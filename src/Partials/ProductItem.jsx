@@ -17,7 +17,7 @@ export default function ProductItem() {
                 <div className="qty-column width-10">13</div>
                 <div className="price-column width-10">223.00</div>
                 <div className="rating-column width-10 showing">
-                <div id="rateYo"></div>
+                    3.6
                 </div>
                 <div className="category-column width-10"><Badge bg="info">Electronics</Badge></div>
                 <div className="action-column width-10">
