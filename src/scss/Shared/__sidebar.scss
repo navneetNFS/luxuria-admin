@@ -1,0 +1,101 @@
+/* sidebar css */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 22rem;
+    height: 100vh;
+    background: #131313;
+}
+
+
+.sidebar .logo {
+    display: block;
+    border-bottom: 1px dashed #ccc;
+    padding: 14px 15px;
+}
+
+.sidebar .logo a {
+    color: #fff;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.sidebar .side-menu {
+    padding: 20px 15px;
+    list-style: none;
+    height: calc(100vh - 48px);
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.sidebar .side-menu li .sidebar-link{
+    display: block;
+    color: #dbdfe9;
+    background: transparent;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.sidebar .side-menu li button.sidebar-link {
+    border: 0;
+    width: 100%;
+    text-align: left;
+    outline: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar .side-menu li .sidebar-link.active{
+    background-color:  rgba(63,66,84,.35) !important;
+}
+
+.sidebar .side-menu li {
+    margin-bottom: 15px;
+}
+
+
+.sidebar .side-menu .sidebar-link:hover{
+    color: #fff;
+    opacity: 0.8;
+}
+
+
+.sidebar .side-menu li .sidebar-link i {
+    margin-right: 5px;
+}
+
+.sidebar .side-menu li .sidebar-dd{
+    position: static !important;
+    transform: none !important;
+    width: 100%;
+    background: transparent !important;
+    border-color: transparent !important;
+    padding-top: 1.5rem;
+}
+
+.sidebar .side-menu li .side-dd-item {
+    color: #dbdfe9 !important;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    padding: 0px 25px;
+    background-color: transparent !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sidebar .side-menu li .side-dd-item .dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: #dbdfe9;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+.sidebar .side-menu li button.sidebar-link[aria-expanded="true"] i.fa-angle-down {
+    transform: rotate(180deg);
+    padding-bottom: 6px;
+}

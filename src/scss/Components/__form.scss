@@ -1,0 +1,19 @@
+.form-control {
+    width: 100%;
+    height: 4rem;
+    font-size: 1.6rem;
+    border-radius: 4px;
+    padding: 0 1.5rem 0.1rem;
+}
+.table-checkbox {
+    transform: scale(1.5);
+}
+
+.boot-select {
+    position: relative;
+    .fa-angle-down {
+        position: absolute;
+        top: 12px;
+        right: 11px;
+    }
+}

@@ -1,0 +1,28 @@
+.form-control::-webkit-input-placeholder {
+    /* Edge */
+    color: #c1b9b9 !important;
+    font-weight: 500;
+}
+
+.form-control:-ms-input-placeholder {
+    /* Internet Explorer */
+    color: #c1b9b9 !important;
+    font-weight: 500;
+}
+
+.form-control::placeholder {
+    color: #c1b9b9 !important;
+    font-weight: 500;
+}
+
+.form-control.placeholder-normal::-webkit-input-placeholder {
+    font-weight: normal !important;
+}
+
+.form-control.placeholder-normal:-ms-input-placeholder {
+    font-weight: normal !important;
+}
+
+.form-control.placeholder-normal::placeholder {
+    font-weight: normal !important;
+}

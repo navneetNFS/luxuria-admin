@@ -1,0 +1,38 @@
+/* product name css */
+.product_name {
+    display: flex;
+    align-items: center;
+    width: calc(100% - 15px);
+}
+
+.product_thumb {
+    width: 5rem;
+    height: 5rem;
+    background: #efefef;
+    border-radius: 4px;
+}
+
+.product_thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.product_name strong {
+    font-size: 13px;
+    white-space: nowrap;
+    width: calc(100% - 5rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 3rem 0 1rem;
+}
+
+.add-product-modal .modal-dialog {
+    max-width: 1285px;
+    .modal-body {
+        max-height: calc(100vh - 81px);
+        overflow: hidden;
+        overflow-y: auto;
+    }
+}

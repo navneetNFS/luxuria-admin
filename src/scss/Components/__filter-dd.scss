@@ -1,0 +1,26 @@
+.filterDropdown {
+    width: 250px;
+
+    .filter_header {
+        padding: 6px 15px 10px;
+        font-size: 1.4rem;
+        font-weight: 500;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+
+    .filter_options {
+        padding: 15px 15px 12px;
+
+        .checkbox-item{
+            label{
+                font-size: 1.6rem;
+                margin-left: 0.5rem;
+            }
+        }
+    }
+
+    .filter_bottom {
+        padding: 0px 10px 14px;
+    }
+}
