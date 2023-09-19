@@ -1,4 +1,5 @@
 import { Badge, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 export default function ProductItem() {
     return (
         <>
@@ -9,8 +10,9 @@ export default function ProductItem() {
                             <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/1.png"
                                 alt="product img" />
                         </div>
-                        <strong title="Product 1 Product 1 Product 1 Product 1Product 1Product 1 Product 1">Product 1
-                            Product 1 Product 1 Product 1Product 1Product 1 Product 1</strong>
+                        <strong title="Product 1 Product 1 Product 1 Product 1Product 1Product 1 Product 1">
+                            <Link to="/product-detail" className=''>Product 1 Product 1 Product 1 Product 1Product 1Product 1 Product 1</Link>
+                        </strong>
                     </div>
                 </div>
                 <div className="sku-column width-12">02114005</div>

@@ -18,8 +18,13 @@ export default function CategoryPage() {
                   </ol>
                 </nav>
               </div>
-              <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end align-items-center">
+            </div>
+          </section>
 
+          <section className="category_list inner-content">
+            <div className="row">
+              <div className="col-lg-6 col-md-6 col-sm-6"></div>
+              <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end align-items-center">
                 <Dropdown className="">
                   <Dropdown.Toggle id="filterDD" variant="outline-primary" size="sm">
                     Add More
@@ -43,9 +48,6 @@ export default function CategoryPage() {
                 </Dropdown>
               </div>
             </div>
-          </section>
-
-          <section className="category_list">
             <div className="row">
               <div className="col-lg-3 col-md-3 col-sm-3">
                 <div className="category-box">

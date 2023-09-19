@@ -1,10 +1,8 @@
 import { NavLink } from "react-router-dom";
-import ProductItem from "./ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
-import AddProductPage from "../Partials/AddProductPage";
+import OrderItem from "./OrderItem";
 
-
-export default function ProductListTable() {
+export default function OrderListTable() {
     return (
         <>
             <div className="table-header">
@@ -16,7 +14,7 @@ export default function ProductListTable() {
                     </div>
                     <div className="col-lg-5 col-md-5 col-sm-5 d-flex align-items-center justify-content-end">
                         <Dropdown className="d-inline-block">
-                            <Dropdown.Toggle id="filterDD" className="only-button-dd me-3">
+                            <Dropdown.Toggle id="filterDD" className="only-button-dd">
                                 <i className="fa fa-sliders slider_icon text-primary-hover"></i>
                             </Dropdown.Toggle>
 
@@ -49,23 +47,23 @@ export default function ProductListTable() {
                                 </Dropdown>
                             </Dropdown.Menu>
                         </Dropdown>
-                        <AddProductPage />
                     </div>
                 </div>
             </div>
             <div className="table-body">
                 <div className="body-header d-flex align-items-center">
-                    <div className="product-column width-38">Product</div>
-                    <div className="sku-column width-12">SKU</div>
-                    <div className="qty-column width-10">Stock</div>
-                    <div className="price-column width-10">Price</div>
-                    <div className="rating-column width-10">Rating</div>
-                    <div className="category-column width-10">Category</div>
-                    <div className="action-column width-10">Action</div>
+                    <div className="product-column width-25">Product</div>
+                    <div className="qty-column width-10">Order Date</div>
+                    <div className="state-column width-15">Shipping Address</div>
+                    <div className="customer-column width-12">Customer</div>
+                    <div className="rating-column width-8">Quantity</div>
+                    <div className="price-column width-8">Price</div>
+                    <div className="category-column width-10">Payment</div>
+                    <div className="action-column width-13">Status</div>
                 </div>
 
                 <div className="body-content">
-                    <ProductItem />
+                    <OrderItem />
                 </div>
             </div>
             <div className="table-footer">
@@ -87,11 +85,11 @@ export default function ProductListTable() {
                     <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end">
                         <nav aria-label="Page navigation example">
                             <ul className="pagination mb-0">
-                                <li className="page-item"><NavLink to="/products" className="page-link"><i className="fa fa-angle-left"></i></NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link">1</NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link">2</NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link">3</NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link"><i className="fa fa-angle-right"></i></NavLink></li>
+                                <li className="page-item"><NavLink to="/orders" className="page-link"><i className="fa fa-angle-left"></i></NavLink></li>
+                                <li className="page-item"><NavLink to="/orders" className="page-link">1</NavLink></li>
+                                <li className="page-item"><NavLink to="/orders" className="page-link">2</NavLink></li>
+                                <li className="page-item"><NavLink to="/orders" className="page-link">3</NavLink></li>
+                                <li className="page-item"><NavLink to="/orders" className="page-link"><i className="fa fa-angle-right"></i></NavLink></li>
                             </ul>
                         </nav>
                     </div>

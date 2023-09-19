@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import '../scss/Pages/Products.scss'
-import ProductListTable from "../Partials/ProductListTable";
-export default function ProductPage() {
+import OrderListTable from "../Partials/OrderListTable";
+
+export default function OrderPage() {
   return (
     <>
       <main>
@@ -9,19 +10,18 @@ export default function ProductPage() {
           <section className="product-header">
             <div className="row">
               <div className="col-lg-6 col-md-6 col-sm-6">
-                <h5 className="page-title">Products</h5>
+                <h5 className="page-title">Orders</h5>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item text-primary"><Link to="/dashboard">Dashboard</Link></li>
-                    <li className="breadcrumb-item active">Products</li>
+                    <li className="breadcrumb-item active">Orders</li>
                   </ol>
                 </nav>
               </div>
-              <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end align-items-center"></div>
             </div>
           </section>
           <section className="product-list card inner-full-card">
-            <ProductListTable />
+            <OrderListTable />
           </section>
         </div>
       </main>

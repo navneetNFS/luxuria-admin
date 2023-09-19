@@ -4,7 +4,7 @@ import JoditEditor from 'jodit-react';
 import '../scss/Pages/Edit-Product.scss'
 import { Link } from 'react-router-dom';
 
-export default function AddProductPage() {
+export default function AddProductModal() {
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const config = {
@@ -45,14 +45,14 @@ export default function AddProductPage() {
                                         <div className="card widget-card">
                                             <h6 className="title">Category</h6>
                                             <div className="form-group boot-select">
-                                                <select className="form-control" id="productCategory">
-                                                    <option value="0" selected>-- Select Category --</option>
+                                                <select className="form-control" id="productCategory" defaultValue={0}>
+                                                    <option value="0">-- Select Category --</option>
                                                     <option value="Electronic">Electronic</option>
                                                 </select>
                                                 <i className="fa fa-angle-down"></i>
                                                 <p className="hint text-start pt-2">Set the product category.</p>
 
-                                                <Link className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
+                                                <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
                                             </div>
                                         </div>
                                     </div>

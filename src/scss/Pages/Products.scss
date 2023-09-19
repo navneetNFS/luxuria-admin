@@ -26,6 +26,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 3rem 0 1rem;
+    a {
+        color: #333;
+        &:hover{
+            color: #0a72eb;
+        }
+    }
 }
 
 .add-product-modal .modal-dialog {
@@ -36,3 +42,4 @@
         overflow-y: auto;
     }
 }
+

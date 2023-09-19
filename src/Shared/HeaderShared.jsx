@@ -6,7 +6,7 @@ export default function Header() {
       <header className="admin-header">
         <nav className="header_navbar">
           <div className="left_menu">
-            <form className="search_box" method="POST">
+            {/* <form className="search_box" method="POST">
               <div className="search_select">
                 <select name="searchtype" className="form-control border-0">
                   <option>Based On</option>
@@ -17,7 +17,7 @@ export default function Header() {
                 <input type="text" name="search" id="" className="form-control border-0 placeholder-normal" placeholder="Search Keyword" />
               </div>
               <button type="submit" className="search-btn text-primary"><i className="fa fa-search"></i></button>
-            </form>
+            </form> */}
           </div>
 
           <div className="right_menu">

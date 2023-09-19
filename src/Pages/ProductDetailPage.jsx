@@ -1,15 +1,7 @@
 import { Link } from "react-router-dom";
-import JoditEditor from 'jodit-react';
 import '../scss/Pages/Edit-Product.scss'
-import { useRef, useState } from "react";
 
-export default function EditProductPage() {
-  const editor = useRef(null);
-  const [content, setContent] = useState('');
-  const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-    placeholder: 'Enter Description'
-  }
+export default function ProductDetailPage() {
   return (
     <>
       <main>
@@ -17,7 +9,7 @@ export default function EditProductPage() {
           <section className="product-header mb-4">
             <div className="row">
               <div className="col-lg-6 col-md-6 col-sm-6">
-                <h5 className="page-title">Edit Product</h5>
+                <h5 className="page-title">Product Detail</h5>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item text-primary"><Link to="/dashboard">Dashboard</Link></li>
@@ -26,11 +18,14 @@ export default function EditProductPage() {
                   </ol>
                 </nav>
               </div>
-              <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end align-items-center"></div>
             </div>
           </section>
 
-          <section className="edit_product inner-content">
+          <section className="inner-content product-detail">
+            {/* <div className="row mb-4">
+              <div className="col-lg-6 col-md-6 col-sm-6"></div>
+              <div className="col-lg-6 col-md-6 col-sm-6 text-end"><Link to="/edit-product" className="btn btn-outline-primary">Update Product</Link></div>
+            </div> */}
             <div className="row">
               <div className="col-lg-3 col-md-3 col-sm-3">
                 <div className="thumbline mb-5">
@@ -39,10 +34,7 @@ export default function EditProductPage() {
                       <h6 className="title">Thumbnail</h6>
                       <div className="thumb_img mx-auto">
                         <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                        <input type="file" id="thumbImage" className="hidden-file" />
-                        <label className="btn-edit" htmlFor="thumbImage"><i className="fa fa-pencil"></i></label>
                       </div>
-                      <p className="hint">Update the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
                     </div>
                   </form>
                 </div>
@@ -52,15 +44,10 @@ export default function EditProductPage() {
                     <div className="card widget-card">
                       <h6 className="title">Category</h6>
                       <div className="form-group boot-select">
-                        <select className="form-control" id="productCategory">
-                          <option value="0">-- Select Category --</option>
-                          <option value="Electronic" selected>Electronic</option>
-                          <option>Other</option>
+                        <select className="form-control" id="productCategory" disabled>
+                          <option>Electronic</option>
                         </select>
                         <i className="fa fa-angle-down"></i>
-                        <p className="hint text-start pt-2">Update the product category.</p>
-
-                        <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
                       </div>
                     </div>
                   </form>
@@ -72,38 +59,26 @@ export default function EditProductPage() {
                   <form action="">
                     <div className="card widget-card">
                       <h6 className="title">Images</h6>
-
-                      <div className="upload_more">
-                        <label htmlFor="uploadMore" className="btn btn-primary btn-upload-more btn-sm">Upload More</label>
-                        <input type="file" name="" id="uploadMore" className="w-100" accept="image/*" multiple="true" />
-                      </div>
                       <div className="d-flex image_list">
                         <div className="thumb_img me-4">
                           <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                          <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
                         </div>
                         <div className="thumb_img me-4">
                           <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                          <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
                         </div>
                         <div className="thumb_img me-4">
                           <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                          <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
                         </div>
                         <div className="thumb_img me-4">
                           <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                          <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
                         </div>
                         <div className="thumb_img me-4">
                           <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                          <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
                         </div>
                         <div className="thumb_img me-4">
                           <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                          <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
                         </div>
                       </div>
-                      {/* <input type="file" id="uploadMore" className="hidden-file" /> */}
                     </div>
                   </form>
                 </div>
@@ -114,47 +89,35 @@ export default function EditProductPage() {
                     <div className="card widget-card">
                       <h6 className="title">General</h6>
 
-                      <div className="form-group">
+                      <div className="form-group mb-4">
                         <label htmlFor="productName" className="mb-3 h5">Product Name <span style={{ color: "red" }}>*</span></label>
-                        <input type="text" className="form-control" id="productName" />
-                        <p className="hint text-start pt-2">A product name is required and recommended to be unique.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore culpa libero pariatur optio non, ullam aliquid accusamus id reprehenderit iusto nobis? Quia!</p>
                       </div>
 
-                      <div className="form-group">
+                      <div className="form-group mb-4">
                         <label className="mb-3 h5">Description <span style={{ color: "red" }}>*</span></label>
-                        <JoditEditor ref={editor}
-                          value={content}
-                          config={config}
-                          tabIndex={1} // tabIndex of textarea
-                          onBlur={newContent => setContent(newContent)} id="productDescription" />
-                        <p className="hint text-start pt-2">Update description of the product for better visibility.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore culpa libero pariatur optio non, ullam aliquid accusamus id reprehenderit iusto nobis? Quia!</p>
                       </div>
 
                       <div className="row">
                         <div className="col-lg-4 col-md-4 col-sm-4">
                           <div className="form-group">
                             <label htmlFor="productPrice" className="mb-3 h5">Price <span style={{ color: "red" }}>*</span></label>
-                            <input type="text" className="form-control" id="productPrice" />
-                            <p className="hint text-start pt-2">Update the product price.</p>
+                            <p>$153.66</p>
                           </div>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4">
                           <div className="form-group">
                             <label htmlFor="productStock" className="mb-3 h5">Stock <span style={{ color: "red" }}>*</span></label>
-                            <input type="text" className="form-control" id="productStock" />
-                            <p className="hint text-start pt-2">Update the product stock remaining.</p>
+                            <p>500</p>
                           </div>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4">
                           <div className="form-group">
                             <label htmlFor="productStock" className="mb-3 h5">SKU <span style={{ color: "red" }}>*</span></label>
-                            <input type="text" className="form-control" id="productStock" />
-                            <p className="hint text-start pt-2">Update the product SKU.</p>
+                            <p>AKU-124343</p>
                           </div>
                         </div>
-                      </div>
-                      <div className="text-end">
-                        <button type="submit" className="btn btn-primary">Update</button>
                       </div>
                     </div>
                   </form>
