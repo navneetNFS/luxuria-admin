@@ -1,18 +1,16 @@
-.pagination .page-link {
-    border: 0;
-}
+.pagination{
+    .page-link {
+        border: 0;
+        outline: none !important;
+        box-shadow: none !important;
+        border-radius: 4px !important;
+        padding: 7px 13px;
+        font-size: 1.4rem;
 
-.pagination .page-link {
-    border: 0;
-    outline: none !important;
-    box-shadow: none !important;
-    border-radius: 4px !important;
-    padding: 7px 13px;
-    font-size: 1.4rem;
-}
-
-.pagination .page-link.active{
-    background-color: $primary-color !important;
-    color: #fff !important;
-    padding: 7px 15px;
+        &.active{
+            background-color: $primary-color !important;
+            color: #fff !important;
+            padding: 7px 15px;
+        }
+    }
 }
