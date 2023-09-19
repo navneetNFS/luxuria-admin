@@ -11,10 +11,10 @@
 .only-button {
     width: 4rem;
     height: 4rem;
-    border: 0px;
+    border: 0;
     background-color: #f9f9f9;
-    border-radius: 4px;
-    font-size: 18px;
+    border-radius: 0.4rem;
+    font-size: 1.8rem;
     box-shadow: none !important;
     outline: none !important;
 }
@@ -22,13 +22,13 @@
 .only-button-dd{
     width: 4rem;
     height: 4rem;
-    border: 0px;
+    border: 0;
     background-color: #f9f9f9;
-    border-radius: 4px !important;
-    font-size: 18px;
+    border-radius: 0.4rem !important;
+    font-size: 1.8rem;
     box-shadow: none !important;
     outline: none !important;
-    padding: 0px !important;
+    padding: 0 !important;
     color: #333 !important;
     
     &:after{
@@ -45,9 +45,9 @@
     width: 100%;
     background: #efefef;
     border: 0;
-    font-size: 13px;
-    padding: 6px 10px;
-    border-radius: 4px;
+    font-size: 1.3rem;
+    padding: 0.6rem 1rem;
+    border-radius: 0.4rem;
     outline: none !important;
     box-shadow: none !important;
     &:hover , &:active , &:focus{

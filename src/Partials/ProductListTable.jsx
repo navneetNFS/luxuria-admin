@@ -72,7 +72,7 @@ export default function ProductListTable() {
                 <div className="row d-flex align-items-center justify-content-center">
                     <div className="col-lg-6 col-md-6 col-sm-6">
                         <Dropdown>
-                            <Dropdown.Toggle id="pageSizeDD" className='btn-action text-black' style={{ "width": "70px" }}>
+                            <Dropdown.Toggle id="pageSizeDD" className='btn-action text-black' style={{ "width": "7rem" }}>
                                 10 <i className="fa fa-angle-down"></i>
                             </Dropdown.Toggle>
 

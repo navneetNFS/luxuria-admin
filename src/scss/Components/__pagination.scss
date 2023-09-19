@@ -3,14 +3,14 @@
         border: 0;
         outline: none !important;
         box-shadow: none !important;
-        border-radius: 4px !important;
-        padding: 7px 13px;
+        border-radius: 0.4rem !important;
+        padding: 0.7rem 1.3rem;
         font-size: 1.4rem;
 
         &.active{
             background-color: $primary-color !important;
             color: #fff !important;
-            padding: 7px 15px;
+            padding: 0.7rem 1.5rem;
         }
     }
 }

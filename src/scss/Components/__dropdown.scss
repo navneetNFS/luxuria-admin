@@ -5,18 +5,18 @@
 }
 
 .filterDropdown {
-    width: 250px;
+    width: 25rem;
 
     .filter_header {
-        padding: 6px 15px 10px;
+        padding: 0.6rem 1.5rem 1rem;
         font-size: 1.4rem;
         font-weight: 500;
-        border-bottom: 1px solid #dee2e6;
+        border-bottom: 0.1rem solid #dee2e6;
     }
 
 
     .filter_options {
-        padding: 15px 15px 12px;
+        padding: 1.5rem 1.5rem 1.2rem;
 
         .checkbox-item{
             label{
@@ -27,6 +27,6 @@
     }
 
     .filter_bottom {
-        padding: 0px 10px 14px;
+        padding: 0 1rem 1.4rem;
     }
 }

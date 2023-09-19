@@ -23,7 +23,7 @@ export default function OrderItem() {
                 <div className="category-column width-10"><Badge bg="success">Cash</Badge></div>
                 <div className="action-column width-13">
                     <form>
-                        <select className='form-control' style={{fontSize:"13px",padding:"0 12px",height:"32px"}}>
+                        <select className='form-control' style={{fontSize:"1.3rem",padding:"0 1.2rem",height:"3.2rem"}}>
                             <option>Processing</option>
                             <option>Shipped</option>
                             <option>Out For Delivery</option>

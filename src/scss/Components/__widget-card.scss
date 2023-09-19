@@ -1,20 +1,20 @@
 .widget-card {
-    border: 1px solid #f1f1f2;
-    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.03);
+    border: 0.1rem solid #f1f1f2;
+    box-shadow: 0 0.4rem 1.2rem 0 rgba(0, 0, 0, 0.03);
     padding: 3rem;
 
     .title {
-        font-size: 18px;
-        margin-bottom: 25px;
+        font-size: 1.8rem;
+        margin-bottom: 2.5rem;
     }
 
     .thumb_img {
-        width: 138px;
-        height: 138px;
-        min-width: 138px;
-        border: 3px solid #ffffff;
+        width: 13.8rem;
+        height: 13.8rem;
+        min-width: 13.8rem;
+        border: 0.3rem solid #ffffff;
         box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075);
-        border-radius: 10px;
+        border-radius: 1rem;
         position: relative;
 
         img {
@@ -25,14 +25,14 @@
 
         .btn-edit {
             position: absolute;
-            top: -12px;
-            right: -15px;
-            width: 25px;
-            height: 25px;
+            top: -1.2rem;
+            right: -1.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
             border: 0;
             background: #fff;
             border-radius: 50%;
-            font-size: 12px;
+            font-size: 1.2rem;
             box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075);
             display: inline-flex;
             align-items: center;
@@ -46,14 +46,14 @@
 
     .upload_more {
         display: inline-block;
-        width: 115px;
+        width: 11.5rem;
         position: absolute;
-        right: 25px;
-        top: 17px;
+        right: 2.5rem;
+        top: 1.7rem;
 
         label {
             width: 100%;
-            font-size: 14px;
+            font-size: 10.4rem;
         }
 
         input {
@@ -66,9 +66,9 @@
     }
 
     .hint{
-        font-size: 12px;
+        font-size: 1.2rem;
         text-align: center;
-        padding-top: 20px;
+        padding-top: 20;
         color: #979797;
     }
 }

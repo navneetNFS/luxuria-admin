@@ -78,7 +78,7 @@ export default function OrderDetailProducts() {
                 <div className="price-column width-10">Shipping Rate</div>
                 <div className="price-column width-10 showing">5.00</div>
             </div>
-            <div className="body-row d-flex align-items-center" style={{paddingBottom:"0px"}}>
+            <div className="body-row d-flex align-items-center" style={{paddingBottom:"0"}}>
                 <div className="empty-column width-80 d-flex ">
                 </div>
                 <div className="price-column width-10"><b>Grand Total</b></div>

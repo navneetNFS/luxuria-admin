@@ -32,7 +32,7 @@ export default function OrderDetailPage() {
                   <form action="">
                     <div className="card widget-card">
                       <h6 className="title text-center">Navneet Taneja</h6>
-                      <div className="thumb_img mx-auto" style={{ width: "120px", height: "120px", minWidth: "120px", borderRadius: "50%", overflow: "hidden" }}>
+                      <div className="thumb_img mx-auto" style={{ width: "12rem", height: "12rem", minWidth: "12rem", borderRadius: "50%", overflow: "hidden" }}>
                         <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/300-1.jpg" alt="" style={{ objectFit: "cover" }} />
                       </div>
                     </div>
@@ -108,7 +108,7 @@ export default function OrderDetailPage() {
                     <div className="card widget-card">
                       <h6 className="title">Order #14534</h6>
                       <div>
-                        <div className="table-body" style={{height:"auto",paddingBottom:"0px"}}>
+                        <div className="table-body" style={{height:"auto",paddingBottom:"0"}}>
                           <div className="body-header d-flex align-items-center">
                             <div className="product-column width-38">Product</div>
                             <div className="sku-column width-12">SKU</div>

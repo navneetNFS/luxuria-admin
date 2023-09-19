@@ -1,6 +1,6 @@
 .table-header {
     .search-field {
-        max-width: 230px;
+        max-width: 23rem;
     }
 }
 
@@ -24,14 +24,14 @@
         padding-left: 0.5rem;
 
         .body-row {
-            border-bottom: 1px dashed #efefef;
+            border-bottom: 0.1rem dashed #efefef;
             padding: 1.5rem 0;
             * {
-                font-size: 14px;
+                font-size: 1.4rem;
             }
 
             &:last-child {
-                border-bottom: 0px !important;
+                border-bottom: 0 !important;
             }
         }
     }
