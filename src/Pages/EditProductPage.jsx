@@ -52,9 +52,9 @@ export default function EditProductPage() {
                     <div className="card widget-card">
                       <h6 className="title">Category</h6>
                       <div className="form-group boot-select">
-                        <select className="form-control" id="productCategory">
+                        <select className="form-control" id="productCategory" defaultChecked={0}>
                           <option value="0">-- Select Category --</option>
-                          <option value="Electronic" selected>Electronic</option>
+                          <option value="Electronic">Electronic</option>
                           <option>Other</option>
                         </select>
                         <i className="fa fa-angle-down"></i>
@@ -75,7 +75,7 @@ export default function EditProductPage() {
 
                       <div className="upload_more">
                         <label htmlFor="uploadMore" className="btn btn-primary btn-upload-more btn-sm">Upload More</label>
-                        <input type="file" name="" id="uploadMore" className="w-100" accept="image/*" multiple="true" />
+                        <input type="file" name="" id="uploadMore" className="w-100" accept="image/*" multiple />
                       </div>
                       <div className="d-flex image_list">
                         <div className="thumb_img me-4">
