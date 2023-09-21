@@ -52,10 +52,10 @@ export default function OrderListTable() {
             </div>
             <div className="table-body">
                 <div className="body-header d-flex align-items-center">
+                    <div className="customer-column width-12">Customer</div>
                     <div className="product-column width-25">Product</div>
                     <div className="qty-column width-10">Order Date</div>
                     <div className="state-column width-15">Shipping Address</div>
-                    <div className="customer-column width-12">Customer</div>
                     <div className="rating-column width-8">Quantity</div>
                     <div className="price-column width-8">Price</div>
                     <div className="category-column width-10">Payment</div>

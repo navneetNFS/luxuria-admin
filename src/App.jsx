@@ -10,6 +10,7 @@ import CategoryPage from "./Pages/CategoryPage";
 import ProductDetailPage from "./Pages/ProductDetailPage";
 import OrderPage from "./Pages/OrderPage";
 import OrderDetailPage from "./Pages/OrderDetailPage";
+import ReviewPage from "./Pages/ReviewPage";
 function App() {
   return (
     <>
@@ -33,6 +34,9 @@ function App() {
           {/* Orders Links */}
           <Route path="/orders" element={<OrderPage />} />
           <Route path="/order-detail" element={<OrderDetailPage />} />
+
+          {/* Reviews */}
+          <Route path="/reviews" element={<ReviewPage />} />
 
           {/* Categories */}
           <Route path="/categories" element={<CategoryPage />} />

@@ -8,6 +8,13 @@
     padding: 0.5rem 1.2rem;
 }
 
+.link{
+    color: #333;
+    &:hover{
+        color: #0d6efd;
+    }
+}
+
 .only-button {
     width: 4rem;
     height: 4rem;

@@ -22,10 +22,13 @@ export default function ProductDetailPage() {
           </section>
 
           <section className="inner-content product-detail">
-            {/* <div className="row mb-4">
+            <div className="row mb-4">
               <div className="col-lg-6 col-md-6 col-sm-6"></div>
-              <div className="col-lg-6 col-md-6 col-sm-6 text-end"><Link to="/edit-product" className="btn btn-outline-primary">Update Product</Link></div>
-            </div> */}
+              <div className="col-lg-6 col-md-6 col-sm-6 text-end">
+                <Link to="/reviews" className="btn btn-outline-primary me-3">Reviews</Link>
+                <Link to="/edit-product" className="btn btn-outline-primary">Update Product</Link>
+                </div>
+            </div>
             <div className="row">
               <div className="col-lg-3 col-md-3 col-sm-3">
                 <div className="thumbline mb-5">
