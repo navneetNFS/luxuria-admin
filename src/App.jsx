@@ -11,38 +11,49 @@ import ProductDetailPage from "./Pages/ProductDetailPage";
 import OrderPage from "./Pages/OrderPage";
 import OrderDetailPage from "./Pages/OrderDetailPage";
 import ReviewPage from "./Pages/ReviewPage";
+// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectUserLogged } from "./store/slices/auth-slice";
+import PageNotFound from "./Pages/PageNotFound";
+import NotAuthorised from "./Pages/NotAuthorised";
+
+
+
+
 function App() {
+  const isLogged = useSelector(selectUserLogged)
   return (
     <>
       <Router>
-        <Header />
-        <Sidebar />
+        {isLogged ? <Header /> : ''}
+        {isLogged ? <Sidebar /> : ''}
+        
         <Routes>
           {/* User Links */}
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<RegisterPage />} />
 
           {/* Dashboard */}
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={isLogged ? <DashboardPage /> : <NotAuthorised />} />
 
           {/* Product Links */}
-          <Route path="/products" element={<ProductPage />} />
-          <Route path="/product-detail" element={<ProductDetailPage />} />
-          <Route path="/edit-product" element={<EditProductPage />} />
+          <Route path="/products" element={isLogged ? <ProductPage /> : <NotAuthorised />} />
+          <Route path="/product-detail" element={isLogged ? <ProductDetailPage /> : <NotAuthorised />} />
+          <Route path="/edit-product" element={isLogged ? <EditProductPage /> : <NotAuthorised />} />
 
 
           {/* Orders Links */}
           <Route path="/orders" element={<OrderPage />} />
-          <Route path="/order-detail" element={<OrderDetailPage />} />
+          <Route path="/order-detail" element={isLogged ? <OrderDetailPage /> : <NotAuthorised />} />
 
           {/* Reviews */}
-          <Route path="/reviews" element={<ReviewPage />} />
+          <Route path="/reviews" element={isLogged ? <ReviewPage /> : <NotAuthorised />} />
 
           {/* Categories */}
-          <Route path="/categories" element={<CategoryPage />} />
+          <Route path="/categories" element={isLogged ? <CategoryPage /> : <NotAuthorised />} />
 
           {/* Page Not Found */}
-          <Route path="*" element={"Page Not Found"} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </>
