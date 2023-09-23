@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { selectUserLogged } from "./store/slices/auth-slice";
 import PageNotFound from "./Pages/PageNotFound";
 import NotAuthorised from "./Pages/NotAuthorised";
+import PageStart from "./Components/PageStart";
 
 
 
@@ -24,6 +25,7 @@ function App() {
   const isLogged = useSelector(selectUserLogged)
   return (
     <>
+      <PageStart />
       <Router>
         {isLogged ? <Header /> : ''}
         {isLogged ? <Sidebar /> : ''}
