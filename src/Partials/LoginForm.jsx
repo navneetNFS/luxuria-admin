@@ -1,16 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-// import { setCredential } from "../store/slices/auth-slice";
 
 export default function LoginForm() {
-
-    // const dispatch = useDispatch()
-
-    // const {logged} =  useSelector((state) => state.auth)
-    // console.log(logged);
-
     const initialValue = {
         email : '',
         password: ''
@@ -23,10 +14,6 @@ export default function LoginForm() {
 
     const loginNow = ({email,password}) => {
         console.log(`email is ${email} , password is ${password}`);
-
-        // const payload = {logged: true}
-        // dispatch(setCredential(payload))
-        // window.location.reload(true)
     }
 
     const validation = () => {

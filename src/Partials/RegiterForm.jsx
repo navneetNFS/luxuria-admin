@@ -12,7 +12,7 @@ export default function RegiterForm() {
     }
     const [inputVals , setInputVals] = useState(initialValue)
 
-    const {name,email,password,mobile,avatar} = inputVals
+    const {name,email,password,mobile} = inputVals
 
     const [error,setError] = useState({})
 
@@ -77,7 +77,7 @@ export default function RegiterForm() {
     return (
         <>
             <h1>Sign Up</h1>
-            <form method="POST" enctype="multipart/form-data" onSubmit={onHandelSubmit}>
+            <form method="POST" encType="multipart/form-data" onSubmit={onHandelSubmit}>
                 <div className="form-group mb-5">
                     <div className="form-field mb-3">
                         <input type="text" name="name" id="userName" className="form-control" placeholder="Name" value={name} onChange={onHandelChange} onKeyUp={validation} />
@@ -95,11 +95,11 @@ export default function RegiterForm() {
                         <input type="text" name="mobile" id="userMob" className="form-control" placeholder="Mobile" value={mobile} onChange={onHandelChange} onKeyUp={validation} />
                         <span className="error">{error.mobile}</span>
                     </div>
-                    <div className="form-field mb-3">
+                    {/* <div className="form-field mb-3">
                         <label htmlFor="userProfilePic" className="mb-3">Profile Image</label>
                         <input type="file" name="avatar" id="userProfilePic" className="form-control" value={avatar} onChange={onHandelChange}/>
                         <span className="error">{error.avatar}</span>
-                    </div>
+                    </div> */}
                     <div className="form-field">
                         <input type="hidden" name="role" value="admin" />
                     </div>
