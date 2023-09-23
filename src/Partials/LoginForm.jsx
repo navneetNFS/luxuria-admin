@@ -41,7 +41,7 @@ export default function LoginForm() {
 
     const loginNow = ({email,password}) => {
         console.log(`email is ${email} , password is ${password}`);
-        // window.location.reload(true)
+        window.location.reload(true)
     }
 
     const onHandelSubmit = (e) => {
@@ -64,12 +64,12 @@ export default function LoginForm() {
             <form method="POST" onSubmit={onHandelSubmit}>
                 <div className="form-group mb-5">
                     <div className="form-field mb-3">
-                        <input type="email" name="email" id="userEmail" className="form-control" placeholder="Email" value={email} onChange={onHandelChange} />
-                        <span>{error.email}</span>
+                        <input type="email" name="email" id="userEmail" className="form-control" placeholder="Email" value={email} onChange={onHandelChange} onKeyUp={validation} />
+                        <span className="error">{error.email}</span>
                     </div>
                     <div className="form-field mb-3">
-                        <input type="text" name="password" id="userPwd" className="form-control" placeholder="Password" value={password} onChange={onHandelChange} />
-                        <span>{error.password}</span>
+                        <input type="text" name="password" id="userPwd" className="form-control" placeholder="Password" value={password} onChange={onHandelChange} onKeyUp={validation} />
+                        <span className="error">{error.password}</span>
                     </div>
                     <div className="form-field mb-3 text-end">
                         <a href="/" className="text-primary">Forgot Password</a>
