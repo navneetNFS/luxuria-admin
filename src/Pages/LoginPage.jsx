@@ -3,6 +3,7 @@ import AuthImage from "../../public/images/auth-screens.png";
 import '../scss/Pages/Login.scss'
 
 export default function LoginPage() {
+
     return (
         <>
             <section className="login min-vh-100">

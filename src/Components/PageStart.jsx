@@ -8,8 +8,8 @@ export default function PageStart() {
     const api_url = "http://localhost:3000/api"
     const ApiUrl = (payload) => {
         dispatch(setApiUrl(payload))
-        console.log(payload);
     }
     ApiUrl(api_url)
+    
     return ''
 }

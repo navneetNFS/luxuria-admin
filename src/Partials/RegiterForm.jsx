@@ -1,27 +1,51 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 /* eslint-disable react/no-unknown-property */
 export default function RegiterForm() {
+
+    const navigate = useNavigate()
+
+    const { apiUrl } = useSelector((state) => state)
+
     const initialValue = {
-        name:'',
-        email:'',
+        name: '',
+        email: '',
         password: '',
-        mobile:'',
-        avatar:''
+        mobile: '',
+        avatar: ''
     }
-    const [inputVals , setInputVals] = useState(initialValue)
 
-    const {name,email,password,mobile} = inputVals
 
-    const [error,setError] = useState({})
+    const [inputVals, setInputVals] = useState(initialValue)
 
-    const userRegister = (data) => {
-        console.log(data);
-    } 
+    const { name, email, password, mobile } = inputVals
+
+    const [error, setError] = useState({})
+
+    const [showSuccess, setSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+
+    const userRegister = (postedData) => {
+        axios.post(`${apiUrl}/user/new-user`, postedData)
+            .then(({ data }) => {
+                console.log(data);
+                const { success } = data
+                if (success) {
+                    setSuccess(true)
+                    setSuccessMessage('User Created Successfully')
+                    setTimeout(() => {
+                        navigate('/')
+                    },1000)
+                }
+            })
+            .catch(err => console.log(err))
+    }
 
     const validation = () => {
-        if(!name && !email && !password && !mobile){
+        if (!name && !email && !password && !mobile) {
             const err = {}
             err.name = 'Name is required field'
             err.email = 'Email is required field'
@@ -30,31 +54,31 @@ export default function RegiterForm() {
             setError(err)
             return err
         }
-        else if(!name){
+        else if (!name) {
             const err = {}
             err.name = 'Name is required field'
             setError(err)
             return err
         }
-        else if(!email){
+        else if (!email) {
             const err = {}
             err.email = 'Email is required field'
             setError(err)
             return err
         }
-        else if(!password){
+        else if (!password) {
             const err = {}
             err.password = 'Password is required field'
             setError(err)
             return err
         }
-        else if(!mobile){
+        else if (!mobile) {
             const err = {}
             err.mobile = 'Mobile number is required field'
             setError(err)
             return err
         }
-        else{
+        else {
             setError({})
             return {}
         }
@@ -64,15 +88,15 @@ export default function RegiterForm() {
         e.preventDefault()
         const isValid = validation()
         const errorList = Object.keys(isValid)
-        if(errorList.length == 0){
+        if (errorList.length == 0) {
             userRegister(inputVals)
         }
     }
 
     const onHandelChange = (e) => {
-        const {name,value} = e.target
+        const { name, value } = e.target
         validation()
-        setInputVals({...inputVals,[name]:value})
+        setInputVals({ ...inputVals, [name]: value })
     }
     return (
         <>
@@ -110,6 +134,12 @@ export default function RegiterForm() {
                     Already a Member <Link to="/" className="text-primary">Sign In</Link>
                 </div>
             </form>
+                {
+                    showSuccess ? <div className="custom_toast">
+                        <i className="fa fa-check"></i>
+                        <b>{successMessage}</b>
+                    </div> : ''
+                }
         </>
     )
 }
