@@ -3,6 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import JoditEditor from 'jodit-react';
 import '../scss/Pages/Edit-Product.scss'
 import { Link } from 'react-router-dom';
+import Noimage from '../assets/images/blank-image.svg'
 
 export default function AddProductModal() {
     const editor = useRef(null);
@@ -33,9 +34,15 @@ export default function AddProductModal() {
                                         <div className="card widget-card">
                                             <h6 className="title">Thumbnail</h6>
                                             <div className="thumb_img mx-auto">
-                                                <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media/svg/files/blank-image.svg" alt="" />
-                                                <input type="file" id="thumbImage" className="hidden-file" />
-                                                <label className="btn-edit" htmlFor="thumbImage"><i className="fa fa-pencil"></i></label>
+                                                <img src={Noimage} alt="" id="thumbImage" />
+                                                <input type="file" id="thumbFile" className="hidden-file" onChange={() => {
+                                                    const [file] = document.getElementById("thumbFile").files
+                                                    if (file) {
+                                                        document.getElementById("thumbImage").src = URL.createObjectURL(file)
+                                                        document.getElementById("thumbImage").classList.add('covered_image')
+                                                    }
+                                                }} />
+                                                <label className="btn-edit" htmlFor="thumbFile"><i className="fa fa-plus"></i></label>
                                             </div>
                                             <p className="hint">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
                                         </div>
@@ -62,43 +69,28 @@ export default function AddProductModal() {
                                     <div className="images mb-5">
                                         <div className="card widget-card">
                                             <h6 className="title">Images</h6>
-
                                             <div className="upload_more">
                                                 <label htmlFor="uploadImage" className="btn btn-primary btn-upload-more btn-sm">Upload Image</label>
-                                                <input type="file" name="" id="uploadImage" className="w-100" accept="image/*" multiple="true" />
-                                            </div>
-                                            <div className="d-flex image_list">
-                                                <div className="thumb_img mx-auto">
-                                                    <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media/svg/files/blank-image.svg" alt="" />
-                                                </div>
-                                            </div>
+                                                <input type="file" name="" id="uploadImage" className="w-100" accept="image/*" multiple="true" onChange={(e) => {
+                                                    let a = document.getElementById("uploadImage").files
+                                                    document.getElementById("productImages").innerHTML = ""
 
-                                            {/* <div className="d-flex image_list">
-                                                <div className="thumb_img me-4">
-                                                    <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                                    <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
+                                                    Object.values(a).forEach((item,index) => {
+                                                        var urls = URL.createObjectURL(e.target.files[index]);
+                                                        document.getElementById("productImages").innerHTML += 
+                                                        `<div class="thumb_img me-4">
+                                                        <img src="${urls}" alt="" class="covered_image" />
+                                                        <button type="button" class="btn-edit"><i class="fa fa-trash"></i></button>
+                                                    </div>`
+
+                                                    })
+                                                }}  />
+                                            </div>
+                                            <div className="d-flex image_list" id="productImages">
+                                                <div className="thumb_img mx-auto" >
+                                                    <img src={Noimage} alt="" />
                                                 </div>
-                                                <div className="thumb_img me-4">
-                                                    <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                                    <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                                </div>
-                                                <div className="thumb_img me-4">
-                                                    <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                                    <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                                </div>
-                                                <div className="thumb_img me-4">
-                                                    <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                                    <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                                </div>
-                                                <div className="thumb_img me-4">
-                                                    <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                                    <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                                </div>
-                                                <div className="thumb_img me-4">
-                                                    <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                                    <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                                </div>
-                                            </div> */}
+                                            </div>
                                         </div>
                                     </div>
 

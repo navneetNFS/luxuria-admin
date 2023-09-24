@@ -35,7 +35,7 @@ export default function CategoryPage() {
                       <div className="filter_header">
                         Add Category
                       </div>
-                      <form action="" method="POST">
+                      <form method="POST">
                         <div className="filter_options">
                           <div className="field mb-4">
                             <input type="text" placeholder="Category Name" id="search" className="form-control" />
