@@ -21,4 +21,11 @@
         justify-content: center;
         margin-right: 0.7rem;
     }
+
+    &.error_tost{
+        color: #f57d7d;
+        i{
+            background-color: red;
+        }
+    }
 }

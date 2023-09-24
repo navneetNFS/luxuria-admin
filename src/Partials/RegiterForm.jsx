@@ -6,6 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 /* eslint-disable react/no-unknown-property */
 export default function RegiterForm() {
 
+    const cookieDate = (d = 1, h = 12, m = 60, s = 60) => {
+        return new Date(Date.now() + (d * h * m * s * 1000))
+    }
+
+
     const navigate = useNavigate()
 
     const { apiUrl } = useSelector((state) => state)
@@ -27,21 +32,27 @@ export default function RegiterForm() {
 
     const [showSuccess, setSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [showFail, setFail] = useState(false);
+    const [FailMessage, setFailMessage] = useState('');
 
     const userRegister = (postedData) => {
         axios.post(`${apiUrl}/user/new-user`, postedData)
             .then(({ data }) => {
-                console.log(data);
-                const { success } = data
+                const { success, tokken, user } = data
                 if (success) {
                     setSuccess(true)
                     setSuccessMessage('User Created Successfully')
                     setTimeout(() => {
+                        document.cookie = `tokken=${String(tokken)}; expires=${cookieDate(5)}`;
+                        document.cookie = `user=${JSON.stringify(user)}; expires=${cookieDate(5)}`;
                         navigate('/')
-                    },1000)
+                    }, 1000)
                 }
             })
-            .catch(err => console.log(err))
+            .catch(({response}) => {
+                setFail(true);
+                setFailMessage(`${response.data.message}`)
+            })
     }
 
     const validation = () => {
@@ -134,12 +145,19 @@ export default function RegiterForm() {
                     Already a Member <Link to="/" className="text-primary">Sign In</Link>
                 </div>
             </form>
-                {
-                    showSuccess ? <div className="custom_toast">
-                        <i className="fa fa-check"></i>
-                        <b>{successMessage}</b>
-                    </div> : ''
-                }
+            {
+                showSuccess ? <div className="custom_toast">
+                    <i className="fa fa-check"></i>
+                    <b>{successMessage}</b>
+                </div> : ''
+            }
+
+            {
+                showFail ? <div className="custom_toast error_tost">
+                <i className="fa fa-times"></i>
+                <b>{FailMessage}</b>
+            </div> : ''
+            }
         </>
     )
 }
