@@ -12,19 +12,23 @@ export default function LoginPage() {
     const dispacth = useDispatch()
 
     const getCookieValue = (key_name) => {
-        return document.cookie.split(';').reduce((cookie_lst_dict, item) => {
-            const [keyName, value] = item.split('=').map((str) => str.trim());
-            return keyName === key_name ? value : cookie_lst_dict;
-        }, undefined);
-    };
-    
+        const cookies = document.cookie.split(';');
+        const cookie_lst_dict = {}
+        cookies.forEach((item) => {
+            const key_val = item.split('=')
+            const keyName = key_val[0].trim()
+            const value = key_val[1]
+            cookie_lst_dict[keyName] = value
+        })
+        return cookie_lst_dict[key_name]
+    }
 
     const tokken = getCookieValue('tokken')
     const user = JSON.parse(getCookieValue('user'))
 
-    if(tokken && user){
+    if (tokken && user) {
         // SET TOKKEN TO REDUX
-        const setting = {logged: true, user , tokken}
+        const setting = { logged: true, user, tokken }
         const setCred = (payload) => {
             dispacth(setCredential(payload))
             navigate('/dashboard')
