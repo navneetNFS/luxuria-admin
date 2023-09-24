@@ -30,8 +30,8 @@ function App() {
         
         <Routes>
           {/* User Links */}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/sign-up" element={<RegisterPage />} />
+          <Route path="/" element={!isLogged ? <LoginPage /> : <DashboardPage />} />
+          <Route path="/sign-up" element={!isLogged ? <RegisterPage /> : <DashboardPage />} />
 
           {/* Dashboard */}
           <Route path="/dashboard" element={isLogged ? <DashboardPage /> : <NotAuthorised />} />

@@ -1,9 +1,9 @@
 import LoginForm from "../Partials/LoginForm";
-import AuthImage from "../../public/images/auth-screens.png";
-import '../scss/Pages/Login.scss'
 import { useDispatch } from "react-redux";
 import { setCredential } from "../store/slices/auth-slice";
 import { useNavigate } from "react-router-dom";
+import AuthImage from "../../public/images/auth-screens.png";
+import '../scss/Pages/Login.scss'
 
 export default function LoginPage() {
 

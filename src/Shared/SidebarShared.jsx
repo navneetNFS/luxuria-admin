@@ -6,7 +6,7 @@ export default function Sidebar() {
             <aside className="sidebar">
                 <nav className="sidenav">
                     <div className="logo">
-                        <a href="/dashboard">Luxuria</a>
+                        <a href="/">Luxuria</a>
                     </div>
                     <ul className="side-menu">
                         <li><NavLink to="/dashboard" className="sidebar-link"><i className="fa fa-dashboard"></i> Dashboard</NavLink></li>
