@@ -70,10 +70,11 @@ export default function AddProductModal() {
                                         <div className="card widget-card">
                                             <h6 className="title">Images</h6>
                                             <div className="upload_more">
-                                                <label htmlFor="uploadImage" className="btn btn-primary btn-upload-more btn-sm">Upload Image</label>
+                                                <label htmlFor="uploadImage" id="uploadBtn" className="btn btn-primary btn-upload-more btn-sm">Upload Image</label>
                                                 <input type="file" name="" id="uploadImage" className="w-100" accept="image/*" multiple="true" onChange={(e) => {
                                                     let a = document.getElementById("uploadImage").files
                                                     document.getElementById("productImages").innerHTML = ""
+                                                    document.getElementById("uploadBtn").style.display = "none"
 
                                                     Object.values(a).forEach((item,index) => {
                                                         var urls = URL.createObjectURL(e.target.files[index]);
@@ -87,7 +88,7 @@ export default function AddProductModal() {
                                                 }}  />
                                             </div>
                                             <div className="d-flex image_list" id="productImages">
-                                                <div className="thumb_img mx-auto" >
+                                                <div className="thumb_img mx-auto no_image" >
                                                     <img src={Noimage} alt="" />
                                                 </div>
                                             </div>

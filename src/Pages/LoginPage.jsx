@@ -35,9 +35,9 @@ export default function LoginPage() {
         }
         setCred(setting)
     }
-    else{
+    else {
         // SET TOKKEN TO REDUX
-        const setting = { logged: false, user: null, tokken:null }
+        const setting = { logged: false, user: null, tokken: null }
         const setCred = (payload) => {
             dispacth(setCredential(payload))
             navigate('/dashboard')
