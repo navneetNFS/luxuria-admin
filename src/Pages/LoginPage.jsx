@@ -1,49 +1,8 @@
 import LoginForm from "../Partials/LoginForm";
-import { useDispatch } from "react-redux";
-import { setCredential } from "../store/slices/auth-slice";
-import { useNavigate } from "react-router-dom";
 import AuthImage from "../../public/images/auth-screens.png";
 import '../scss/Pages/Login.scss'
 
 export default function LoginPage() {
-
-    const navigate = useNavigate()
-
-    const dispacth = useDispatch()
-
-    const getCookieValue = (key_name) => {
-        const cookies = document.cookie.split(';');
-        const cookie_lst_dict = {}
-        cookies.forEach((item) => {
-            const key_val = item.split('=')
-            const keyName = key_val[0].trim()
-            const value = key_val[1]
-            cookie_lst_dict[keyName] = value
-        })
-        return cookie_lst_dict[key_name]
-    }
-
-    const tokken = getCookieValue('tokken')
-    const user = JSON.parse(getCookieValue('user'))
-
-    if (tokken && user) {
-        // SET TOKKEN TO REDUX
-        const setting = { logged: true, user, tokken }
-        const setCred = (payload) => {
-            dispacth(setCredential(payload))
-            navigate('/dashboard')
-        }
-        setCred(setting)
-    }
-    else {
-        // SET TOKKEN TO REDUX
-        const setting = { logged: false, user: null, tokken: null }
-        const setCred = (payload) => {
-            dispacth(setCredential(payload))
-            navigate('/dashboard')
-        }
-        setCred(setting)
-    }
 
     return (
         <>
