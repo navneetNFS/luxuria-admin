@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import GetOtpModal from "../Partials/GetOtpModal";
 
 export default function VerifyUserPage() {
     return (
@@ -18,8 +18,7 @@ export default function VerifyUserPage() {
                                     </h3>
 
                                     <p>You are not authorised to view this page please verify your account first!</p>
-
-                                    <Link to="/" className="link_404">Get OTP</Link>
+                                    <GetOtpModal />
                                 </div>
                             </div>
                         </div>

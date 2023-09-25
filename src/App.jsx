@@ -17,6 +17,7 @@ import PageNotFound from "./Pages/PageNotFound";
 import NotAuthorised from "./Pages/NotAuthorised";
 import PageStart from "./Components/PageStart";
 import VerifyUserPage from "./Pages/VerifyUserPage";
+import SignOutPage from "./Pages/SignOutPage";
 
 
 
@@ -58,6 +59,9 @@ function App() {
 
           {/* Categories */}
           <Route path="/categories" element={isLogged ? verifyed.verifyed ? <CategoryPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+
+          {/* Categories */}
+          <Route path="/log-out" element={isLogged ? verifyed.verifyed ? <SignOutPage /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* Page Not Found */}
