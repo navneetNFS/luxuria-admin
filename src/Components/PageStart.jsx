@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setApiUrl } from "../store/slices/api-slice"
+// import { setApiUrl } from "../store/slices/api-slice"
 // import { useNavigate } from "react-router-dom"
 import { selectCurrentTokken, selectCurrentUser, setCredential } from "../store/slices/auth-slice"
 export default function PageStart() {
@@ -7,11 +7,11 @@ export default function PageStart() {
     // const navigate = useNavigate()
 
     // SET API URL
-    const api_url = "http://localhost:3000/api"
-    const ApiUrl = (payload) => {
-        dispatch(setApiUrl(payload))
-    }
-    ApiUrl(api_url)
+    // const api_url = "http://localhost:3000/api"
+    // const ApiUrl = (payload) => {
+    //     dispatch(setApiUrl(payload))
+    // }
+    // ApiUrl(api_url)
 
 
     // Get Cookie
@@ -40,15 +40,21 @@ export default function PageStart() {
         setCred(setting)
     }
     else {
-        if(current_user == null){
-            const userData = JSON.parse(user)
-            const setting = { logged: true, user: userData, tokken: getCookie }
+        if (current_user == null) {
+            const userData = user
+            const jsonStr = userData.replace('j%3A', '')
+            const decodedString = decodeURIComponent(jsonStr);
+            const userObject = JSON.parse(decodedString);
+            delete userObject.password
+            const setting = { logged: true, user: userObject, tokken: getCookie }
+
             const setCred = (payload) => {
                 dispatch(setCredential(payload))
             }
             setCred(setting)
         }
     }
+
 
     return ''
 }

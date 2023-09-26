@@ -1,22 +1,22 @@
 import axios from 'axios';
-import {useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setVerified } from '../store/slices/auth-slice';
 
 export default function GetOtpModal() {
+    const dispatch = useDispatch()
     const [show, setShow] = useState(false);
-    const { apiUrl } = useSelector((state) => state)
-    const getOtp = async function(){
+    const getOtp = async function () {
         // alert('Hello')
-        let otpRes = await axios.get(`${apiUrl}/user/email-verify`)
-        .then((result) => {
-            return result.data
-        })
-        .catch((err) => {
-            return err.data
-        })
-
-        console.log(otpRes);
+        let otpRes = await axios.get(`/api/user/email-verify`)
+            .then((result) => {
+                return result.data
+            })
+            .catch((err) => {
+                return err.data
+            })
+        return otpRes
     }
 
     const handleShow = () => {
@@ -25,6 +25,51 @@ export default function GetOtpModal() {
     }
 
     const handleClose = () => setShow(false);
+    const initialState = {
+        one: '',
+        two: '',
+        three: '',
+        four: '',
+        five: '',
+        six: ''
+    }
+
+    const [optVals, setOtpVals] = useState(initialState)
+    const { one, two, three, four, five, six } = optVals
+
+    const verifyOTP = async(otp) => {
+        console.log(otp);
+        let response = await axios.post('/api/user/email-verify', {otp} , {
+            withCredentials: true,
+            headers : {'Content-Type': 'application/json'}
+        })
+        .then(({data}) => {
+            return data
+        })
+        .catch((err) => {return err})
+        console.log(response);
+        const {success} = response
+        if(success){
+            alert(success)
+            const setVerifiedTrue = (payload) => {
+                dispatch(setVerified(payload))
+            }
+            setVerifiedTrue(true)
+            window.location.reload(true)
+        }
+    }
+
+    const handelSubmit = (e) => {
+        e.preventDefault();
+        let otpNum = ""
+        for (let i in optVals) { otpNum += optVals[i] }
+        verifyOTP(Number(otpNum))
+    }
+
+    const onHandelChange = (e) => {
+        const { name, value } = e.target
+        setOtpVals({ ...optVals, [name]: value })
+    }
 
     return (
         <>
@@ -39,18 +84,25 @@ export default function GetOtpModal() {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>OTP Verification</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    I will not close if you click outside me. Don not even try to press
-                    escape key.
+                <Modal.Body className='pt-5 pb-5 ps-5 pe-5'>
+                    <p className='text-center mb-4'>Please Enter Otp For Verify this account, after verification you can use this account</p>
+                    <form method='POST' onSubmit={handelSubmit}>
+                        <div className="row otp_inputs mx-auto" style={{ maxWidth: '340px' }}>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="one" maxLength={1} className='form-control text-center' value={one} onChange={onHandelChange} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="two" maxLength={1} className='form-control text-center' value={two} onChange={onHandelChange} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="three" maxLength={1} className='form-control text-center' value={three} onChange={onHandelChange} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="four" maxLength={1} className='form-control text-center' value={four} onChange={onHandelChange} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="five" maxLength={1} className='form-control text-center' value={five} onChange={onHandelChange} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="six" maxLength={1} className='form-control text-center' value={six} onChange={onHandelChange} /></div>
+                        </div>
+
+                        <div className="text-center mt-5">
+                            <Button variant="primary" type='submit'>Verify</Button>
+                        </div>
+                    </form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary">Understood</Button>
-                </Modal.Footer>
             </Modal>
         </>
     )

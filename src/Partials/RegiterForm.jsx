@@ -6,14 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 /* eslint-disable react/no-unknown-property */
 export default function RegiterForm() {
 
-    // const cookieDate = (d = 1, h = 12, m = 60, s = 60) => {
-    //     return new Date(Date.now() + (d * h * m * s * 1000))
-    // }
-
 
     const navigate = useNavigate()
-
-    // const { apiUrl } = useSelector((state) => state)
 
     const initialValue = {
         name: '',
@@ -52,9 +46,8 @@ export default function RegiterForm() {
                     setSuccess(true)
                     setSuccessMessage('User Created Successfully')
                     setTimeout(() => {
-                        // document.cookie = `tokken=${String(tokken)}; expires=${cookieDate(5)}`;
-                        // document.cookie = `user=${JSON.stringify(user)}; expires=${cookieDate(5)}`;
-                        navigate('/')
+                        navigate('/');
+                        window.location.reload(true);
                     }, 1000)
                 }
             })
