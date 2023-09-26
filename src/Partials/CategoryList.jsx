@@ -13,12 +13,16 @@ export default function CategoryList() {
         <>
             <div className="row pt-5">
                 {
+                    categories.length > 0 ?
                     categories.map((item) => <div className="col-lg-3 col-md-3 col-sm-3 mb-5" key={item._id}>
-                    <div className="category-box">
-                        {item.name}
-                        <Link to="/categories" className="btn-trash"><i className="fa fa-trash"></i></Link>
+                        <div className="category-box">
+                            {item.name}
+                            <Link to={`/delete-categorie/${item._id}`} className="btn-trash"><i className="fa fa-trash"></i></Link>
+                        </div>
+                    </div>) : 
+                    <div className="col-lg-12 col-md-12 col-sm-12">
+                    <p>No Category Added Yet</p>
                     </div>
-                </div>)
                 }
             </div>
         </>

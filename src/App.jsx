@@ -18,6 +18,7 @@ import NotAuthorised from "./Pages/NotAuthorised";
 import PageStart from "./Components/PageStart";
 import VerifyUserPage from "./Pages/VerifyUserPage";
 import SignOutPage from "./Pages/SignOutPage";
+import DeleteCategory from "./Components/DeleteCategory";
 
 
 
@@ -59,6 +60,7 @@ function App() {
 
           {/* Categories */}
           <Route path="/categories" element={isLogged ? verifyed.verifyed ? <CategoryPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-categorie/:id" element={isLogged ? verifyed.verifyed ? <DeleteCategory /> : <VerifyUserPage /> : <NotAuthorised />} />
 
           {/* Categories */}
           <Route path="/log-out" element={isLogged ? verifyed.verifyed ? <SignOutPage /> : <VerifyUserPage /> : <NotAuthorised />} />
