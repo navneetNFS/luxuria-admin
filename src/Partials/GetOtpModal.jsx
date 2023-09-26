@@ -5,28 +5,54 @@ import { useDispatch } from 'react-redux';
 import { setVerified } from '../store/slices/auth-slice';
 
 export default function GetOtpModal() {
-    const dispatch = useDispatch()
-    const [show, setShow] = useState(false);
     const getOtp = async function () {
         let otpRes = await axios.get(`/api/user/email-verify`)
             .then((result) => {
                 return result.data
             })
-            .catch(({response}) => {
+            .catch(({ response }) => {
                 return response.data
             })
-            const {success} = otpRes
-        if(success){
+        const { success } = otpRes
+        if (success) {
             return otpRes
         }
     }
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
     const handleShow = () => {
         getOtp()
         setShow(true)
     }
 
-    const handleClose = () => setShow(false);
+
+    const dispatch = useDispatch()
+    const [error, setError] = useState({});
+
+    const [showSuccess, setSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showFail, setFail] = useState(false);
+    const [FailMessage, setFailMessage] = useState('');
+
+
+
+    const validation = () => {
+        if (!one || !two || !three || !four || !five || !six) {
+            const err = {}
+            err.otp_digit = "All digits need to fill according to number"
+            setError(err)
+            return err
+        }
+        else {
+            setError({})
+            return {}
+        }
+    }
+
+
+
+
     const initialState = {
         one: '',
         two: '',
@@ -39,33 +65,42 @@ export default function GetOtpModal() {
     const [optVals, setOtpVals] = useState(initialState)
     const { one, two, three, four, five, six } = optVals
 
-    const verifyOTP = async(otp) => {
-        console.log(otp);
-        let response = await axios.post('/api/user/email-verify', {otp} , {
+    const verifyOTP = async (otp) => {
+        let response = await axios.post('/api/user/email-verify', { otp }, {
             withCredentials: true,
-            headers : {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         })
-        .then(({data}) => {
-            return data
-        })
-        .catch((err) => {return err})
-        console.log(response);
-        const {success} = response
-        if(success){
-            alert(success)
-            const setVerifiedTrue = (payload) => {
-                dispatch(setVerified(payload))
-            }
-            setVerifiedTrue(true)
-            window.location.reload(true)
+            .then(({ data }) => {
+                return data
+            })
+            .catch((err) => { return err })
+        const { success, message } = response
+        if (success) {
+            setSuccess(true)
+            setSuccessMessage('User Verified Successfully')
+            setTimeout(() => {
+                const setVerifiedTrue = (payload) => {
+                    dispatch(setVerified(payload))
+                }
+                setVerifiedTrue(true)
+                window.location.reload(true)
+            }, 1000)
+        }
+        else {
+            setFail(true);
+            setFailMessage(`${message}`)
         }
     }
 
     const handelSubmit = (e) => {
         e.preventDefault();
-        let otpNum = ""
-        for (let i in optVals) { otpNum += optVals[i] }
-        verifyOTP(Number(otpNum))
+        const isValid = validation();
+        const isValidKeys = Object.keys(isValid)
+        if (isValidKeys.length == 0) {
+            let otpNum = ""
+            for (let i in optVals) { otpNum += optVals[i] }
+            verifyOTP(Number(otpNum))
+        }
     }
 
     const onHandelChange = (e) => {
@@ -92,13 +127,15 @@ export default function GetOtpModal() {
                     <p className='text-center mb-4'>Please Enter Otp For Verify this account, after verification you can use this account</p>
                     <form method='POST' onSubmit={handelSubmit}>
                         <div className="row otp_inputs mx-auto" style={{ maxWidth: '340px' }}>
-                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="one" maxLength={1} className='form-control text-center' value={one} onChange={onHandelChange} /></div>
-                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="two" maxLength={1} className='form-control text-center' value={two} onChange={onHandelChange} /></div>
-                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="three" maxLength={1} className='form-control text-center' value={three} onChange={onHandelChange} /></div>
-                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="four" maxLength={1} className='form-control text-center' value={four} onChange={onHandelChange} /></div>
-                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="five" maxLength={1} className='form-control text-center' value={five} onChange={onHandelChange} /></div>
-                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="six" maxLength={1} className='form-control text-center' value={six} onChange={onHandelChange} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="one" maxLength={1} className='form-control text-center' value={one} onChange={onHandelChange} onKeyUp={validation} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="two" maxLength={1} className='form-control text-center' value={two} onChange={onHandelChange} onKeyUp={validation} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="three" maxLength={1} className='form-control text-center' value={three} onChange={onHandelChange} onKeyUp={validation} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="four" maxLength={1} className='form-control text-center' value={four} onChange={onHandelChange} onKeyUp={validation} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="five" maxLength={1} className='form-control text-center' value={five} onChange={onHandelChange} onKeyUp={validation} /></div>
+                            <div className="col-2 col-md-2 col-sm-2"><input type="text" name="six" maxLength={1} className='form-control text-center' value={six} onChange={onHandelChange} onKeyUp={validation} /></div>
                         </div>
+
+                        <span className='error text-center d-block pt-3'>{error.otp_digit}</span>
 
                         <div className="text-center mt-5">
                             <Button variant="primary" type='submit'>Verify</Button>
@@ -106,6 +143,20 @@ export default function GetOtpModal() {
                     </form>
                 </Modal.Body>
             </Modal>
+
+            {
+                showSuccess ? <div className="custom_toast">
+                    <i className="fa fa-check"></i>
+                    <b>{successMessage}</b>
+                </div> : ''
+            }
+
+            {
+                showFail ? <div className="custom_toast error_tost">
+                    <i className="fa fa-times"></i>
+                    <b>{FailMessage}</b>
+                </div> : ''
+            }
         </>
     )
 }

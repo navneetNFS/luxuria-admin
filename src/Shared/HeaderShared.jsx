@@ -1,6 +1,9 @@
 import { Dropdown } from 'react-bootstrap';
 import DefaultUserProfile from '../assets/images/avatar.png'
+import { useSelector } from 'react-redux/es';
+import { selectCurrentUserIsVerified } from '../store/slices/auth-slice';
 export default function Header() {
+  const varified = useSelector(selectCurrentUserIsVerified)
   return (
     <>
       <header className="admin-header">
@@ -20,20 +23,23 @@ export default function Header() {
             </form> */}
           </div>
 
-          <div className="right_menu">
-            <button className="only-button text-primary-hover me-3"><i className="fa fa-bell-o"></i></button>
-            <button className="only-button text-primary-hover me-3"><i className="fa fa-sun-o"></i></button>
-            <Dropdown className='profile_dd'>
-              <Dropdown.Toggle id="profileDD" className='btn-user'>
-                <img src={DefaultUserProfile} alt="admin" />
-              </Dropdown.Toggle>
+          {
+            varified ? <div className="right_menu">
+              <button className="only-button text-primary-hover me-3"><i className="fa fa-bell-o"></i></button>
+              <button className="only-button text-primary-hover me-3"><i className="fa fa-sun-o"></i></button>
+              <Dropdown className='profile_dd'>
+                <Dropdown.Toggle id="profileDD" className='btn-user'>
+                  <img src={DefaultUserProfile} alt="admin" />
+                </Dropdown.Toggle>
 
-              <Dropdown.Menu className='profile_dd_menu'>
-                <Dropdown.Item href="/" className='profile-dd-item text-primary-hover'>My Profile</Dropdown.Item>
-                <Dropdown.Item href="/log-out" className='profile-dd-item text-primary-hover'>Sign Out</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
+                <Dropdown.Menu className='profile_dd_menu'>
+                  <Dropdown.Item href="/" className='profile-dd-item text-primary-hover'>My Profile</Dropdown.Item>
+                  <Dropdown.Item href="/log-out" className='profile-dd-item text-primary-hover'>Sign Out</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div> : ''
+          }
+
         </nav>
       </header>
     </>

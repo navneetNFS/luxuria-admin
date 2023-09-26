@@ -6,51 +6,64 @@ import { Link } from "react-router-dom";
 export default function LoginForm() {
     const navigate = useNavigate()
     const initialValue = {
-        email : '',
+        email: '',
         password: ''
     }
 
-    const [formData,setFormData] = useState(initialValue);
-    const {email,password} = formData;
+    const [formData, setFormData] = useState(initialValue);
+    const { email, password } = formData;
 
-    const [error,setError] = useState({})
+    const [error, setError] = useState({})
 
-    const loginNow = async function(data){
-        const response = await axios.post("/api/user/login",data,{
+    const [showSuccess, setSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showFail, setFail] = useState(false);
+    const [FailMessage, setFailMessage] = useState('');
+
+    const loginNow = async function (data) {
+        const response = await axios.post("/api/user/login", data, {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(({ data }) => {return data}).catch(({ response }) => {return response.data})
+        }).then(({ data }) => { return data }).catch(({ response }) => { return response.data })
         console.log(response);
-        const {success} = response
-        if(success){
-            navigate('/')
-            window.location.reload(true);
+        const { success , message } = response
+        if (success) {
+            setSuccess(true)
+            setSuccessMessage('User Login Successfully')
+            setTimeout(() => {
+                navigate('/');
+                window.location.reload(true);
+            }, 1000)
+        }
+        else {
+            setFail(true);
+            setFailMessage(`${message}`)
         }
     }
 
     const validation = () => {
-        if(!email && !password){
+        if (!email && !password) {
             const err = {}
             err.email = "Email is required field"
             err.password = "Password is required field"
             setError(err)
             return err
         }
-        else if(!email){
+        else if (!email) {
             const err = {}
             err.email = "Email is required field"
             setError(err)
             return err
         }
-        else if (!password){
+        else if (!password) {
             const err = {}
             err.password = "Password is required field"
             setError(err)
             return err
         }
-        else{
+        else {
             setError({})
             return {}
         }
@@ -60,14 +73,14 @@ export default function LoginForm() {
         e.preventDefault();
         const isValid = validation();
         const isValidKeys = Object.keys(isValid)
-        if(isValidKeys.length  == 0){
+        if (isValidKeys.length == 0) {
             loginNow(formData)
         }
     }
 
     const onHandelChange = (e) => {
-        const {name,value} = e.target
-        setFormData({...formData,[name]:value})
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
     }
 
     return (
@@ -94,6 +107,19 @@ export default function LoginForm() {
                     Not a Member yet? <Link to="/sign-up" className="text-primary">Sign up</Link>
                 </div>
             </form>
+            {
+                showSuccess ? <div className="custom_toast">
+                    <i className="fa fa-check"></i>
+                    <b>{successMessage}</b>
+                </div> : ''
+            }
+
+            {
+                showFail ? <div className="custom_toast error_tost">
+                    <i className="fa fa-times"></i>
+                    <b>{FailMessage}</b>
+                </div> : ''
+            }
         </>
     )
 }

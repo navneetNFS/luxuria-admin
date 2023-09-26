@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from "react-redux"
-// import { setApiUrl } from "../store/slices/api-slice"
 // import { useNavigate } from "react-router-dom"
 import { selectCurrentTokken, selectCurrentUser, setCredential } from "../store/slices/auth-slice"
+import { setImageApiUrl } from "../store/slices/imageApi-slice"
 export default function PageStart() {
     const dispatch = useDispatch()
     // const navigate = useNavigate()
 
-    // SET API URL
-    // const api_url = "http://localhost:3000/api"
-    // const ApiUrl = (payload) => {
-    //     dispatch(setApiUrl(payload))
-    // }
-    // ApiUrl(api_url)
+    // SET IMAGE API URL
+    const api_url = "http://localhost:3000/api"
+    const ApiUrl = (payload) => {
+        dispatch(setImageApiUrl(payload))
+    }
+    ApiUrl(api_url)
 
 
     // Get Cookie

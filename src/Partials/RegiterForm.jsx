@@ -14,13 +14,14 @@ export default function RegiterForm() {
         email: '',
         password: '',
         mobile: '',
-        avatar: ''
+        avatar: '',
+        role: 'admin'
     }
 
 
     const [inputVals, setInputVals] = useState(initialValue)
 
-    const { name, email, password, mobile } = inputVals
+    const { name, email, password, mobile , role } = inputVals
 
     const [error, setError] = useState({})
 
@@ -138,7 +139,7 @@ export default function RegiterForm() {
                         <span className="error">{error.avatar}</span>
                     </div> */}
                     <div className="form-field">
-                        <input type="hidden" name="role" value="admin" />
+                        <input type="hidden" name="role" value={role} />
                     </div>
                 </div>
                 <button type="submit" className="btn btn-primary btn-block mb-5">Sign Up</button>
