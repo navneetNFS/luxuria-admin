@@ -1,19 +1,19 @@
 import axios from "axios";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 /* eslint-disable react/no-unknown-property */
 export default function RegiterForm() {
 
-    const cookieDate = (d = 1, h = 12, m = 60, s = 60) => {
-        return new Date(Date.now() + (d * h * m * s * 1000))
-    }
+    // const cookieDate = (d = 1, h = 12, m = 60, s = 60) => {
+    //     return new Date(Date.now() + (d * h * m * s * 1000))
+    // }
 
 
     const navigate = useNavigate()
 
-    const { apiUrl } = useSelector((state) => state)
+    // const { apiUrl } = useSelector((state) => state)
 
     const initialValue = {
         name: '',
@@ -36,20 +36,29 @@ export default function RegiterForm() {
     const [FailMessage, setFailMessage] = useState('');
 
     const userRegister = (postedData) => {
-        axios.post(`${apiUrl}/user/new-user`, postedData)
+        
+        axios.post(`/api/user/new-user`, postedData,
+            {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+
+            })
             .then(({ data }) => {
-                const { success, tokken, user } = data
+                // const { success, tokken, user } = data
+                const { success } = data
                 if (success) {
                     setSuccess(true)
                     setSuccessMessage('User Created Successfully')
                     setTimeout(() => {
-                        document.cookie = `tokken=${String(tokken)}; expires=${cookieDate(5)}`;
-                        document.cookie = `user=${JSON.stringify(user)}; expires=${cookieDate(5)}`;
+                        // document.cookie = `tokken=${String(tokken)}; expires=${cookieDate(5)}`;
+                        // document.cookie = `user=${JSON.stringify(user)}; expires=${cookieDate(5)}`;
                         navigate('/')
                     }, 1000)
                 }
             })
-            .catch(({response}) => {
+            .catch(({ response }) => {
                 setFail(true);
                 setFailMessage(`${response.data.message}`)
             })
@@ -154,9 +163,9 @@ export default function RegiterForm() {
 
             {
                 showFail ? <div className="custom_toast error_tost">
-                <i className="fa fa-times"></i>
-                <b>{FailMessage}</b>
-            </div> : ''
+                    <i className="fa fa-times"></i>
+                    <b>{FailMessage}</b>
+                </div> : ''
             }
         </>
     )
