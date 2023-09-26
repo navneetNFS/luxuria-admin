@@ -8,15 +8,17 @@ export default function GetOtpModal() {
     const dispatch = useDispatch()
     const [show, setShow] = useState(false);
     const getOtp = async function () {
-        // alert('Hello')
         let otpRes = await axios.get(`/api/user/email-verify`)
             .then((result) => {
                 return result.data
             })
-            .catch((err) => {
-                return err.data
+            .catch(({response}) => {
+                return response.data
             })
-        return otpRes
+            const {success} = otpRes
+        if(success){
+            return otpRes
+        }
     }
 
     const handleShow = () => {

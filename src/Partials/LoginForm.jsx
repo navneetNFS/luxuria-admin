@@ -1,7 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
 export default function LoginForm() {
+    const navigate = useNavigate()
     const initialValue = {
         email : '',
         password: ''
@@ -12,8 +15,19 @@ export default function LoginForm() {
 
     const [error,setError] = useState({})
 
-    const loginNow = ({email,password}) => {
-        console.log(`email is ${email} , password is ${password}`);
+    const loginNow = async function(data){
+        const response = await axios.post("/api/user/login",data,{
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(({ data }) => {return data}).catch(({ response }) => {return response.data})
+        console.log(response);
+        const {success} = response
+        if(success){
+            navigate('/')
+            window.location.reload(true);
+        }
     }
 
     const validation = () => {
