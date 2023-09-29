@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 export default function NotAuthorised() {
-  return (
-    <>
-    <section className="page_404">
+    return (
+        <>
+            <section className="page_404">
                 <div className="container">
                     <div className="row">
                         <div className="col-sm-12 d-flex align-items-center justify-content-center">
@@ -26,6 +26,6 @@ export default function NotAuthorised() {
                     </div>
                 </div>
             </section>
-    </>
-  )
+        </>
+    )
 }

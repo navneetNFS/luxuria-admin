@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import ProductItem from "./ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
-import AddProductPage from "../Partials/AddProductPage";
+import AddProductPage from "../Modal/AddProductPage";
 
 
 export default function ProductListTable() {
