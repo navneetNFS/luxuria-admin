@@ -25,7 +25,7 @@ export default function AddCategoryInProduct() {
                     <h6 className="title">Category</h6>
                     <div className="form-group boot-select">
                         <select className="form-control" id="productCategory" multiple={false} defaultValue={0} onChange={(e) => {
-                            alert(e.target.value)
+                            console.log(e.target.value);
                         }}>
                             <option>-- Select Category --</option>
                             {
