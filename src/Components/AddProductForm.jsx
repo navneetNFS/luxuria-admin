@@ -9,7 +9,6 @@ export default function AddProductForm() {
     let [thumbline, setThumb] = useState([])
     const thumbUpload = () => {
         const [file] = document.getElementById("thumbFile").files
-        console.log(file);
         setThumb(file)
         if (file) {
             $("#addIcon").removeClass("fa-plus").addClass("fa-pencil")
