@@ -12,7 +12,6 @@ export default function AddProductModal() {
     const modalClose = () => setShow(false);
     const modalShow = () => setShow(true);
 
-
     // Thumblin Upload
     let [thumbline,setThumb] = useState([])
     const thumbUpload = () => {
