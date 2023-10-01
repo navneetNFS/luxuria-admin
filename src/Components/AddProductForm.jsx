@@ -1,15 +1,13 @@
-import { Link } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import Noimage from '../assets/images/blank-image.svg'
-import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 export default function AddProductForm() {
     // Thumblin Upload
-    let [thumbline, setThumb] = useState([])
     const thumbUpload = () => {
         const [file] = document.getElementById("thumbFile").files
-        setThumb(file)
         if (file) {
             $("#addIcon").removeClass("fa-plus").addClass("fa-pencil")
             document.getElementById("thumbImage").src = URL.createObjectURL(file)
@@ -35,8 +33,7 @@ export default function AddProductForm() {
     }, [])
 
     // Product Image
-    let [prodImage, setProdImage] = useState([])
-    const files_upload = (e) => {
+    const images_upload = (e) => {
         $(".file_no_image").remove();
         $("#uploadBtn").hide();
         var files = e.target.files,
@@ -66,7 +63,8 @@ export default function AddProductForm() {
             });
             fileReader.readAsDataURL(f);
         }
-        setProdImage(prod_array)
+
+        handelChange("images", e.target.files)
     }
 
     // General Instruction
@@ -75,7 +73,6 @@ export default function AddProductForm() {
         readonly: false, // all options from https://xdsoft.net/jodit/docs/,
         placeholder: 'Enter Description'
     }
-    const [desc, setDescription] = useState('');
 
     // Add Product
     const initialState = {
@@ -88,34 +85,38 @@ export default function AddProductForm() {
         stock: '',
         sku: ''
     }
+
     const [product, setProduct] = useState(initialState)
 
     const { name, description, thumb, category, images, price, stock, sku } = product
 
-    const addProduct = (e) => {
-        e.preventDefault();
-        product["images"] = prodImage
-        product["thumb"] = thumbline
-        product["description"] = desc
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
         console.log(product);
     }
 
-    const handelValueChange = (e) => {
-        const { name, value } = e.target
+    const handelChange = (name, value) => {
         setProduct({ ...product, [name]: value })
     }
+
+
+
     return (
         <>
-            <form onSubmit={addProduct} method='POST' encType={'multipart/form-data'}>
+            <form onSubmit={handleSubmit} method='POST' encType={'multipart/form-data'}>
                 <section className="add_product p-4">
                     <div className="row">
                         <div className="col-lg-3 col-md-3 col-sm-3">
                             <div className="thumbline mb-5">
                                 <div className="card widget-card">
                                     <h6 className="title">Thumbnail</h6>
-                                    <div className="thumb_img mx-auto">
+                                    <div className="thumb_img mx-auto mb-4">
                                         <img src={Noimage} alt="" id="thumbImage" />
-                                        <input type="file" id="thumbFile" name="thumb" accept="image/*" className="hidden-file" value={thumb} onChange={thumbUpload} />
+                                        <input type="file" id="thumbFile" accept="image/*" value={thumb} className="hidden-file" onChange={(e) => {
+                                            thumbUpload()
+                                            handelChange("thumb", e.target.files)
+                                        }} />
                                         <label className="btn-edit" htmlFor="thumbFile"><i className="fa fa-plus" id="addIcon"></i></label>
                                     </div>
                                     <p className="hint">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
@@ -125,7 +126,9 @@ export default function AddProductForm() {
                                 <div className="card widget-card">
                                     <h6 className="title">Category</h6>
                                     <div className="form-group boot-select">
-                                        <select className="form-control" name='category' id="productCategory" multiple={false} defaultValue={category} onChange={handelValueChange}>
+                                        <select className="form-control" multiple={false} defaultValue={category} onChange={(e) => {
+                                            handelChange("category", e.target.value)
+                                        }}>
                                             <option value={0}>-- Select Category --</option>
                                             {
                                                 categories.map((item, index) => { return <option key={index}>{item.name}</option> })
@@ -133,6 +136,7 @@ export default function AddProductForm() {
 
                                         </select>
                                         <i className="fa fa-angle-down"></i>
+
                                         <p className="hint text-start pt-2">Set the product category.</p>
 
                                         <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
@@ -147,7 +151,7 @@ export default function AddProductForm() {
                                     <h6 className="title">Images</h6>
                                     <div className="upload_more">
                                         <label htmlFor="uploadImage" id="uploadBtn" className="btn btn-primary btn-upload-more btn-sm">Upload Image</label>
-                                        <input type="file" id="uploadImage" className="w-100" name="images" accept="image/*" multiple={true} onChange={files_upload} value={images} />
+                                        <input type="file" id="uploadImage" className="w-100" accept="image/*" value={images} multiple={true} onChange={images_upload} />
                                     </div>
                                     <div className="d-flex image_list" id="productImages">
                                         <div className="thumb_img mx-auto file_no_image" >
@@ -161,18 +165,22 @@ export default function AddProductForm() {
                                     <h6 className="title">General</h6>
                                     <div className="form-group">
                                         <label htmlFor="productName" className="mb-3 h5">Product Name <span style={{ color: "red" }}>*</span></label>
-                                        <input type="text" name="name" value={name} className="form-control" id="productName" onChange={handelValueChange} />
+                                        <input type="text" value={name} className="form-control" onChange={(e) => {
+                                            handelChange("name", e.target.value)
+                                        }} />
                                         <p className="hint text-start pt-2">A product name is required and recommended to be unique.</p>
                                     </div>
 
                                     <div className="form-group">
                                         <label className="mb-3 h5">Description <span style={{ color: "red" }}>*</span></label>
-                                        <JoditEditor ref={editor} name="description"
+                                        <JoditEditor ref={editor}
                                             value={description}
                                             config={config}
-                                            tabIndex={1} // tabIndex of textarea
-                                            id="productDescription"
-                                            onBlur={Description => setDescription(Description)} // preferred to use only this option 
+                                            tabIndex={1}
+                                            onBlur={(Description) => {
+                                                handelChange("description", Description)
+                                            }
+                                            }
                                         />
                                         <p className="hint text-start pt-2">Set description of the product for better visibility.</p>
                                     </div>
@@ -181,21 +189,27 @@ export default function AddProductForm() {
                                         <div className="col-lg-4 col-md-4 col-sm-4">
                                             <div className="form-group">
                                                 <label htmlFor="productPrice" className="mb-3 h5">Price <span style={{ color: "red" }}>*</span></label>
-                                                <input type="text" name="price" className="form-control" value={price} id="productPrice" onChange={handelValueChange} />
+                                                <input type="text" className="form-control" value={price} onChange={(e) => {
+                                                    handelChange("price", e.target.value)
+                                                }} />
                                                 <p className="hint text-start pt-2">Set the product price.</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-4">
                                             <div className="form-group">
                                                 <label htmlFor="productStock" className="mb-3 h5">Stock <span style={{ color: "red" }}>*</span></label>
-                                                <input type="text" name="stock" className="form-control" value={stock} id="productStock" onChange={handelValueChange} />
+                                                <input type="text" className="form-control" value={stock} onChange={(e) => {
+                                                    handelChange("stock", e.target.value)
+                                                }} />
                                                 <p className="hint text-start pt-2">Set the product stock remaining.</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-4">
                                             <div className="form-group">
                                                 <label htmlFor="productStock" className="mb-3 h5">SKU <span style={{ color: "red" }}>*</span></label>
-                                                <input type="text" name="sku" className="form-control" value={sku} id="productStock" onChange={handelValueChange} />
+                                                <input type="text" className="form-control" value={sku} onChange={(e) => {
+                                                    handelChange("name", e.target.value)
+                                                }} />
                                                 <p className="hint text-start pt-2">Set the product SKU.</p>
                                             </div>
                                         </div>
