@@ -270,7 +270,7 @@ export default function AddProductForm() {
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-4">
                                             <div className="form-group">
-                                                <label htmlFor="productStock" className="mb-3 h5">Stock <span style={{ color: "red" }}>*</span></label>
+                                                <label htmlFor="productStock" className="mb-3 h5">Stock</label>
                                                 <input type="text" className="form-control" value={stock} onChange={(e) => {
                                                     handelChange("stock", e.target.value)
                                                 }} />
