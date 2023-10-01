@@ -81,12 +81,75 @@ export default function AddProductForm() {
     }
 
     const [Product, setProduct] = useState(initialState)
+    const [error,setError] = useState('')
 
     const { name, description, thumb, category, images, price, stock, sku } = Product
+
+    const validation = () => {
+        if(name == '' && description == '' && thumb == '' && category == 0 && images.length == 0 && price == '' && sku == ''){
+            const err = {}
+            err.name = "Please enter product name",
+            err.description = "Please enter product description",
+            err.thumb = "Please upload product thumb",
+            err.category = "Please select product category",
+            err.images = "Please upload product images",
+            err.price = "Please enter product price",
+            err.sku = "Please enter product sku"
+            setError(err)
+            return err
+        }
+        else if(name == ''){
+            const err = {}
+            err.name = "Please enter product name"
+            setError(err)
+            return err
+        }
+        else if(description == ''){
+            const err = {}
+            err.description = "Please enter product description"
+            setError(err)
+            return err
+        }
+        else if(thumb == ''){
+            const err = {}
+            err.images = "Please upload product images"
+            setError(err)
+            return err
+        }
+        else if(category == 0){
+            const err = {}
+            err.category = "Please select product category",
+            setError(err)
+            return err
+        }
+        else if(images.length == 0){
+            const err = {}
+            err.images = "Please upload product images"
+            setError(err)
+            return err
+        }
+        else if(price == ''){
+            const err = {}
+            err.price = "Please enter product price"
+            setError(err)
+            return err
+        }
+        else if(sku == ''){
+            const err = {}
+            err.sku = "Please enter product sku"
+            setError(err)
+            return err
+        }
+        else{
+            setError({})
+            return {}
+        }
+    }
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        
         const Obj = new Object(Product);
         if (imagesName){
             Obj["images"] = imagesName
@@ -96,6 +159,7 @@ export default function AddProductForm() {
             Obj["thumb"] = thumbName 
         }
         console.log(Obj);
+        validation()
 
     }
 
@@ -121,6 +185,7 @@ export default function AddProductForm() {
                                         }} />
                                         <label className="btn-edit" htmlFor="thumbFile"><i className="fa fa-plus" id="addIcon"></i></label>
                                     </div>
+                                    <p><span className='error'>{error.thumb}</span></p>
                                     <p className="hint">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
                                 </div>
                             </div>
@@ -138,6 +203,8 @@ export default function AddProductForm() {
 
                                         </select>
                                         <i className="fa fa-angle-down"></i>
+
+                                        <p><span className='error'>{error.category}</span></p>
 
                                         <p className="hint text-start pt-2">Set the product category.</p>
 
@@ -160,6 +227,7 @@ export default function AddProductForm() {
                                             <img src={Noimage} alt="" />
                                         </div>
                                     </div>
+                                    <p><span className='error'>{error.images}</span></p>
                                 </div>
                             </div>
                             <div className="general mb-4">
@@ -171,6 +239,7 @@ export default function AddProductForm() {
                                             handelChange("name", e.target.value)
                                         }} />
                                         <p className="hint text-start pt-2">A product name is required and recommended to be unique.</p>
+                                        <p><span className='error'>{error.name}</span></p>
                                     </div>
 
                                     <div className="form-group">
@@ -185,6 +254,7 @@ export default function AddProductForm() {
                                             }
                                         />
                                         <p className="hint text-start pt-2">Set description of the product for better visibility.</p>
+                                        <p><span className='error'>{error.description}</span></p>
                                     </div>
 
                                     <div className="row">
@@ -195,6 +265,7 @@ export default function AddProductForm() {
                                                     handelChange("price", e.target.value)
                                                 }} />
                                                 <p className="hint text-start pt-2">Set the product price.</p>
+                                                <p><span className='error'>{error.price}</span></p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-4">
@@ -213,6 +284,7 @@ export default function AddProductForm() {
                                                     handelChange("sku", e.target.value)
                                                 }} />
                                                 <p className="hint text-start pt-2">Set the product SKU.</p>
+                                                <p><span className='error'>{error.sku}</span></p>
                                             </div>
                                         </div>
                                     </div>
