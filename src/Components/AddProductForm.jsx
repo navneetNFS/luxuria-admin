@@ -6,13 +6,17 @@ import Noimage from '../assets/images/blank-image.svg'
 import axios from 'axios';
 export default function AddProductForm() {
     // Thumblin Upload
+    const [thumbName, setThumbName] = useState('')
     const thumbUpload = () => {
         const [file] = document.getElementById("thumbFile").files
         if (file) {
             $("#addIcon").removeClass("fa-plus").addClass("fa-pencil")
             document.getElementById("thumbImage").src = URL.createObjectURL(file)
             document.getElementById("thumbImage").classList.add('covered_image')
+            
         }
+        setThumbName(file.name)
+        document.getElementById("thumbFile").form.reset()
     }
 
     // Categories
@@ -33,6 +37,7 @@ export default function AddProductForm() {
     }, [])
 
     // Product Image
+    const [imagesName, setImagesName] = useState([])
     const images_upload = (e) => {
         $(".file_no_image").remove();
         $("#uploadBtn").hide();
@@ -41,30 +46,19 @@ export default function AddProductForm() {
         let prod_array = []
         for (let i = 0; i < filesLength; i++) {
             var f = files[i];
-            prod_array.push(f)
+            prod_array.push(f.name)
             var fileReader = new FileReader();
             fileReader.onload = (function (e) {
                 var file = e.target;
                 var uniqueId = i;
-                // $(`<div class="thumb_img me-4" data-id="${uniqueId}">
-                //     <img src="${e.target.result}" alt="${file.name}" class="covered_image" />
-                //     <button type="button" class="btn-edit remove" data-id="${uniqueId}"><i class="fa fa-trash"></i></button>
-                // </div>`).appendTo("#productImages");
-
                 $(`<div class="thumb_img me-4" data-id="${uniqueId}">
                     <img src="${e.target.result}" alt="${file.name}" class="covered_image" />
                 </div>`).appendTo("#productImages");
-
-                // $(`.remove[data-id="${uniqueId}"]`).click(function () {
-                //     console.log(uniqueId);
-                //     files = []
-                //     $(`[data-id="${uniqueId}"]`).remove();
-                // });
             });
             fileReader.readAsDataURL(f);
         }
 
-        handelChange("images", e.target.files)
+        setImagesName(prod_array)
     }
 
     // General Instruction
@@ -78,7 +72,7 @@ export default function AddProductForm() {
     const initialState = {
         name: '',
         description: '',
-        thumb: [],
+        thumb: '',
         category: 0,
         images: [],
         price: '',
@@ -86,25 +80,34 @@ export default function AddProductForm() {
         sku: ''
     }
 
-    const [product, setProduct] = useState(initialState)
+    const [Product, setProduct] = useState(initialState)
 
-    const { name, description, thumb, category, images, price, stock, sku } = product
+    const { name, description, thumb, category, images, price, stock, sku } = Product
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(product);
+        const Obj = new Object(Product);
+        if (imagesName){
+            Obj["images"] = imagesName
+        }
+
+        if(thumbName){
+            Obj["thumb"] = thumbName 
+        }
+        console.log(Obj);
+
     }
 
     const handelChange = (name, value) => {
-        setProduct({ ...product, [name]: value })
+        setProduct({ ...Product, [name]: value })
     }
 
 
 
     return (
         <>
-            <form onSubmit={handleSubmit} method='POST' encType={'multipart/form-data'}>
+            <form onSubmit={handleSubmit} method='POST' encType='multipart/form-data'>
                 <section className="add_product p-4">
                     <div className="row">
                         <div className="col-lg-3 col-md-3 col-sm-3">
@@ -113,9 +116,8 @@ export default function AddProductForm() {
                                     <h6 className="title">Thumbnail</h6>
                                     <div className="thumb_img mx-auto mb-4">
                                         <img src={Noimage} alt="" id="thumbImage" />
-                                        <input type="file" id="thumbFile" accept="image/*" value={thumb} className="hidden-file" onChange={(e) => {
+                                        <input type="file" id="thumbFile" accept="image/*" value={thumb} className="hidden-file" onChange={() => {
                                             thumbUpload()
-                                            handelChange("thumb", e.target.files)
                                         }} />
                                         <label className="btn-edit" htmlFor="thumbFile"><i className="fa fa-plus" id="addIcon"></i></label>
                                     </div>
@@ -208,7 +210,7 @@ export default function AddProductForm() {
                                             <div className="form-group">
                                                 <label htmlFor="productStock" className="mb-3 h5">SKU <span style={{ color: "red" }}>*</span></label>
                                                 <input type="text" className="form-control" value={sku} onChange={(e) => {
-                                                    handelChange("name", e.target.value)
+                                                    handelChange("sku", e.target.value)
                                                 }} />
                                                 <p className="hint text-start pt-2">Set the product SKU.</p>
                                             </div>
