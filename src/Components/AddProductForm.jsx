@@ -5,17 +5,16 @@ import $ from 'jquery';
 import Noimage from '../assets/images/blank-image.svg'
 import axios from 'axios';
 export default function AddProductForm() {
+
     // Thumblin Upload
     const [thumb,setThumb] = useState(null)
     const thumbUpload = () => {
         const [file] = document.getElementById("thumbFile").files
-        setThumb(file)
         if (file) {
             $("#addIcon").removeClass("fa-plus").addClass("fa-pencil")
             document.getElementById("thumbImage").src = URL.createObjectURL(file)
             document.getElementById("thumbImage").classList.add('covered_image')
         }
-        
     }
 
     // Categories
@@ -147,15 +146,29 @@ export default function AddProductForm() {
         }
     }
 
+    const postProduct = (data) => {
+        console.log(data);
+        // axios.post('/api/product/create-product',data,{
+        //     withCredentials: true,
+        //     headers: {
+        //         'Content-Type':'application/json'
+        //     }
+        // })
+    }
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
         const isValid = validation();
         const errorLst = Object.keys(isValid)
         if(errorLst.length == 0){
-            console.log(Product);
-            console.log(thumb);
-            console.log(images);
+            const formData = Product
+            formData.thumb = thumb
+            formData.images = images
+            console.log(formData);
+            postProduct(formData)
+            // const prod_images = Object.values(images).map((item) => item.name)
+            // console.log(prod_images);
         }
     }
 
@@ -167,7 +180,7 @@ export default function AddProductForm() {
 
     return (
         <>
-            <form onSubmit={handleSubmit} method='POST' encType='multipart/form-data'>
+            <form onSubmit={handleSubmit} method='POST'>
                 <section className="add_product p-4">
                     <div className="row">
                         <div className="col-lg-3 col-md-3 col-sm-3">
@@ -176,8 +189,9 @@ export default function AddProductForm() {
                                     <h6 className="title">Thumbnail</h6>
                                     <div className="thumb_img mx-auto mb-4">
                                         <img src={Noimage} alt="" id="thumbImage" />
-                                        <input type="file" id="thumbFile" accept="image/*" className="hidden-file" onChange={() => {
+                                        <input type="file" id="thumbFile" accept="image/*" className="hidden-file" onChange={(e) => {
                                             thumbUpload()
+                                            setThumb(e.target.files[0])
                                         }} />
                                         <label className="btn-edit" htmlFor="thumbFile"><i className="fa fa-plus" id="addIcon"></i></label>
                                     </div>
