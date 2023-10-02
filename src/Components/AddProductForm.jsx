@@ -6,8 +6,14 @@ import Noimage from '../assets/images/blank-image.svg'
 import axios from 'axios';
 export default function AddProductForm() {
 
+    const [showSuccess, setSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showFail, setFail] = useState(false);
+    const [FailMessage, setFailMessage] = useState('');
+
+
     // Thumblin Upload
-    const [thumb,setThumb] = useState(null)
+    const [thumb, setThumb] = useState(null)
     const thumbUpload = () => {
         const [file] = document.getElementById("thumbFile").files
         if (file) {
@@ -35,7 +41,7 @@ export default function AddProductForm() {
     }, [])
 
     // Product Image
-    const [images,setImages] = useState(null)
+    const [images, setImages] = useState(null)
     const images_upload = (e) => {
         $(".file_no_image").remove();
         $("#uploadBtn").hide();
@@ -74,101 +80,156 @@ export default function AddProductForm() {
     }
 
     const [Product, setProduct] = useState(initialState)
-    const [error,setError] = useState('')
+    const [error, setError] = useState('')
 
     const { name, description, category, price, stock, sku } = Product
 
     const validation = () => {
-        if(!name && !description && !thumb && category == 0 && !images && !price && !stock && !sku){
+        if (!name && !description && !thumb && category == 0 && !images && !price && !stock && !sku) {
             const err = {}
             err.name = "Please enter product name",
-            err.description = "Please enter product description",
-            err.thumb = "Please upload product thumb",
-            err.category = "Please select product category",
-            err.images = "Please upload product images",
-            err.price = "Please enter product price",
-            err.stock = "Please enter product available stock",
-            err.sku = "Please enter product sku"
+                err.description = "Please enter product description",
+                err.thumb = "Please upload product thumb",
+                err.category = "Please select product category",
+                err.images = "Please upload product images",
+                err.price = "Please enter product price",
+                err.stock = "Please enter product available stock",
+                err.sku = "Please enter product sku"
             setError(err)
             return err
         }
-        else if(!thumb){
+        else if (!thumb) {
             const err = {}
-            err.images = "Please upload product thumb"
+            err.thumb = "Please upload product thumb"
             setError(err)
             return err
         }
-        else if(!images){
+        else if (!images) {
             const err = {}
             err.images = "Please upload product images"
             setError(err)
             return err
         }
-        else if(category == 0){
+        else if (category == 0) {
             const err = {}
             err.category = "Please select product category",
-            setError(err)
+                setError(err)
             return err
         }
-        else if(!name){
+        else if (!name) {
             const err = {}
             err.name = "Please enter product name"
             setError(err)
             return err
         }
-        else if(!description){
+        else if (!description) {
             const err = {}
             err.description = "Please enter product description"
             setError(err)
             return err
         }
-        else if(!price){
+        else if (!price) {
             const err = {}
             err.price = "Please enter product price"
             setError(err)
             return err
         }
-        if(!stock){
+        if (!stock) {
             const err = {}
             err.stock = "Please enter product available stock"
             setError(err)
             return err
         }
-        else if(!sku){
+        else if (!sku) {
             const err = {}
             err.sku = "Please enter product sku"
             setError(err)
             return err
         }
-        else{
+        else {
             setError({})
             return {}
         }
     }
 
+    
+
+    const thumbImageUpload = async function (thumb_data) {
+
+        const fd = new FormData()
+        fd.append('thumb', thumb_data)
+
+        const uploading = await axios.post("/api/product/product-thumb", fd, {
+            // onUploadProgress: (ProgressEvent) => {
+            //     console.log(ProgressEvent.progress * 100);
+            // },
+            withCredentials: true,
+            headers: {
+                'Content-Type': "value"
+            }
+        }).then(({ data }) => { return data }).catch((err) => { return err })
+
+        const { success, thumb } = uploading
+        if (success) {
+            return thumb
+        }
+        else {
+            console.log(uploading);
+        }
+
+    }
+
+    const imagesInsert = async (its_image) => {
+        const fd = new FormData()
+            fd.append(`images`, its_image);
+            return await axios.post("/api/product/product-images", fd, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'value'
+                }
+            }).then(({data}) => {return data}).catch(err => console.log(err))
+    }
+
+    const productImageUpload = async function (images) {
+        let image_list = []
+        for (let i = 0; i < images.length; i++) {
+            const itsImage = await imagesInsert(images[i])
+            image_list.push(itsImage.images)
+        }
+        return image_list
+    }
+
     const postProduct = (data) => {
-        console.log(data);
-        // axios.post('/api/product/create-product',data,{
-        //     withCredentials: true,
-        //     headers: {
-        //         'Content-Type':'application/json'
-        //     }
-        // })
+        axios.post('/api/product/create-product',data,{
+            withCredentials: true,
+            headers: {
+                'Content-Type':'application/json'
+            }
+        })
+        .then(() => {
+            setSuccess(true)
+            setSuccessMessage('Product Created Successfully')
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 1000)
+        })
+        .catch(({ response }) => {
+            setFail(true);
+            setFailMessage(`${response.data.message}`)
+        })
+        
     }
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const isValid = validation();
         const errorLst = Object.keys(isValid)
-        if(errorLst.length == 0){
+        if (errorLst.length == 0) {
             const formData = Product
-            formData.thumb = thumb
-            formData.images = images
-            console.log(formData);
+            formData.thumb = await thumbImageUpload(thumb)
+            formData.images = await productImageUpload(images)
             postProduct(formData)
-            // const prod_images = Object.values(images).map((item) => item.name)
-            // console.log(prod_images);
         }
     }
 
@@ -307,6 +368,20 @@ export default function AddProductForm() {
                     </div>
                 </section>
             </form>
+
+            {
+                showSuccess ? <div className="custom_toast">
+                    <i className="fa fa-check"></i>
+                    <b>{successMessage}</b>
+                </div> : ''
+            }
+
+            {
+                showFail ? <div className="custom_toast error_tost">
+                    <i className="fa fa-times"></i>
+                    <b>{FailMessage}</b>
+                </div> : ''
+            }
         </>
     )
 }
