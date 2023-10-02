@@ -19,6 +19,8 @@ import PageStart from "./Components/PageStart";
 import VerifyUserPage from "./Pages/VerifyUserPage";
 import SignOutPage from "./Pages/SignOutPage";
 import DeleteCategory from "./Components/DeleteCategory";
+import FileUpload from "./Components/FileUpload";
+import MultiFileUpload from "./Components/MultiFileUpload";
 
 
 
@@ -64,6 +66,8 @@ function App() {
 
           {/* Categories */}
           <Route path="/log-out" element={isLogged ? verifyed.verifyed ? <SignOutPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/file-upload" element={isLogged ? verifyed.verifyed ? <FileUpload /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/multi-file-upload" element={isLogged ? verifyed.verifyed ? <MultiFileUpload /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* Page Not Found */}
