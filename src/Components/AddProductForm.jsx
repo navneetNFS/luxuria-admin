@@ -6,17 +6,16 @@ import Noimage from '../assets/images/blank-image.svg'
 import axios from 'axios';
 export default function AddProductForm() {
     // Thumblin Upload
-    const [thumbName, setThumbName] = useState('')
+    const [thumb,setThumb] = useState(null)
     const thumbUpload = () => {
         const [file] = document.getElementById("thumbFile").files
+        setThumb(file)
         if (file) {
             $("#addIcon").removeClass("fa-plus").addClass("fa-pencil")
             document.getElementById("thumbImage").src = URL.createObjectURL(file)
             document.getElementById("thumbImage").classList.add('covered_image')
-            
         }
-        setThumbName(file.name)
-        document.getElementById("thumbFile").form.reset()
+        
     }
 
     // Categories
@@ -37,16 +36,14 @@ export default function AddProductForm() {
     }, [])
 
     // Product Image
-    const [imagesName, setImagesName] = useState([])
+    const [images,setImages] = useState(null)
     const images_upload = (e) => {
         $(".file_no_image").remove();
         $("#uploadBtn").hide();
         var files = e.target.files,
             filesLength = files.length;
-        let prod_array = []
         for (let i = 0; i < filesLength; i++) {
             var f = files[i];
-            prod_array.push(f.name)
             var fileReader = new FileReader();
             fileReader.onload = (function (e) {
                 var file = e.target;
@@ -57,8 +54,7 @@ export default function AddProductForm() {
             });
             fileReader.readAsDataURL(f);
         }
-
-        setImagesName(prod_array)
+        setImages(files)
     }
 
     // General Instruction
@@ -72,9 +68,7 @@ export default function AddProductForm() {
     const initialState = {
         name: '',
         description: '',
-        thumb: '',
         category: 0,
-        images: [],
         price: '',
         stock: '',
         sku: ''
@@ -83,10 +77,10 @@ export default function AddProductForm() {
     const [Product, setProduct] = useState(initialState)
     const [error,setError] = useState('')
 
-    const { name, description, thumb, category, images, price, stock, sku } = Product
+    const { name, description, category, price, stock, sku } = Product
 
     const validation = () => {
-        if(name == '' && description == '' && thumb == '' && category == 0 && images.length == 0 && price == '' && sku == ''){
+        if(!name && !description && !thumb && category == 0 && !images && !price && !stock && !sku){
             const err = {}
             err.name = "Please enter product name",
             err.description = "Please enter product description",
@@ -94,23 +88,18 @@ export default function AddProductForm() {
             err.category = "Please select product category",
             err.images = "Please upload product images",
             err.price = "Please enter product price",
+            err.stock = "Please enter product available stock",
             err.sku = "Please enter product sku"
             setError(err)
             return err
         }
-        else if(name == ''){
+        else if(!thumb){
             const err = {}
-            err.name = "Please enter product name"
+            err.images = "Please upload product thumb"
             setError(err)
             return err
         }
-        else if(description == ''){
-            const err = {}
-            err.description = "Please enter product description"
-            setError(err)
-            return err
-        }
-        else if(thumb == ''){
+        else if(!images){
             const err = {}
             err.images = "Please upload product images"
             setError(err)
@@ -122,19 +111,31 @@ export default function AddProductForm() {
             setError(err)
             return err
         }
-        else if(images.length == 0){
+        else if(!name){
             const err = {}
-            err.images = "Please upload product images"
+            err.name = "Please enter product name"
             setError(err)
             return err
         }
-        else if(price == ''){
+        else if(!description){
+            const err = {}
+            err.description = "Please enter product description"
+            setError(err)
+            return err
+        }
+        else if(!price){
             const err = {}
             err.price = "Please enter product price"
             setError(err)
             return err
         }
-        else if(sku == ''){
+        if(!stock){
+            const err = {}
+            err.stock = "Please enter product available stock"
+            setError(err)
+            return err
+        }
+        else if(!sku){
             const err = {}
             err.sku = "Please enter product sku"
             setError(err)
@@ -149,21 +150,16 @@ export default function AddProductForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        
-        const Obj = new Object(Product);
-        if (imagesName){
-            Obj["images"] = imagesName
+        const isValid = validation();
+        const errorLst = Object.keys(isValid)
+        if(errorLst.length == 0){
+            console.log(Product);
+            console.log(thumb);
+            console.log(images);
         }
-
-        if(thumbName){
-            Obj["thumb"] = thumbName 
-        }
-        console.log(Obj);
-        validation()
-
     }
 
-    const handelChange = (name, value) => {
+    const handelValueChange = (name, value) => {
         setProduct({ ...Product, [name]: value })
     }
 
@@ -180,12 +176,12 @@ export default function AddProductForm() {
                                     <h6 className="title">Thumbnail</h6>
                                     <div className="thumb_img mx-auto mb-4">
                                         <img src={Noimage} alt="" id="thumbImage" />
-                                        <input type="file" id="thumbFile" accept="image/*" value={thumb} className="hidden-file" onChange={() => {
+                                        <input type="file" id="thumbFile" accept="image/*" className="hidden-file" onChange={() => {
                                             thumbUpload()
                                         }} />
                                         <label className="btn-edit" htmlFor="thumbFile"><i className="fa fa-plus" id="addIcon"></i></label>
                                     </div>
-                                    <p><span className='error'>{error.thumb}</span></p>
+                                    <p className='text-center'><span className='error'>{error.thumb}</span></p>
                                     <p className="hint">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
                                 </div>
                             </div>
@@ -194,7 +190,7 @@ export default function AddProductForm() {
                                     <h6 className="title">Category</h6>
                                     <div className="form-group boot-select">
                                         <select className="form-control" multiple={false} defaultValue={category} onChange={(e) => {
-                                            handelChange("category", e.target.value)
+                                            handelValueChange("category", e.target.value)
                                         }}>
                                             <option value={0}>-- Select Category --</option>
                                             {
@@ -220,14 +216,14 @@ export default function AddProductForm() {
                                     <h6 className="title">Images</h6>
                                     <div className="upload_more">
                                         <label htmlFor="uploadImage" id="uploadBtn" className="btn btn-primary btn-upload-more btn-sm">Upload Image</label>
-                                        <input type="file" id="uploadImage" className="w-100" accept="image/*" value={images} multiple={true} onChange={images_upload} />
+                                        <input type="file" id="uploadImage" className="w-100" accept="image/*" multiple={true} onChange={images_upload} />
                                     </div>
                                     <div className="d-flex image_list" id="productImages">
                                         <div className="thumb_img mx-auto file_no_image" >
                                             <img src={Noimage} alt="" />
                                         </div>
                                     </div>
-                                    <p><span className='error'>{error.images}</span></p>
+                                    <p className='text-center'><span className='error'>{error.images}</span></p>
                                 </div>
                             </div>
                             <div className="general mb-4">
@@ -236,7 +232,7 @@ export default function AddProductForm() {
                                     <div className="form-group">
                                         <label htmlFor="productName" className="mb-3 h5">Product Name <span style={{ color: "red" }}>*</span></label>
                                         <input type="text" value={name} className="form-control" onChange={(e) => {
-                                            handelChange("name", e.target.value)
+                                            handelValueChange("name", e.target.value)
                                         }} />
                                         <p className="hint text-start pt-2">A product name is required and recommended to be unique.</p>
                                         <p><span className='error'>{error.name}</span></p>
@@ -249,9 +245,8 @@ export default function AddProductForm() {
                                             config={config}
                                             tabIndex={1}
                                             onBlur={(Description) => {
-                                                handelChange("description", Description)
-                                            }
-                                            }
+                                                handelValueChange("description", Description)
+                                            }}
                                         />
                                         <p className="hint text-start pt-2">Set description of the product for better visibility.</p>
                                         <p><span className='error'>{error.description}</span></p>
@@ -262,7 +257,7 @@ export default function AddProductForm() {
                                             <div className="form-group">
                                                 <label htmlFor="productPrice" className="mb-3 h5">Price <span style={{ color: "red" }}>*</span></label>
                                                 <input type="text" className="form-control" value={price} onChange={(e) => {
-                                                    handelChange("price", e.target.value)
+                                                    handelValueChange("price", e.target.value)
                                                 }} />
                                                 <p className="hint text-start pt-2">Set the product price.</p>
                                                 <p><span className='error'>{error.price}</span></p>
@@ -270,18 +265,19 @@ export default function AddProductForm() {
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-4">
                                             <div className="form-group">
-                                                <label htmlFor="productStock" className="mb-3 h5">Stock</label>
+                                                <label htmlFor="productStock" className="mb-3 h5">Stock <span style={{ color: "red" }}>*</span></label>
                                                 <input type="text" className="form-control" value={stock} onChange={(e) => {
-                                                    handelChange("stock", e.target.value)
+                                                    handelValueChange("stock", e.target.value)
                                                 }} />
                                                 <p className="hint text-start pt-2">Set the product stock remaining.</p>
+                                                <p><span className='error'>{error.stock}</span></p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-4">
                                             <div className="form-group">
                                                 <label htmlFor="productStock" className="mb-3 h5">SKU <span style={{ color: "red" }}>*</span></label>
                                                 <input type="text" className="form-control" value={sku} onChange={(e) => {
-                                                    handelChange("sku", e.target.value)
+                                                    handelValueChange("sku", e.target.value)
                                                 }} />
                                                 <p className="hint text-start pt-2">Set the product SKU.</p>
                                                 <p><span className='error'>{error.sku}</span></p>
