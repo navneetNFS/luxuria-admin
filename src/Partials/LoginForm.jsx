@@ -93,7 +93,7 @@ export default function LoginForm() {
                         <span className="error">{error.email}</span>
                     </div>
                     <div className="form-field mb-3">
-                        <input type="text" name="password" id="userPwd" className="form-control" placeholder="Password" value={password} onChange={onHandelChange} onKeyUp={validation} />
+                        <input type="password" name="password" id="userPwd" className="form-control" placeholder="Password" value={password} onChange={onHandelChange} onKeyUp={validation} />
                         <span className="error">{error.password}</span>
                     </div>
                     <div className="form-field mb-3 text-end">
