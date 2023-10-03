@@ -1,32 +1,35 @@
 import { NavLink, useParams } from "react-router-dom";
 import ProductItem from "./ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
+import RangeSlider from 'react-bootstrap-range-slider';
 import AddProductPage from "../Modal/AddProductPage";
 import axios from "axios";
 import { useMemo, useState } from "react";
 
 
 export default function ProductListTable() {
-    const {pageNum} = useParams()
-    const [products,setProducts] = useState([])
-    const [totalPages,setTotalPages] = useState(0)
+    const { pageNum } = useParams()
+    const [products, setProducts] = useState([])
+    const [totalPages, setTotalPages] = useState(0)
 
-    useMemo(()=>{
+    useMemo(() => {
         axios.get(`/api/product?page=${pageNum}`)
-        .then((res) => {
-            const {data,totalPages} = res.data
-            setProducts(data)
-            setTotalPages(totalPages)
-        }).catch(err=> console.log(err))
-    },[]);
+            .then((res) => {
+                const { data, totalPages } = res.data
+                setProducts(data)
+                setTotalPages(totalPages)
+            }).catch(err => console.log(err))
+    }, []);
 
     const range = (number) => {
         let num_list = []
-        for(let i=0;i<=number-1;i++){
-            num_list.push(i+1)
+        for (let i = 0; i <= number - 1; i++) {
+            num_list.push(i + 1)
         }
         return num_list
     }
+
+    const [ value, setValue ] = useState(0); 
 
     const pages_lst = range(totalPages)
     return (
@@ -60,7 +63,13 @@ export default function ProductListTable() {
 
                                             <div className="field mb-3">
                                                 <h4 className="mb-3">Price</h4>
-                                                <Form.Range />
+                                                <RangeSlider
+                                                    value={value}
+                                                    min={1}
+                                                    max={250}
+                                                    size="sm"
+                                                    onChange={changeEvent => setValue(changeEvent.target.value)}
+                                                />
                                             </div>
 
                                             <div className="field mb-3">
@@ -111,17 +120,17 @@ export default function ProductListTable() {
                     <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end">
                         <nav aria-label="Page navigation example">
                             <ul className="pagination mb-0">
-                                
-                                { pageNum-1 > 0 ? <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-left"></i></NavLink></li>:''}
+
+                                {pageNum - 1 > 0 ? <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-left"></i></NavLink></li> : ''}
                                 {
-                                    pages_lst.map((item,index)=>{
-                                        { return pageNum == item ? <li key={index} className="page-item"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li> : <li key={index} className="page-item unactive"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li>}
+                                    pages_lst.map((item, index) => {
+                                        { return pageNum == item ? <li key={index} className="page-item"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li> : <li key={index} className="page-item unactive"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li> }
                                         // return 
                                     })
                                 }
-                                
-                                { pageNum+1 > totalPages ? '':<li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-right"></i></NavLink></li>}
-                                
+
+                                {pageNum + 1 > totalPages ? '' : <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-right"></i></NavLink></li>}
+
                             </ul>
                         </nav>
                     </div>
