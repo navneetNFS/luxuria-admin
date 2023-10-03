@@ -1,7 +1,33 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import '../scss/Pages/Edit-Product.scss'
+import { useMemo, useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function ProductDetailPage() {
+  const { imageApi } = useSelector((state) => state)
+  const { productId } = useParams()
+  const [product, setProduct] = useState([])
+  useMemo(() => {
+    axios.get(`/api/product/${productId}`)
+      .then(({ data }) => {
+        const { product } = data
+        setProduct(product)
+      }).catch((err) => {
+        console.log(err);
+      })
+  }, [])
+
+  const { name, description, price, stock, sku, images , category , thumb } = product
+
+
+  const img_list = []
+  for (let i in images) {
+    // console.log(i)
+    img_list.push(images[i])
+  }
+  console.log(thumb);
+
   return (
     <>
       <main>
@@ -13,7 +39,7 @@ export default function ProductDetailPage() {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item text-primary"><Link to="/dashboard">Dashboard</Link></li>
-                    <li className="breadcrumb-item text-primary"><Link to="/products">Product</Link></li>
+                    <li className="breadcrumb-item text-primary"><Link to="/products/1">Product</Link></li>
                     <li className="breadcrumb-item active">Product Name</li>
                   </ol>
                 </nav>
@@ -27,7 +53,7 @@ export default function ProductDetailPage() {
               <div className="col-lg-6 col-md-6 col-sm-6 text-end">
                 <Link to="/reviews" className="btn btn-outline-primary me-3">Reviews</Link>
                 <Link to="/edit-product" className="btn btn-outline-primary">Update Product</Link>
-                </div>
+              </div>
             </div>
             <div className="row">
               <div className="col-lg-3 col-md-3 col-sm-3">
@@ -36,7 +62,7 @@ export default function ProductDetailPage() {
                     <div className="card widget-card">
                       <h6 className="title">Thumbnail</h6>
                       <div className="thumb_img mx-auto">
-                        <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
+                        <img src={`${imageApi}/${thumb}`} alt="" />
                       </div>
                     </div>
                   </form>
@@ -48,7 +74,7 @@ export default function ProductDetailPage() {
                       <h6 className="title">Category</h6>
                       <div className="form-group boot-select">
                         <select className="form-control" id="productCategory" disabled>
-                          <option>Electronic</option>
+                          <option>{category}</option>
                         </select>
                         <i className="fa fa-angle-down"></i>
                       </div>
@@ -63,24 +89,11 @@ export default function ProductDetailPage() {
                     <div className="card widget-card">
                       <h6 className="title">Images</h6>
                       <div className="d-flex image_list">
-                        <div className="thumb_img me-4">
-                          <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                        </div>
-                        <div className="thumb_img me-4">
-                          <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                        </div>
-                        <div className="thumb_img me-4">
-                          <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                        </div>
-                        <div className="thumb_img me-4">
-                          <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                        </div>
-                        <div className="thumb_img me-4">
-                          <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                        </div>
-                        <div className="thumb_img me-4">
-                          <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                        </div>
+                        {
+                          img_list.map((item, index) => <div className="thumb_img me-4" key={index}>
+                            <img src={`${imageApi}/${item}`} alt="" />
+                          </div>)
+                        }
                       </div>
                     </div>
                   </form>
@@ -93,32 +106,32 @@ export default function ProductDetailPage() {
                       <h6 className="title">General</h6>
 
                       <div className="form-group mb-4">
-                        <label htmlFor="productName" className="mb-3 h5">Product Name <span style={{ color: "red" }}>*</span></label>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore culpa libero pariatur optio non, ullam aliquid accusamus id reprehenderit iusto nobis? Quia!</p>
+                        <label htmlFor="productName" className="mb-3 h5 fw-bold">Product Name</label>
+                        <p>{name}</p>
                       </div>
 
                       <div className="form-group mb-4">
-                        <label className="mb-3 h5">Description <span style={{ color: "red" }}>*</span></label>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore culpa libero pariatur optio non, ullam aliquid accusamus id reprehenderit iusto nobis? Quia!</p>
+                        <label className="mb-3 h5 fw-bold">Description</label>
+                        <p>{description}</p>
                       </div>
 
                       <div className="row">
                         <div className="col-lg-4 col-md-4 col-sm-4">
                           <div className="form-group">
-                            <label htmlFor="productPrice" className="mb-3 h5">Price <span style={{ color: "red" }}>*</span></label>
-                            <p>$153.66</p>
+                            <label htmlFor="productPrice" className="mb-3 h5 fw-bold">Price</label>
+                            <p>{price}</p>
                           </div>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4">
                           <div className="form-group">
-                            <label htmlFor="productStock" className="mb-3 h5">Stock <span style={{ color: "red" }}>*</span></label>
-                            <p>500</p>
+                            <label htmlFor="productStock" className="mb-3 h5 fw-bold">Stock</label>
+                            <p>{stock}</p>
                           </div>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4">
                           <div className="form-group">
-                            <label htmlFor="productStock" className="mb-3 h5">SKU <span style={{ color: "red" }}>*</span></label>
-                            <p>AKU-124343</p>
+                            <label htmlFor="productStock" className="mb-3 h5 fw-bold">SKU</label>
+                            <p>{sku}</p>
                           </div>
                         </div>
                       </div>

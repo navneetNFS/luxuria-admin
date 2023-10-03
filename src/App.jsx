@@ -47,7 +47,7 @@ function App() {
 
           {/* Product Links */}
           <Route path="/products/:pageNum" element={isLogged ? verifyed.verifyed ? <ProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/product-detail" element={isLogged ? verifyed.verifyed ? <ProductDetailPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/product-detail/:productId" element={isLogged ? verifyed.verifyed ? <ProductDetailPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/edit-product" element={isLogged ? verifyed.verifyed ? <EditProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 

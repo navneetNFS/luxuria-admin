@@ -8,7 +8,7 @@ export default function ProductItem({data}) {
         <>
             {
                 Array.from(data).map((item,ind)=>{
-                    const {name,thumb,category,price,stock,sku} = item
+                    const {_id,name,thumb,category,price,stock,sku} = item
                     return <div className="body-row d-flex align-items-center" key={ind}>
                 <div className="product-column width-32 d-flex align-items-center justify-content-between">
                     <div className="product_name">
@@ -16,7 +16,7 @@ export default function ProductItem({data}) {
                             <img src={`${imageApi}/${thumb}`} />
                         </div>
                         <strong title={name}>
-                            <Link to="/product-detail" className=''>{name}</Link>
+                            <Link to={`/product-detail/${_id}`} className=''>{name}</Link>
                         </strong>
                     </div>
                 </div>
