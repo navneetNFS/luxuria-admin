@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import ReactStars from 'react-stars'
 import { Badge, Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,7 +9,7 @@ export default function ProductItem({data}) {
         <>
             {
                 Array.from(data).map((item,ind)=>{
-                    const {_id,name,thumb,category,price,stock,sku} = item
+                    const {_id,name,thumb,category,price,stock,sku,rating} = item
                     return <div className="body-row d-flex align-items-center" key={ind}>
                 <div className="product-column width-32 d-flex align-items-center justify-content-between">
                     <div className="product_name">
@@ -24,7 +25,7 @@ export default function ProductItem({data}) {
                 <div className="stock-column width-10">{stock}</div>
                 <div className="price-column width-10">{price}</div>
                 <div className="rating-column width-10 showing">
-                    3.6
+                    <ReactStars value={rating} count={5} size={18} color1={'#bdbbbb'} color2={'#ffd700'} edit={false} />
                 </div>
                 <div className="category-column width-16"><Badge bg="info">{category}</Badge></div>
                 <div className="action-column width-10">
