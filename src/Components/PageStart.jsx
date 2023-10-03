@@ -7,7 +7,7 @@ export default function PageStart() {
     // const navigate = useNavigate()
 
     // SET IMAGE API URL
-    const api_url = "http://localhost:3000/api"
+    const api_url = "http://localhost:3000/uploads/images"
     const ApiUrl = (payload) => {
         dispatch(setImageApiUrl(payload))
     }
@@ -36,6 +36,7 @@ export default function PageStart() {
         const setting = { logged: false, user: null, tokken: null }
         const setCred = (payload) => {
             dispatch(setCredential(payload))
+            dispatch(setImageApiUrl(""))
         }
         setCred(setting)
     }

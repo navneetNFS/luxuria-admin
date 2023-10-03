@@ -12,5 +12,10 @@
             color: #fff !important;
             padding: 0.7rem 1.5rem;
         }
+
+        &.unactive.active {
+            background: transparent !important;
+            color: #000 !important;
+        }
     }
 }

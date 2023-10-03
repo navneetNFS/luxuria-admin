@@ -1,10 +1,34 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import ProductItem from "./ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
 import AddProductPage from "../Modal/AddProductPage";
+import axios from "axios";
+import { useMemo, useState } from "react";
 
 
 export default function ProductListTable() {
+    const {pageNum} = useParams()
+    const [products,setProducts] = useState([])
+    const [totalPages,setTotalPages] = useState(0)
+
+    useMemo(()=>{
+        axios.get(`/api/product?page=${pageNum}`)
+        .then((res) => {
+            const {data,totalPages} = res.data
+            setProducts(data)
+            setTotalPages(totalPages)
+        }).catch(err=> console.log(err))
+    },[]);
+
+    const range = (number) => {
+        let num_list = []
+        for(let i=0;i<=number-1;i++){
+            num_list.push(i+1)
+        }
+        return num_list
+    }
+
+    const pages_lst = range(totalPages)
     return (
         <>
             <div className="table-header">
@@ -55,17 +79,17 @@ export default function ProductListTable() {
             </div>
             <div className="table-body">
                 <div className="body-header d-flex align-items-center">
-                    <div className="product-column width-38">Product</div>
+                    <div className="product-column width-32">Product</div>
                     <div className="sku-column width-12">SKU</div>
                     <div className="qty-column width-10">Stock</div>
                     <div className="price-column width-10">Price</div>
                     <div className="rating-column width-10">Rating</div>
-                    <div className="category-column width-10">Category</div>
+                    <div className="category-column width-16">Category</div>
                     <div className="action-column width-10">Action</div>
                 </div>
 
                 <div className="body-content">
-                    <ProductItem />
+                    <ProductItem data={products} />
                 </div>
             </div>
             <div className="table-footer">
@@ -87,11 +111,17 @@ export default function ProductListTable() {
                     <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end">
                         <nav aria-label="Page navigation example">
                             <ul className="pagination mb-0">
-                                <li className="page-item"><NavLink to="/products" className="page-link"><i className="fa fa-angle-left"></i></NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link">1</NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link">2</NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link">3</NavLink></li>
-                                <li className="page-item"><NavLink to="/products" className="page-link"><i className="fa fa-angle-right"></i></NavLink></li>
+                                
+                                { pageNum-1 > 0 ? <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-left"></i></NavLink></li>:''}
+                                {
+                                    pages_lst.map((item,index)=>{
+                                        { return pageNum == item ? <li key={index} className="page-item"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li> : <li key={index} className="page-item unactive"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li>}
+                                        // return 
+                                    })
+                                }
+                                
+                                { pageNum+1 > totalPages ? '':<li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-right"></i></NavLink></li>}
+                                
                             </ul>
                         </nav>
                     </div>

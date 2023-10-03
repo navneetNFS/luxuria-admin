@@ -46,7 +46,7 @@ function App() {
           <Route path="/verify-user" element={isLogged ? !verifyed.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
 
           {/* Product Links */}
-          <Route path="/products" element={isLogged ? verifyed.verifyed ? <ProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/products/:pageNum" element={isLogged ? verifyed.verifyed ? <ProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/product-detail" element={isLogged ? verifyed.verifyed ? <ProductDetailPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/edit-product" element={isLogged ? verifyed.verifyed ? <EditProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
 
