@@ -66,9 +66,16 @@ export default function EditPageForm({ imageApi, productId }) {
 
     const handelSubmit = (e) => {
         e.preventDefault();
-        console.log(Product);
-        console.log(imageHidden.current.value);
-        console.log(removedImages);
+        if(removedImages.length > 0){
+            // console.log(imageHidden.current.value);
+            Product.images = imageHidden.current.value
+            console.log(removedImages);
+            console.log(Product);
+        }
+        else{
+            console.log(Product);
+        }
+        
     }
 
     const handelChange = (name, value) => {
