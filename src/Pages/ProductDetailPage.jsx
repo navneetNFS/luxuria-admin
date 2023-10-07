@@ -3,6 +3,7 @@ import '../scss/Pages/Edit-Product.scss'
 import { useMemo, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import parse from 'html-react-parser';
 
 export default function ProductDetailPage() {
   const { imageApi } = useSelector((state) => state)
@@ -23,15 +24,14 @@ export default function ProductDetailPage() {
 
   const img_list = []
   for (let i in images) {
-    // console.log(i)
     img_list.push(images[i])
   }
-  console.log(thumb);
 
   return (
     <>
       <main>
         <div className="inner-frame">
+      
           <section className="product-header mb-4">
             <div className="row">
               <div className="col-lg-6 col-md-6 col-sm-6">
@@ -40,7 +40,7 @@ export default function ProductDetailPage() {
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item text-primary"><Link to="/dashboard">Dashboard</Link></li>
                     <li className="breadcrumb-item text-primary"><Link to="/products/1">Product</Link></li>
-                    <li className="breadcrumb-item active">Product Name</li>
+                    <li className="breadcrumb-item bread-link active" title={name}>{name}</li>
                   </ol>
                 </nav>
               </div>
@@ -52,7 +52,7 @@ export default function ProductDetailPage() {
               <div className="col-lg-6 col-md-6 col-sm-6"></div>
               <div className="col-lg-6 col-md-6 col-sm-6 text-end">
                 <Link to="/reviews" className="btn btn-outline-primary me-3">Reviews</Link>
-                <Link to="/edit-product" className="btn btn-outline-primary">Update Product</Link>
+                <Link to={`/edit-product/${productId}`} className="btn btn-outline-primary">Update Product</Link>
               </div>
             </div>
             <div className="row">
@@ -112,7 +112,7 @@ export default function ProductDetailPage() {
 
                       <div className="form-group mb-4">
                         <label className="mb-3 h5 fw-bold">Description</label>
-                        <p>{description}</p>
+                        {parse(String(description))}
                       </div>
 
                       <div className="row">

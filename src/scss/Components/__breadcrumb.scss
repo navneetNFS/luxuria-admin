@@ -2,4 +2,12 @@
     background: transparent;
     padding: 0;
     font-size: 1.3rem;
+
+    .bread-link{
+        max-width: 250px;
+        overflow: hidden;
+        white-space: nowrap;
+        display: inline-block;
+        text-overflow: ellipsis;
+    }
 }
