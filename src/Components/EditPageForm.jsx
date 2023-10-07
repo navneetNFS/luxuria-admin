@@ -4,8 +4,6 @@ import JoditEditor from 'jodit-react';
 import axios from 'axios';
 
 export default function EditPageForm({imageApi,productId}) {
-    console.log(imageApi);
-    console.log(productId);
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const config = {
@@ -96,30 +94,14 @@ export default function EditPageForm({imageApi,productId}) {
                                     <input type="hidden" value={images} />
                                 </div>
                                 <div className="d-flex image_list">
-                                    <div className="thumb_img me-4">
-                                        <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                        <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                    </div>
-                                    <div className="thumb_img me-4">
-                                        <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                        <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                    </div>
-                                    <div className="thumb_img me-4">
-                                        <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                        <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                    </div>
-                                    <div className="thumb_img me-4">
-                                        <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                        <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                    </div>
-                                    <div className="thumb_img me-4">
-                                        <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                        <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                    </div>
-                                    <div className="thumb_img me-4">
-                                        <img src="https://preview.keenthemes.com/metronic8/demo1/assets/media//stock/ecommerce/78.png" alt="" />
-                                        <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
-                                    </div>
+                                    {
+                                        images.map((item,ind)=> {
+                                            return <div className="thumb_img me-4" key={ind}>
+                                            <img src={`${imageApi}/${item}`} alt="" />
+                                            <button type="button" className="btn-edit"><i className="fa fa-trash"></i></button>
+                                        </div>
+                                        })
+                                    }
                                 </div>
                                 {/* <input type="file" id="uploadMore" className="hidden-file" /> */}
                             </div>

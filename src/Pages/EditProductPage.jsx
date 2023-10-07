@@ -17,7 +17,6 @@ export default function EditProductPage() {
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item text-primary"><Link to="/dashboard">Dashboard</Link></li>
                     <li className="breadcrumb-item text-primary"><Link to="/products/1">Product</Link></li>
-                    <li className="breadcrumb-item text-primary bread-link"><Link to={`/product-detail/${productId}`}>{name}</Link></li>
                     <li className="breadcrumb-item active">Edit</li>
                   </ol>
                 </nav>
