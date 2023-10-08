@@ -49,8 +49,6 @@ export default function EditPageForm() {
 
     const { name, thumb, category, images, description, price, stock, sku } = Product
 
-
-
     const imageHidden = useRef(images);
     const removedImages = []
     const deleteImage = (img_name) => {
@@ -67,6 +65,23 @@ export default function EditPageForm() {
         })
     })
 
+    const [newThumb,setNewThumb] = useState(null)
+    const prevThumb = useRef(thumb)
+    const newThumbFiles = useRef(null)
+
+    const newThumUpload = () =>{
+        const [file] = newThumbFiles.current.files
+        if (file) {
+            $("#editIcon").remove()
+            document.getElementById("thumbImg").src = URL.createObjectURL(file)
+            document.getElementById("thumbImg").classList.add('covered_image')
+        }
+    }
+
+    const [uploadNew,setUploadNew] = useState(null)
+    const uploadNewImages = (files) => {
+    }
+
     const handelSubmit = (e) => {
         e.preventDefault();
         if(removedImages.length > 0){
@@ -75,9 +90,16 @@ export default function EditPageForm() {
             console.log(removedImages);
             console.log(Product);
         }
-        else{
-            console.log(Product);
+
+        if(newThumb){
+            console.log(newThumb);
+            console.log(prevThumb.current.value);
         }
+
+        if(uploadNew){
+            console.log(uploadNew);
+        }
+        console.log(Product);
         
     }
 
@@ -94,11 +116,14 @@ export default function EditPageForm() {
                             <div className="card widget-card">
                                 <h6 className="title">Thumbnail</h6>
                                 <div className="thumb_img mx-auto">
-                                    {thumb ? <img src={`${imageApi}/${thumb}`} alt="" /> : ''}
-                                    <input type="file" id="thumbImage" className="hidden-file" onChange={() => {
-                                        alert("Hello")
+                                    {thumb ? <img src={`${imageApi}/${thumb}`} alt="" id="thumbImg" /> : ''}
+                                    <input type="file" id="thumbImage" className="hidden-file" ref={newThumbFiles} onChange={(e)=>{
+                                        newThumUpload()
+                                        setNewThumb(e.target.files)
                                     }} />
-                                    <label className="btn-edit" htmlFor="thumbImage"><i className="fa fa-pencil"></i></label>
+
+                                    <input type="hidden" value={thumb} ref={prevThumb} />
+                                    <label className="btn-edit" htmlFor="thumbImage" id="editIcon"><i className="fa fa-pencil"></i></label>
                                 </div>
                                 <p className="hint">Update the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
                             </div>
@@ -132,7 +157,9 @@ export default function EditPageForm() {
 
                                 <div className="upload_more">
                                     <label htmlFor="uploadMore" className="btn btn-primary btn-upload-more btn-sm">Upload More</label>
-                                    <input type="file" name="" id="uploadMore" className="w-100" accept="image/*" multiple />
+                                    <input type="file" id="uploadMore" className="w-100" accept="image/*" multiple onChange={(e)=>{
+                                        setUploadNew(e.target.files)
+                                    }} />
                                     <input type="hidden" value={images} ref={imageHidden} />
                                 </div>
                                 <div className="d-flex image_list">
