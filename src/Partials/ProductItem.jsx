@@ -35,7 +35,7 @@ export default function ProductItem({data}) {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu className='action-dd-menu'>
-                            <Dropdown.Item href="/edit-product">Edit</Dropdown.Item>
+                            <Dropdown.Item href={`/edit-product/${_id}`}>Edit</Dropdown.Item>
                             <Dropdown.Item href="#">Delete</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
