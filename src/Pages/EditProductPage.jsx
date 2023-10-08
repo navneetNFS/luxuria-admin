@@ -1,10 +1,7 @@
-import { Link, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import EditPageForm from "../Components/EditPageForm";
 import '../scss/Pages/Edit-Product.scss'
 export default function EditProductPage() {
-  const { productId } = useParams()
-  const { imageApi } = useSelector((state) => state)
   return (
     <>
       <main>
@@ -26,7 +23,7 @@ export default function EditProductPage() {
           </section>
 
           <section className="edit_product inner-content">
-            <EditPageForm imageApi={imageApi} productId={productId}  />
+            <EditPageForm  />
           </section>
         </div>
       </main>

@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useMemo, useRef, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import JoditEditor from 'jodit-react';
 import axios from 'axios';
-import $ from 'jquery'
-export default function EditPageForm({ imageApi, productId }) {
+import $ from 'jquery';
+import { useSelector } from 'react-redux';
+export default function EditPageForm() {
+    const { productId } = useParams()
+    const imageApi = useSelector((state) => state.imageApi)
     const editor = useRef(null);
     const config = {
         readonly: false,

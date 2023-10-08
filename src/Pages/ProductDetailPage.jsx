@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import parse from 'html-react-parser';
 
 export default function ProductDetailPage() {
-  const { imageApi } = useSelector((state) => state)
+  const imageApi = useSelector((state) => state.imageApi)
   const { productId } = useParams()
   const [product, setProduct] = useState([])
   useMemo(() => {

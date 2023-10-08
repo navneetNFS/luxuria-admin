@@ -4,7 +4,7 @@ import { Badge, Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 export default function ProductItem({data}) {
-    const {imageApi} = useSelector((state)=> state)
+    const imageApi = useSelector((state)=> state.imageApi)
     return (
         <>
             {
