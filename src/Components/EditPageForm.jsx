@@ -163,7 +163,7 @@ export default function EditPageForm() {
         const formData = Product
 
         alert(removedImagesList.length)
-        // imageCheck(formData)
+        imageCheck(formData)
 
         if (newThumb) {
             const thumb = await thumWork(newThumb[0], prevThumb.current.value)
