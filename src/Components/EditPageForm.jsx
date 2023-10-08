@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 export default function EditPageForm() {
     const { productId } = useParams()
     const imageApi = useSelector((state) => state.imageApi)
+    
     const editor = useRef(null);
     const config = {
         readonly: false,
@@ -50,14 +51,8 @@ export default function EditPageForm() {
     const { name, thumb, category, images, description, price, stock, sku } = Product
 
     const imageHidden = useRef(images);
-    const removedImagesList = []
-    const deleteImage = (img_name) => {
-        const image_arr = String(imageHidden.current.value).split(',')
-        const removed_arr = image_arr.filter((e) => e != img_name)
-        imageHidden.current.value = removed_arr.join(",")
-        removedImagesList.push(img_name)
-        console.log(removedImagesList);
-    }
+    // const removedImagesList = []
+    const [removedImagesList,setRemoveItemList] = useState([])
 
 
     $(document).ready(function () {
@@ -81,7 +76,6 @@ export default function EditPageForm() {
 
     const [uploadNew, setUploadNew] = useState(null)
     const uploadNewImages = (e) => {
-        console.log(removedImagesList);
         $("#uploadBtn").hide();
         var files = e.target.files,
             filesLength = files.length;
@@ -131,39 +125,40 @@ export default function EditPageForm() {
         }
     }
 
-    const removedImageFunc = (its_data) => {
-        its_data.images = String(imageHidden.current.value).split(',')
-        removedImagesList.map((item) => {
-            console.log(item);
-        })
-        return its_data.images
+    const removedImageFunc = () => {
     }
 
-    const imageCheck = (data) => {
-        alert(removedImagesList.length);
-        let splited_item = removedImageFunc(data)
-        if (removedImagesList.length > 0) {
-            if(uploadNew){
-                console.log(removedImagesList);
-                console.log(splited_item);
-                console.log(uploadNew);
-            }
-            else{
-                console.log(splited_item);
-            }
+    const uploadImages = () => {
+        
+    }
+
+    const imageCheck = (del_img,alr_img,new_img=[]) => {
+        console.log(`Removed Img :- ${del_img}`);
+        console.log(`Already Images :- ${alr_img}`);
+
+        if(Array.from(del_img).length > 0){
+            Array.from(del_img).map((rem_item)=> {
+                alr_img = Array.from(alr_img).filter((e) => e != rem_item)
+            })
         }
-        else{
-            console.log(uploadNew);
-            return data
+
+        if(new_img.length>0){
+            console.log(new_img);
         }
+
+        console.log(`Images after Removed :- ${alr_img}`);
     }
 
     const handelSubmit = async function (e) {
         e.preventDefault();
         const formData = Product
 
-        alert(removedImagesList.length)
-        imageCheck(formData)
+        if(uploadNew){
+            imageCheck(removedImagesList,String(imageHidden.current.value).split(','),uploadNew)
+        }
+        else{
+            imageCheck(removedImagesList,String(imageHidden.current.value).split(','))
+        }
 
         if (newThumb) {
             const thumb = await thumWork(newThumb[0], prevThumb.current.value)
@@ -235,7 +230,7 @@ export default function EditPageForm() {
                                             return <div className="thumb_img me-4" id={`image_${ind}`} key={ind}>
                                                 <img src={`${imageApi}/${item}`} alt="" />
                                                 <button type="button" className="btn-edit currentProdImage" onClick={() => {
-                                                    deleteImage(item)
+                                                    setRemoveItemList([...removedImagesList,item])
                                                 }}><i className="fa fa-trash"></i></button>
                                             </div>
                                         })
