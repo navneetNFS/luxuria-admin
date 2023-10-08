@@ -36,7 +36,7 @@ export default function ProductItem({data}) {
 
                         <Dropdown.Menu className='action-dd-menu'>
                             <Dropdown.Item href={`/edit-product/${_id}`}>Edit</Dropdown.Item>
-                            <Dropdown.Item href="#">Delete</Dropdown.Item>
+                            <Dropdown.Item href={`/delete-product/${_id}`}>Delete</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>

@@ -19,6 +19,7 @@ import PageStart from "./Components/PageStart";
 import VerifyUserPage from "./Pages/VerifyUserPage";
 import SignOutPage from "./Pages/SignOutPage";
 import DeleteCategory from "./Components/DeleteCategory";
+import DeleteProduct from "./Components/DeleteProduct";
 
 
 
@@ -49,6 +50,7 @@ function App() {
           <Route path="/products/:pageNum" element={isLogged ? verifyed.verifyed ? <ProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/product-detail/:productId" element={isLogged ? verifyed.verifyed ? <ProductDetailPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/edit-product/:productId" element={isLogged ? verifyed.verifyed ? <EditProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-product/:productId" element={isLogged ? verifyed.verifyed ? <DeleteProduct /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* Orders Links */}
