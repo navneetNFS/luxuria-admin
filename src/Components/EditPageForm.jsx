@@ -58,7 +58,7 @@ export default function EditPageForm() {
 
     const imageHidden = useRef(images);
     // const removedImagesList = []
-    const [removedImagesList,setRemoveItemList] = useState([])
+    const [removedImagesList, setRemoveItemList] = useState([])
 
 
     $(document).ready(function () {
@@ -131,7 +131,7 @@ export default function EditPageForm() {
         }
     }
 
-    const removedImageFunc = async(del_img) => {
+    const removedImageFunc = async (del_img) => {
         const delete_res = await axios.delete(`/api/product/delete-product-image/${del_img}`, {
             withCredentials: true,
             headers: {
@@ -140,43 +140,43 @@ export default function EditPageForm() {
             }
         })
             .then(({ data }) => { return data }).catch(err => { return err })
-            const { success } = delete_res
-            if(success){
-                console.log("Successfult");
-            }
+        const { success } = delete_res
+        if (success) {
+            console.log("Successfult");
+        }
     }
 
-    const uploadImages = async(up_item) => {
+    const uploadImages = async (up_item) => {
         const fd = new FormData()
-            fd.append('images', up_item)
-            const upload_res = await axios.post(`/api/product/product-images`, fd, {
+        fd.append('images', up_item)
+        const upload_res = await axios.post(`/api/product/product-images`, fd, {
+            withCredentials: true,
+            headers: {
                 withCredentials: true,
-                headers: {
-                    withCredentials: true,
-                    'Content-Type': 'value'
-                }
-            }).then(({ data }) => { return data }).catch(({response}) => { return response.data });
-            const { success } = upload_res
-            if(!success){
-                console.log(upload_res);
+                'Content-Type': 'value'
             }
+        }).then(({ data }) => { return data }).catch(({ response }) => { return response.data });
+        const { success } = upload_res
+        if (!success) {
+            console.log(upload_res);
+        }
     }
 
-    const imageCheck = (del_img,alr_img,new_img=[]) => {
-        if(Array.from(del_img).length > 0){
-            Array.from(del_img).map((rem_item)=> {
+    const imageCheck = (del_img, alr_img, new_img = []) => {
+        if (Array.from(del_img).length > 0) {
+            Array.from(del_img).map((rem_item) => {
                 removedImageFunc(rem_item)
                 alr_img = Array.from(alr_img).filter((e) => e != rem_item)
             })
         }
 
-        if(new_img.length>0){
+        if (new_img.length > 0) {
             console.log(new_img);
-            Array.from(new_img).map((up_item)=> {
+            Array.from(new_img).map((up_item) => {
                 uploadImages(up_item)
             })
         }
-        const updatedProduct = Array.from(alr_img).concat(Array.from(new_img).map(item=>item.name))
+        const updatedProduct = Array.from(alr_img).concat(Array.from(new_img).map(item => item.name))
         return updatedProduct
     }
 
@@ -184,12 +184,12 @@ export default function EditPageForm() {
         e.preventDefault();
         const formData = Product
 
-        if(uploadNew){
-            let update_img = imageCheck(removedImagesList,String(imageHidden.current.value).split(','),uploadNew)
+        if (uploadNew) {
+            let update_img = imageCheck(removedImagesList, String(imageHidden.current.value).split(','), uploadNew)
             formData.images = update_img
         }
-        else{
-            let update_img = imageCheck(removedImagesList,String(imageHidden.current.value).split(','))
+        else {
+            let update_img = imageCheck(removedImagesList, String(imageHidden.current.value).split(','))
             formData.images = update_img
         }
 
@@ -204,16 +204,16 @@ export default function EditPageForm() {
         setProduct({ ...Product, [name]: value })
     }
 
-    const postProduct = async function(update_data){
+    const postProduct = async function (update_data) {
         console.log(update_data);
-        const res = await axios.put(`/api/product/edit-product/${productId}`,update_data,{
+        const res = await axios.put(`/api/product/edit-product/${productId}`, update_data, {
             withCredentials: true,
-            headers: {'Content-Type':'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         })
-        .then(({data})=>{return data}).catch(({response}) => {return response.data})
+            .then(({ data }) => { return data }).catch(({ response }) => { return response.data })
 
-        const {success} = res
-        if(success){
+        const { success } = res
+        if (success) {
             setSuccess(true)
             setSuccessMessage('Product Updated Successfully')
             setTimeout(() => {
@@ -221,7 +221,7 @@ export default function EditPageForm() {
                 window.location.reload(true);
             }, 1000)
         }
-        else{
+        else {
             setFail(true);
             setFailMessage(`${res.data.message}`)
         }
@@ -286,7 +286,7 @@ export default function EditPageForm() {
                                             return <div className="thumb_img me-4" id={`image_${ind}`} key={ind}>
                                                 <img src={`${imageApi}/${item}`} alt="" />
                                                 <button type="button" className="btn-edit currentProdImage" onClick={() => {
-                                                    setRemoveItemList([...removedImagesList,item])
+                                                    setRemoveItemList([...removedImagesList, item])
                                                 }}><i className="fa fa-trash"></i></button>
                                             </div>
                                         })
