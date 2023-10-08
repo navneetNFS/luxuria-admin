@@ -50,12 +50,13 @@ export default function EditPageForm() {
     const { name, thumb, category, images, description, price, stock, sku } = Product
 
     const imageHidden = useRef(images);
-    const removedImages = []
+    const removedImagesList = []
     const deleteImage = (img_name) => {
         const image_arr = String(imageHidden.current.value).split(',')
         const removed_arr = image_arr.filter((e) => e != img_name)
         imageHidden.current.value = removed_arr.join(",")
-        removedImages.push(img_name)
+        removedImagesList.push(img_name)
+        console.log(removedImagesList);
     }
 
 
@@ -80,6 +81,7 @@ export default function EditPageForm() {
 
     const [uploadNew, setUploadNew] = useState(null)
     const uploadNewImages = (e) => {
+        console.log(removedImagesList);
         $("#uploadBtn").hide();
         var files = e.target.files,
             filesLength = files.length;
@@ -96,7 +98,6 @@ export default function EditPageForm() {
             });
             fileReader.readAsDataURL(f);
         }
-
         setUploadNew(e.target.files)
     }
 
@@ -130,19 +131,20 @@ export default function EditPageForm() {
         }
     }
 
-    const removedImage = (its_data) => {
+    const removedImageFunc = (its_data) => {
         its_data.images = String(imageHidden.current.value).split(',')
-        removedImages.map((item) => {
+        removedImagesList.map((item) => {
             console.log(item);
         })
         return its_data.images
     }
 
     const imageCheck = (data) => {
-        let splited_item = removedImage(data)
-        alert(removedImages.length);
-        if (removedImages.length > 0) {
+        alert(removedImagesList.length);
+        let splited_item = removedImageFunc(data)
+        if (removedImagesList.length > 0) {
             if(uploadNew){
+                console.log(removedImagesList);
                 console.log(splited_item);
                 console.log(uploadNew);
             }
@@ -160,7 +162,8 @@ export default function EditPageForm() {
         e.preventDefault();
         const formData = Product
 
-        imageCheck(formData)
+        alert(removedImagesList.length)
+        // imageCheck(formData)
 
         if (newThumb) {
             const thumb = await thumWork(newThumb[0], prevThumb.current.value)
