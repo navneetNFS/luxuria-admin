@@ -65,11 +65,11 @@ export default function EditPageForm() {
         })
     })
 
-    const [newThumb,setNewThumb] = useState(null)
+    const [newThumb, setNewThumb] = useState(null)
     const prevThumb = useRef(thumb)
     const newThumbFiles = useRef(null)
 
-    const newThumUpload = () =>{
+    const newThumUpload = () => {
         const [file] = newThumbFiles.current.files
         if (file) {
             $("#editIcon").remove()
@@ -78,29 +78,47 @@ export default function EditPageForm() {
         }
     }
 
-    const [uploadNew,setUploadNew] = useState(null)
-    const uploadNewImages = (files) => {
+    const [uploadNew, setUploadNew] = useState(null)
+    const uploadNewImages = (e) => {
+        $("#uploadBtn").hide();
+        var files = e.target.files,
+            filesLength = files.length;
+        for (let i = 0; i < filesLength; i++) {
+            var f = files[i];
+            var fileReader = new FileReader();
+            fileReader.onload = (function (e) {
+                var file = e.target;
+                var uniqueId = i;
+                document.getElementById("newImages").classList.add("mt-4")
+                $(`<div class="thumb_img small_thum me-4" data-id="${uniqueId}">
+                <img src="${e.target.result}" alt="${file.name}" class="covered_image" />
+                </div>`).appendTo("#newImages");
+            });
+            fileReader.readAsDataURL(f);
+        }
+
+        setUploadNew(e.target.files)
     }
 
     const handelSubmit = (e) => {
         e.preventDefault();
-        if(removedImages.length > 0){
+        if (removedImages.length > 0) {
             // console.log(imageHidden.current.value);
             Product.images = imageHidden.current.value
             console.log(removedImages);
             console.log(Product);
         }
 
-        if(newThumb){
+        if (newThumb) {
             console.log(newThumb);
             console.log(prevThumb.current.value);
         }
 
-        if(uploadNew){
+        if (uploadNew) {
             console.log(uploadNew);
         }
         console.log(Product);
-        
+
     }
 
     const handelChange = (name, value) => {
@@ -117,7 +135,7 @@ export default function EditPageForm() {
                                 <h6 className="title">Thumbnail</h6>
                                 <div className="thumb_img mx-auto">
                                     {thumb ? <img src={`${imageApi}/${thumb}`} alt="" id="thumbImg" /> : ''}
-                                    <input type="file" id="thumbImage" className="hidden-file" ref={newThumbFiles} onChange={(e)=>{
+                                    <input type="file" id="thumbImage" className="hidden-file" ref={newThumbFiles} onChange={(e) => {
                                         newThumUpload()
                                         setNewThumb(e.target.files)
                                     }} />
@@ -155,13 +173,11 @@ export default function EditPageForm() {
                             <div className="card widget-card">
                                 <h6 className="title">Images</h6>
 
-                                <div className="upload_more">
+                                <div className="upload_more" id="uploadBtn">
                                     <label htmlFor="uploadMore" className="btn btn-primary btn-upload-more btn-sm">Upload More</label>
-                                    <input type="file" id="uploadMore" className="w-100" accept="image/*" multiple onChange={(e)=>{
-                                        setUploadNew(e.target.files)
-                                    }} />
-                                    <input type="hidden" value={images} ref={imageHidden} />
+                                    <input type="file" id="uploadMore" className="w-100" accept="image/*" multiple onChange={uploadNewImages} />
                                 </div>
+                                <input type="hidden" value={images} ref={imageHidden} />
                                 <div className="d-flex image_list">
                                     {
                                         images.map((item, ind) => {
@@ -174,7 +190,9 @@ export default function EditPageForm() {
                                         })
                                     }
                                 </div>
-                                {/* <input type="file" id="uploadMore" className="hidden-file" /> */}
+                                <div className="d-flex image_list" id="newImages">
+
+                                </div>
                             </div>
                         </div>
 

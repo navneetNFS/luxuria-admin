@@ -43,6 +43,12 @@
             color: #b7b7b7;
             cursor: pointer;
         }
+
+        &.small_thum{
+            width: 7rem;
+            height: 7rem;
+            min-width: 7rem;
+        }
     }
 
 
