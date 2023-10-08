@@ -100,24 +100,72 @@ export default function EditPageForm() {
         setUploadNew(e.target.files)
     }
 
-    const handelSubmit = (e) => {
-        e.preventDefault();
-        if (removedImages.length > 0) {
-            // console.log(imageHidden.current.value);
-            Product.images = imageHidden.current.value
-            console.log(removedImages);
-            console.log(Product);
+    const thumWork = async (new_img, del_img) => {
+        const delete_res = await axios.delete(`/api/product/delete-product-image/${del_img}`, {
+            withCredentials: true,
+            headers: {
+                withCredentials: true,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(({ data }) => { return data }).catch(err => { return err })
+        const { success } = delete_res
+        if (success) {
+            const fd = new FormData()
+            fd.append('thumb', new_img)
+            const upload_res = await axios.post(`/api/product/product-thumb`, fd, {
+                withCredentials: true,
+                headers: {
+                    withCredentials: true,
+                    'Content-Type': 'value'
+                }
+            }).then(({ data }) => { return data }).catch(err => { return err });
+            const { success, thumb } = upload_res
+            if (success) {
+                return thumb
+            }
+            else {
+                return upload_res.response.data
+            }
         }
+    }
+
+    const removedImage = (its_data) => {
+        its_data.images = String(imageHidden.current.value).split(',')
+        removedImages.map((item) => {
+            console.log(item);
+        })
+        return its_data.images
+    }
+
+    const imageCheck = (data) => {
+        let splited_item = removedImage(data)
+        alert(removedImages.length);
+        if (removedImages.length > 0) {
+            if(uploadNew){
+                console.log(splited_item);
+                console.log(uploadNew);
+            }
+            else{
+                console.log(splited_item);
+            }
+        }
+        else{
+            console.log(uploadNew);
+            return data
+        }
+    }
+
+    const handelSubmit = async function (e) {
+        e.preventDefault();
+        const formData = Product
+
+        imageCheck(formData)
 
         if (newThumb) {
-            console.log(newThumb);
-            console.log(prevThumb.current.value);
+            const thumb = await thumWork(newThumb[0], prevThumb.current.value)
+            formData.thumb = thumb
         }
-
-        if (uploadNew) {
-            console.log(uploadNew);
-        }
-        console.log(Product);
 
     }
 
