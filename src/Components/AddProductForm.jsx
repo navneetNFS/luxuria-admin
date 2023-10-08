@@ -1,4 +1,4 @@
-import JoditEditor from 'jodit-react';
+import JoditEditor , { Jodit } from 'jodit-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
@@ -64,10 +64,26 @@ export default function AddProductForm() {
 
     // General Instruction
     const editor = useRef(null);
+    function preparePaste(jodit) {
+	jodit.e.on(
+		'paste',
+		e => {
+            jodit.e.stopPropagation('paste');
+            jodit.s.insertHTML(
+                Jodit.modules.Helpers.getDataTransfer(e)
+                    .getData(Jodit.constants.TEXT_HTML)
+                    .replace(/a/g, 'b')
+            );
+		},
+		{ top: true }
+	);
+}
     const config = {
         readonly: false, // all options from https://xdsoft.net/jodit/docs/,
         placeholder: 'Enter Description'
     }
+
+    Jodit.plugins.add('preparePaste', preparePaste);
 
     // Add Product
     const initialState = {
@@ -224,7 +240,9 @@ export default function AddProductForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const isValid = validation();
+        console.log(isValid);
         const errorLst = Object.keys(isValid)
+        console.log(description);
         if (errorLst.length == 0) {
             const formData = Product
             formData.thumb = await thumbImageUpload(thumb)

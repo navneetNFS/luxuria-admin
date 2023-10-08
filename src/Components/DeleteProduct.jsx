@@ -51,7 +51,7 @@ export default function DeleteProduct() {
                 setTimeout(() => {
                     navigate('/products/1');
                     window.location.reload(true);
-                }, 1000)
+                }, 200)
             }
             else {
                 setFail(true);
