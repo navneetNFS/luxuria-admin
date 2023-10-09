@@ -29,14 +29,13 @@ function App() {
   return (
     <>
       <Router>
-        
         <PageStart />
         {isLogged ? <Header /> : ''}
         {isLogged ? <Sidebar /> : ''}
 
         <Routes>
           {/* User Links */}
-          <Route path="/" element={!isLogged ? <LoginPage /> : verifyed.verifyed ? <DashboardPage /> : <VerifyUserPage />}/>
+          <Route path="/" element={!isLogged ? <LoginPage /> : verifyed.verifyed ? <DashboardPage /> : <VerifyUserPage />} />
 
           <Route path="/sign-up" element={!isLogged ? <RegisterPage /> : <NotAuthorised />} />
 

@@ -16,7 +16,7 @@ export default function ProductItem({ data }) {
     return (
         <>
             {
-                Array.from(data).length > 0 ? Array.from(data).map((item, ind) => {
+                Array.from(data).length > 0 ? data ? Array.from(data).map((item, ind) => {
                     const { _id, name, thumb, category, price, stock, sku, rating } = item
                     return <div className="body-row d-flex align-items-center" key={ind}>
                         <div className="product-column width-32 d-flex align-items-center justify-content-between">
@@ -50,7 +50,9 @@ export default function ProductItem({ data }) {
                         </div>
                     </div>
                 }) : <div className='no_product' style={noProductCSS}>
-                    <p>No Product added yet</p>
+                    <p>No Dataa Found</p>
+                </div> : <div className='no_product' style={noProductCSS}>
+                    <p>Loading...</p>
                 </div>
             }
         </>

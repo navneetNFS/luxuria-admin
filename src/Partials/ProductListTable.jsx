@@ -10,14 +10,14 @@ import Slider from '@mui/material/Slider';
 export default function ProductListTable() {
     const [products, setProducts] = useState([])
 
-    const [priceFilterVal, setPriceFilterval] = useState([0,0])
-    const [minPriceVal,setMinPriceVal] = useState(0)
-    const [maxPriceVal,setMaxPriceVal] = useState(0)
+    const [priceFilterVal, setPriceFilterval] = useState([0, 0])
+    const [minPriceVal, setMinPriceVal] = useState(0)
+    const [maxPriceVal, setMaxPriceVal] = useState(0)
 
 
-    const [stockFilterVal, setStockFilterVal] = useState([0,0])
-    const [minStockVal,setMinStockVal] = useState(0)
-    const [maxStockVal,setMaxStockVal] = useState(0)
+    const [stockFilterVal, setStockFilterVal] = useState([0, 0])
+    const [minStockVal, setMinStockVal] = useState(0)
+    const [maxStockVal, setMaxStockVal] = useState(0)
 
     useMemo(() => {
         axios.get(`/api/product`)
@@ -37,7 +37,7 @@ export default function ProductListTable() {
             const max = priceList.reduce(function (a, b) {
                 return Math.max(a, b);
             })
-            setPriceFilterval([min,max])
+            setPriceFilterval([min, max])
             setMinPriceVal(min)
             setMaxPriceVal(max)
         }
@@ -50,7 +50,7 @@ export default function ProductListTable() {
             const stockmax = stockList.reduce(function (a, b) {
                 return Math.max(a, b);
             })
-            setStockFilterVal([stockmin,stockmax])
+            setStockFilterVal([stockmin, stockmax])
             setMinStockVal(stockmin)
             setMaxStockVal(stockmax)
         }
@@ -75,7 +75,7 @@ export default function ProductListTable() {
     }
 
 
-    
+
 
 
     return (
@@ -83,9 +83,7 @@ export default function ProductListTable() {
             <div className="table-header">
                 <div className="row mb-4">
                     <div className="col-lg-7 col-md-7 col-sm-7">
-                        <div className="field search-field">
-                            <input type="text" placeholder="Search" id="search" className="form-control" />
-                        </div>
+
                     </div>
                     <div className="col-lg-5 col-md-5 col-sm-5 d-flex align-items-center justify-content-end">
                         <Dropdown className="d-inline-block">
@@ -100,6 +98,9 @@ export default function ProductListTable() {
                                     </div>
                                     <form action="" method="POST">
                                         <div className="filter_options">
+                                            <div className="field search-field mb-4">
+                                                <input type="text" placeholder="Search" id="search" className="form-control" />
+                                            </div>
                                             <div className="field mb-4">
                                                 <h4 className="mb-3">Category</h4>
                                                 <ul className="list-inline ps-0">
@@ -109,7 +110,7 @@ export default function ProductListTable() {
 
                                             <div className="field mb-3">
                                                 <h4 className="mb-3">Price</h4>
-                                                <Box sx={{ width: '100%',padding:'0 1rem'}}>
+                                                <Box sx={{ width: '100%', padding: '0 1rem' }}>
                                                     <Slider
                                                         getAriaLabel={() => 'Temperature range'}
                                                         value={priceFilterVal}
@@ -124,7 +125,7 @@ export default function ProductListTable() {
 
                                             <div className="field mb-3">
                                                 <h4 className="mb-3">Stock</h4>
-                                                <Box sx={{ width: '100%',padding:'0 1rem'}}>
+                                                <Box sx={{ width: '100%', padding: '0 1rem' }}>
                                                     <Slider
                                                         getAriaLabel={() => 'Temperature range'}
                                                         value={stockFilterVal}
