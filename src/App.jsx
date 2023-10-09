@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser, selectUserLogged } from "./store/slices/auth-slice";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
 import DashboardPage from "./Pages/DashboardPage";
@@ -11,8 +13,6 @@ import ProductDetailPage from "./Pages/ProductDetailPage";
 import OrderPage from "./Pages/OrderPage";
 import OrderDetailPage from "./Pages/OrderDetailPage";
 import ReviewPage from "./Pages/ReviewPage";
-import { useSelector } from "react-redux";
-import { selectCurrentUser, selectUserLogged } from "./store/slices/auth-slice";
 import PageNotFound from "./Pages/PageNotFound";
 import NotAuthorised from "./Pages/NotAuthorised";
 import PageStart from "./Components/PageStart";
@@ -47,7 +47,7 @@ function App() {
           <Route path="/verify-user" element={isLogged ? !verifyed.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
 
           {/* Product Links */}
-          <Route path="/products/:pageNum" element={isLogged ? verifyed.verifyed ? <ProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/products" element={isLogged ? verifyed.verifyed ? <ProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/product-detail/:productId" element={isLogged ? verifyed.verifyed ? <ProductDetailPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/edit-product/:productId" element={isLogged ? verifyed.verifyed ? <EditProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/delete-product/:productId" element={isLogged ? verifyed.verifyed ? <DeleteProduct /> : <VerifyUserPage /> : <NotAuthorised />} />

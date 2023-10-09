@@ -4,7 +4,6 @@ import { store, persistor } from './store/store.jsx';
 import { PersistGate } from 'redux-persist/integration/react';
 import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import './App.scss'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

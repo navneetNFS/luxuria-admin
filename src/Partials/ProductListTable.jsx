@@ -1,38 +1,83 @@
-import { NavLink, useNavigate, useParams } from "react-router-dom";
 import ProductItem from "./ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
-import RangeSlider from 'react-bootstrap-range-slider';
 import AddProductPage from "../Modal/AddProductPage";
 import axios from "axios";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
 
 export default function ProductListTable() {
-    const { pageNum } = useParams()
-    const navigate = useNavigate()
     const [products, setProducts] = useState([])
-    const [totalPages, setTotalPages] = useState(0)
+
+    const [priceFilterVal, setPriceFilterval] = useState([0,0])
+    const [minPriceVal,setMinPriceVal] = useState(0)
+    const [maxPriceVal,setMaxPriceVal] = useState(0)
+
+
+    const [stockFilterVal, setStockFilterVal] = useState([0,0])
+    const [minStockVal,setMinStockVal] = useState(0)
+    const [maxStockVal,setMaxStockVal] = useState(0)
 
     useMemo(() => {
-        axios.get(`/api/product?page=${pageNum}`)
+        axios.get(`/api/product`)
             .then((res) => {
-                const { data, totalPages } = res.data
+                const { data } = res.data
                 setProducts(data)
-                setTotalPages(totalPages)
             }).catch(err => console.log(err))
+
     }, []);
 
-    const range = (number) => {
-        let num_list = []
-        for (let i = 0; i <= number - 1; i++) {
-            num_list.push(i + 1)
+    useEffect(() => {
+        let priceList = products.map((item) => item.price)
+        if (priceList.length > 0) {
+            const min = priceList.reduce(function (a, b) {
+                return Math.min(a, b);
+            })
+            const max = priceList.reduce(function (a, b) {
+                return Math.max(a, b);
+            })
+            setPriceFilterval([min,max])
+            setMinPriceVal(min)
+            setMaxPriceVal(max)
         }
-        return num_list
+
+        let stockList = products.map((item) => item.stock)
+        if (stockList.length > 0) {
+            const stockmin = stockList.reduce(function (a, b) {
+                return Math.min(a, b);
+            })
+            const stockmax = stockList.reduce(function (a, b) {
+                return Math.max(a, b);
+            })
+            setStockFilterVal([stockmin,stockmax])
+            setMinStockVal(stockmin)
+            setMaxStockVal(stockmax)
+        }
+    }, [products])
+
+    const handlePriceChange = (event, newPriceValue) => {
+        setPriceFilterval(newPriceValue);
+    };
+
+    function priceValText(newPriceValue) {
+        return `${newPriceValue}°C`
+
     }
 
-    const [ value, setValue ] = useState(250); 
+    const handleStockChange = (event, newStockValue) => {
+        setStockFilterVal(newStockValue);
+    };
 
-    const pages_lst = range(totalPages)
+    function stockValText(newStockValue) {
+        return `${newStockValue}°C`
+
+    }
+
+
+    
+
+
     return (
         <>
             <div className="table-header">
@@ -64,18 +109,32 @@ export default function ProductListTable() {
 
                                             <div className="field mb-3">
                                                 <h4 className="mb-3">Price</h4>
-                                                <RangeSlider
-                                                    value={value}
-                                                    min={1}
-                                                    max={250}
-                                                    size="sm"
-                                                    onChange={changeEvent => setValue(changeEvent.target.value)}
-                                                />
+                                                <Box sx={{ width: '100%',padding:'0 1rem'}}>
+                                                    <Slider
+                                                        getAriaLabel={() => 'Temperature range'}
+                                                        value={priceFilterVal}
+                                                        onChange={handlePriceChange}
+                                                        valueLabelDisplay="auto"
+                                                        getAriaValueText={priceValText}
+                                                        min={minPriceVal}
+                                                        max={maxPriceVal}
+                                                    />
+                                                </Box>
                                             </div>
 
                                             <div className="field mb-3">
                                                 <h4 className="mb-3">Stock</h4>
-                                                <Form.Range />
+                                                <Box sx={{ width: '100%',padding:'0 1rem'}}>
+                                                    <Slider
+                                                        getAriaLabel={() => 'Temperature range'}
+                                                        value={stockFilterVal}
+                                                        onChange={handleStockChange}
+                                                        valueLabelDisplay="auto"
+                                                        getAriaValueText={stockValText}
+                                                        min={minStockVal}
+                                                        max={maxStockVal}
+                                                    />
+                                                </Box>
                                             </div>
                                         </div>
                                         <div className="filter_bottom text-end"><Button variant="primary" size={"sm"}>Apply</Button></div>
@@ -119,7 +178,7 @@ export default function ProductListTable() {
                         </Dropdown>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end">
-                        <nav aria-label="Page navigation example">
+                        {/* <nav aria-label="Page navigation example">
                             <ul className="pagination mb-0">
 
                                 {pageNum - 1 > 0 ? <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-left"></i></NavLink></li> : ''}
@@ -139,7 +198,7 @@ export default function ProductListTable() {
                                 {pageNum + 1 > totalPages ? '' : <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-right"></i></NavLink></li>}
 
                             </ul>
-                        </nav>
+                        </nav> */}
                     </div>
                 </div>
             </div>
