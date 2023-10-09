@@ -1,4 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import ProductItem from "./ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 
 export default function ProductListTable() {
     const { pageNum } = useParams()
+    const navigate = useNavigate()
     const [products, setProducts] = useState([])
     const [totalPages, setTotalPages] = useState(0)
 
@@ -29,7 +30,7 @@ export default function ProductListTable() {
         return num_list
     }
 
-    const [ value, setValue ] = useState(0); 
+    const [ value, setValue ] = useState(250); 
 
     const pages_lst = range(totalPages)
     return (
@@ -124,7 +125,13 @@ export default function ProductListTable() {
                                 {pageNum - 1 > 0 ? <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-left"></i></NavLink></li> : ''}
                                 {
                                     pages_lst.map((item, index) => {
-                                        { return pageNum == item ? <li key={index} className="page-item"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li> : <li key={index} className="page-item unactive"><NavLink to={`/products/${item}`} className="page-link">{item}</NavLink></li> }
+                                        { return pageNum == item ? <li key={index} className="page-item"><NavLink to={`/products/${item}`} className="page-link" onClick={()=>{
+                                            navigate(`/products/${item}`)
+                                            window.location.reload(true)
+                                        }}>{item}</NavLink></li> : <li key={index} className="page-item unactive"><NavLink to={`/products/${item}`} className="page-link" onClick={()=>{
+                                            navigate(`/products/${item}`)
+                                            window.location.reload(true)
+                                        }}>{item}</NavLink></li> }
                                         // return 
                                     })
                                 }
