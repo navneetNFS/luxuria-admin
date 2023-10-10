@@ -2,33 +2,71 @@ import ProductItem from "./ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
 import AddProductPage from "../Modal/AddProductPage";
 import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { useDispatch, useSelector } from "react-redux";
+import { clearProductFiler, setProductFilter } from "../store/slices/productFilter-slice";
 
 
 export default function ProductListTable() {
-    const [products, setProducts] = useState([])
+    const productFilter = useSelector(state => state.productFilter)
+    const dispatch = useDispatch()
 
+    const [products, setProducts] = useState([])
+    const [filterCategoriesList, setfilterCategorieList] = useState([])
+
+    // search filter
+    const [searchFilter, setSearchFilter] = useState('')
+
+    // category filter
+    const [categoryFilter, setFilterCategory] = useState('')
+
+    // price filter
     const [priceFilterVal, setPriceFilterval] = useState([0, 0])
     const [minPriceVal, setMinPriceVal] = useState(0)
     const [maxPriceVal, setMaxPriceVal] = useState(0)
 
-
+    // stock Filter
     const [stockFilterVal, setStockFilterVal] = useState([0, 0])
     const [minStockVal, setMinStockVal] = useState(0)
     const [maxStockVal, setMaxStockVal] = useState(0)
 
+
     useMemo(() => {
-        axios.get(`/api/product`)
-            .then((res) => {
-                const { data } = res.data
-                setProducts(data)
-            }).catch(err => console.log(err))
+        if (Array.from(productFilter).length > 0) {
+            setProducts(productFilter)
 
-    }, []);
+            let filterCategory = []
 
-    useEffect(() => {
+            for(let i of products){
+                if (filterCategory.includes(i.category)){
+                    continue
+                }
+                else{
+                    filterCategory.push(i.category) 
+                }
+            }
+            setfilterCategorieList(filterCategory)
+        }
+        else {
+            axios.get(`/api/product`)
+                .then((res) => {
+                    const { data } = res.data
+                    setProducts(data)
+                }).catch(err => console.log(err))
+
+            axios.get(`/api/category`).then(({ data }) => {
+                const { category } = data
+                setfilterCategorieList(category)
+            }).catch(({ response }) => {
+                console.log(response.data.message);
+            })
+        }
+
+    }, [products]);
+
+    useMemo(() => {
         let priceList = products.map((item) => item.price)
         if (priceList.length > 0) {
             const min = priceList.reduce(function (a, b) {
@@ -37,6 +75,7 @@ export default function ProductListTable() {
             const max = priceList.reduce(function (a, b) {
                 return Math.max(a, b);
             })
+
             setPriceFilterval([min, max])
             setMinPriceVal(min)
             setMaxPriceVal(max)
@@ -56,26 +95,24 @@ export default function ProductListTable() {
         }
     }, [products])
 
+
     const handlePriceChange = (event, newPriceValue) => {
         setPriceFilterval(newPriceValue);
     };
-
-    function priceValText(newPriceValue) {
-        return `${newPriceValue}°C`
-
-    }
 
     const handleStockChange = (event, newStockValue) => {
         setStockFilterVal(newStockValue);
     };
 
-    function stockValText(newStockValue) {
-        return `${newStockValue}°C`
-
+    const handelSubmitFilter = (e) => {
+        e.preventDefault();
+        dispatch(clearProductFiler())
+        axios.get(`/api/product?search=${searchFilter}&category=${categoryFilter}&price[gt]=${priceFilterVal[0]}&price[lt]=${priceFilterVal[1]}&stock[gt]=${stockFilterVal[0]}&stock[lt]=${stockFilterVal[1]}`)
+            .then(({ data }) => {
+                dispatch(setProductFilter(data.data))
+                window.location.reload(true)
+            }).catch(({ response }) => console.log(response.data))
     }
-
-
-
 
 
     return (
@@ -96,27 +133,33 @@ export default function ProductListTable() {
                                     <div className="filter_header">
                                         Filter Options
                                     </div>
-                                    <form action="" method="POST">
+                                    <form method="POST" onSubmit={handelSubmitFilter}>
                                         <div className="filter_options">
                                             <div className="field search-field mb-4">
-                                                <input type="text" placeholder="Search" id="search" className="form-control" />
+                                                <input type="text" placeholder="Search" id="search" value={searchFilter} className="form-control" onChange={(e) => { setSearchFilter(e.target.value) }} />
                                             </div>
+
                                             <div className="field mb-4">
                                                 <h4 className="mb-3">Category</h4>
                                                 <ul className="list-inline ps-0">
-                                                    <li><Form.Check label="Electronics" name="category" type="radio" id="electronics" className="d-flex align-items-center checkbox-item" /></li>
+
+                                                    {
+                                                        Array.from(productFilter).length > 0 ?
+                                                        filterCategoriesList.map((item,ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>) : 
+                                                        filterCategoriesList.map((item) => <li key={item._id}><Form.Check label={item.name} name="category" type="radio" id={item.name} value={item.name} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>)
+                                                    }
+
                                                 </ul>
                                             </div>
+
 
                                             <div className="field mb-3">
                                                 <h4 className="mb-3">Price</h4>
                                                 <Box sx={{ width: '100%', padding: '0 1rem' }}>
                                                     <Slider
-                                                        getAriaLabel={() => 'Temperature range'}
                                                         value={priceFilterVal}
                                                         onChange={handlePriceChange}
                                                         valueLabelDisplay="auto"
-                                                        getAriaValueText={priceValText}
                                                         min={minPriceVal}
                                                         max={maxPriceVal}
                                                     />
@@ -127,18 +170,22 @@ export default function ProductListTable() {
                                                 <h4 className="mb-3">Stock</h4>
                                                 <Box sx={{ width: '100%', padding: '0 1rem' }}>
                                                     <Slider
-                                                        getAriaLabel={() => 'Temperature range'}
                                                         value={stockFilterVal}
                                                         onChange={handleStockChange}
                                                         valueLabelDisplay="auto"
-                                                        getAriaValueText={stockValText}
                                                         min={minStockVal}
                                                         max={maxStockVal}
                                                     />
                                                 </Box>
                                             </div>
                                         </div>
-                                        <div className="filter_bottom text-end"><Button variant="primary" size={"sm"}>Apply</Button></div>
+                                        <div className="filter_bottom text-end">
+                                            <Button variant="outline-primary" type="button" size={"sm"} className="me-3" onClick={()=>{
+                                                dispatch(clearProductFiler())
+                                                window.location.reload(true)
+                                            }}>Clear Filter</Button>
+                                            <Button variant="primary" type="submit" size={"sm"}>Apply</Button>
+                                        </div>
                                     </form>
                                 </Dropdown>
                             </Dropdown.Menu>

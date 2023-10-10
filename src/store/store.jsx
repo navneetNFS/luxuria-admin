@@ -9,10 +9,12 @@ const persistConfig = {
 
 import authSlice from "./slices/auth-slice";
 import imageApiSlice from "./slices/imageApi-slice";
+import productFilterSlice from "./slices/productFilter-slice";
 
 const persistedReducer = persistReducer(persistConfig, combineReducers({
     auth: authSlice,
-    imageApi: imageApiSlice
+    imageApi: imageApiSlice,
+    productFilter: productFilterSlice
 }));
 
 const store = configureStore({

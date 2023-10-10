@@ -1,4 +1,4 @@
-.action-dd-menu{
+.action-dd-menu {
     .dropdown-item {
         font-size: 1.4rem;
     }
@@ -17,9 +17,12 @@
 
     .filter_options {
         padding: 1.5rem 1.5rem 1.2rem;
+        max-height: calc(100vh - 290px);
+        overflow: hidden;
+        overflow-y: auto;
 
-        .checkbox-item{
-            label{
+        .checkbox-item {
+            label {
                 font-size: 1.6rem;
                 margin-left: 0.5rem;
             }

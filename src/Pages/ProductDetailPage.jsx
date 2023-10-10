@@ -19,7 +19,7 @@ export default function ProductDetailPage() {
       })
   }, [])
 
-  const { name, description, price, stock, sku, images , category , thumb } = product
+  const { name, description, price, stock, sku, images, category, thumb } = product
 
 
   const img_list = []
@@ -31,7 +31,6 @@ export default function ProductDetailPage() {
     <>
       <main>
         <div className="inner-frame">
-      
           <section className="product-header mb-4">
             <div className="row">
               <div className="col-lg-6 col-md-6 col-sm-6">
@@ -39,7 +38,7 @@ export default function ProductDetailPage() {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item text-primary"><Link to="/dashboard">Dashboard</Link></li>
-                    <li className="breadcrumb-item text-primary"><Link to="/products/1">Product</Link></li>
+                    <li className="breadcrumb-item text-primary"><Link to="/products">Product</Link></li>
                     <li className="breadcrumb-item bread-link active" title={name}>{name}</li>
                   </ol>
                 </nav>
