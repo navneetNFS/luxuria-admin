@@ -2,8 +2,11 @@ import { useDispatch, useSelector } from "react-redux"
 // import { useNavigate } from "react-router-dom"
 import { selectCurrentTokken, selectCurrentUser, setCredential } from "../store/slices/auth-slice"
 import { setImageApiUrl } from "../store/slices/imageApi-slice"
+import { clearProductFiler } from "../store/slices/productFilter-slice"
+import { useLocation } from "react-router-dom"
 export default function PageStart() {
     const dispatch = useDispatch()
+    let location = useLocation();
     // const navigate = useNavigate()
 
     // SET IMAGE API URL
@@ -54,6 +57,11 @@ export default function PageStart() {
             }
             setCred(setting)
         }
+    }
+
+
+    if(location.pathname != "/products"){
+        dispatch(clearProductFiler())
     }
 
 
