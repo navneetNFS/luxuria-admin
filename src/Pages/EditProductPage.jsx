@@ -13,7 +13,7 @@ export default function EditProductPage() {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb">
                     <li className="breadcrumb-item text-primary"><Link to="/dashboard">Dashboard</Link></li>
-                    <li className="breadcrumb-item text-primary"><Link to="/products/1">Product</Link></li>
+                    <li className="breadcrumb-item text-primary"><Link to="/products">Product</Link></li>
                     <li className="breadcrumb-item active">Edit</li>
                   </ol>
                 </nav>
