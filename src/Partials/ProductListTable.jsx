@@ -56,12 +56,17 @@ export default function ProductListTable() {
                     setProducts(data)
                 }).catch(err => console.log(err))
 
-            axios.get(`/api/category`).then(({ data }) => {
-                const { category } = data
-                setfilterCategorieList(category)
-            }).catch(({ response }) => {
-                console.log(response.data.message);
-            })
+                let filterCategory = []
+
+                for(let i of products){
+                    if (filterCategory.includes(i.category)){
+                        continue
+                    }
+                    else{
+                        filterCategory.push(i.category) 
+                    }
+                }
+                setfilterCategorieList(filterCategory)
         }
 
     }, [products]);
@@ -146,7 +151,7 @@ export default function ProductListTable() {
                                                     {
                                                         Array.from(productFilter).length > 0 ?
                                                         filterCategoriesList.map((item,ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>) : 
-                                                        filterCategoriesList.map((item) => <li key={item._id}><Form.Check label={item.name} name="category" type="radio" id={item.name} value={item.name} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>)
+                                                        filterCategoriesList.map((item,ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>)
                                                     }
 
                                                 </ul>
@@ -180,10 +185,15 @@ export default function ProductListTable() {
                                             </div>
                                         </div>
                                         <div className="filter_bottom text-end">
-                                            <Button variant="outline-primary" type="button" size={"sm"} className="me-3" onClick={()=>{
-                                                dispatch(clearProductFiler())
-                                                window.location.reload(true)
-                                            }}>Clear Filter</Button>
+
+                                            {
+                                                Array.from(productFilter).length > 0 ? <Button variant="outline-primary" type="button" size={"sm"} className="me-3" onClick={()=>{
+                                                    dispatch(clearProductFiler())
+                                                    window.location.reload(true)
+                                                }}>Clear Filter</Button> : ''
+                                            }
+                                            
+
                                             <Button variant="primary" type="submit" size={"sm"}>Apply</Button>
                                         </div>
                                     </form>
