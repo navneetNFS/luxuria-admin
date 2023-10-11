@@ -46,7 +46,8 @@ export default function ProductDetailPage() {
             </div>
           </section>
 
-          <section className="inner-content product-detail">
+          {
+            product.length == 0 ? 'Loading' : <section className="inner-content product-detail">
             <div className="row mb-4">
               <div className="col-lg-6 col-md-6 col-sm-6"></div>
               <div className="col-lg-6 col-md-6 col-sm-6 text-end">
@@ -140,6 +141,7 @@ export default function ProductDetailPage() {
               </div>
             </div>
           </section>
+          }
         </div>
       </main>
     </>

@@ -21,7 +21,7 @@ export default function CategoryList() {
                         </div>
                     </div>) : 
                     <div className="col-lg-12 col-md-12 col-sm-12">
-                    <p>No Category Added Yet</p>
+                    <p>Loading....</p>
                     </div>
                 }
             </div>
