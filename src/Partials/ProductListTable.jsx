@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useDispatch, useSelector } from "react-redux";
 import { clearProductFiler, setProductFilter } from "../store/slices/productFilter-slice";
+import ReactPaginate from 'react-paginate';
 
 
 export default function ProductListTable() {
@@ -34,6 +35,18 @@ export default function ProductListTable() {
     const [stockFilterVal, setStockFilterVal] = useState([0, 0])
     const [minStockVal, setMinStockVal] = useState(0)
     const [maxStockVal, setMaxStockVal] = useState(0)
+
+
+    const [currentPageProduct, setCurrentPage] = useState(0);
+    const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
+    };
+    const itemsPerPage = 10;
+
+    const pageCount = Math.ceil(products.length / itemsPerPage);
+
+    const offset = currentPageProduct * itemsPerPage;
+    const currentPageData = products.slice(offset, offset + itemsPerPage);
 
 
     useMemo(() => {
@@ -106,11 +119,11 @@ export default function ProductListTable() {
         axios.get(`/api/product?search=${searchFilter}&category=${categoryFilter}&price[gt]=${priceFilterVal[0]}&price[lt]=${priceFilterVal[1]}&stock[gt]=${stockFilterVal[0]}&stock[lt]=${stockFilterVal[1]}`)
             .then(({ data }) => {
                 if (data.data.length > 0) {
-                    const setFilter = {haveProduct:true,filteredProducts:data.data , message: "have data"}
+                    const setFilter = { haveProduct: true, filteredProducts: data.data, message: "have data" }
                     dispatch(setProductFilter(setFilter))
                     window.location.reload(true)
                 }
-                else{
+                else {
                     alert("Not Found")
                     dispatch(clearProductFiler())
                     window.location.reload(true)
@@ -148,7 +161,7 @@ export default function ProductListTable() {
 
                                                     {
                                                         Array.from(filterCategoriesList).length == 1 ? filterCategoriesList.map((item, ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} checked /></li>) : filterCategoriesList.map((item, ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>)
-                                                        
+
                                                     }
 
                                                 </ul>
@@ -183,12 +196,12 @@ export default function ProductListTable() {
                                         </div>
                                         <div className="filter_bottom text-end">
                                             {
-                                                haveProduct ? <Button variant="outline-primary" type="button" size={"sm"} className="me-3" onClick={()=>{
+                                                haveProduct ? <Button variant="outline-primary" type="button" size={"sm"} className="me-3" onClick={() => {
                                                     dispatch(clearProductFiler())
                                                     window.location.reload(true)
                                                 }}>Clear Filter</Button> : ''
                                             }
-                                            
+
 
 
                                             <Button variant="primary" type="submit" size={"sm"}>Apply</Button>
@@ -213,7 +226,7 @@ export default function ProductListTable() {
                 </div>
 
                 <div className="body-content">
-                    <ProductItem data={products} />
+                    <ProductItem data={currentPageData} />
                 </div>
             </div>
             <div className="table-footer">
@@ -233,6 +246,22 @@ export default function ProductListTable() {
                         </Dropdown>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end">
+                        <ReactPaginate
+                            previousLabel={<span aria-hidden="true"><i className="fa fa-chevron-left"></i></span>}
+                            nextLabel={<span aria-hidden="true"><i className="fa fa-chevron-right"></i></span>}
+                            pageCount={pageCount}
+                            onPageChange={handlePageChange}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                            pageClassName={'page-item'}
+                            pageLinkClassName={'page-link'}
+                            previousClassName={'page-item'}
+                            nextClassName={'page-item'}
+                            previousLinkClassName={'page-link'}
+                            nextLinkClassName={'page-link'}
+                            breakClassName={'page-item break-item'}
+                            breakLinkClassName={'page-link break-link'}
+                        />
                     </div>
                 </div>
             </div>

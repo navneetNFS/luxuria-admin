@@ -1,4 +1,4 @@
-.pagination{
+.pagination {
     .page-link {
         border: 0;
         outline: none !important;
@@ -7,7 +7,7 @@
         padding: 0.7rem 1.3rem;
         font-size: 1.4rem;
 
-        &.active{
+        &.active {
             background-color: $primary-color !important;
             color: #fff !important;
             padding: 0.7rem 1.5rem;
@@ -17,5 +17,9 @@
             background: transparent !important;
             color: #000 !important;
         }
+    }
+
+    .disabled {
+        display: none;
     }
 }
