@@ -35,6 +35,7 @@ export default function EditPageForm() {
     }
 
     const [Product, setProduct] = useState(inputValue)
+    const [loadProduct, setLoadProduct] = useState(false)
     const [Category, setCategory] = useState([])
 
     useMemo(() => {
@@ -43,6 +44,7 @@ export default function EditPageForm() {
                 const { success, product } = data
                 if (success) {
                     setProduct(product)
+                    setLoadProduct(true)
                 }
             }).catch(({ response }) => console.log(response))
 
@@ -229,7 +231,8 @@ export default function EditPageForm() {
 
     return (
         <>
-            <form method='POST' onSubmit={handelSubmit}>
+            {
+                loadProduct? <form method='POST' onSubmit={handelSubmit}>
                 <div className="row">
                     <div className="col-lg-3 col-md-3 col-sm-3">
                         <div className="thumbline mb-5">
@@ -357,7 +360,9 @@ export default function EditPageForm() {
                         </div>
                     </div>
                 </div>
-            </form>
+            </form> : 'Loading...'
+            }
+            
 
             {
                 showSuccess ? <div className="custom_toast">
