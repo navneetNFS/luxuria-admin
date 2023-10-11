@@ -112,6 +112,8 @@ export default function ProductListTable() {
                 }
                 else{
                     alert("Not Found")
+                    dispatch(clearProductFiler())
+                    window.location.reload(true)
                 }
             }).catch(({ response }) => console.log(response.data))
     }
