@@ -10,7 +10,10 @@ import { clearProductFiler, setProductFilter } from "../store/slices/productFilt
 
 
 export default function ProductListTable() {
-    const productFilter = useSelector(state => state.productFilter)
+    const productFilter = useSelector(state => state.filteredProduct)
+
+    const { haveProduct, filteredProducts } = productFilter
+    console.log(productFilter);
     const dispatch = useDispatch()
 
     const [products, setProducts] = useState([])
@@ -34,20 +37,8 @@ export default function ProductListTable() {
 
 
     useMemo(() => {
-        if (Array.from(productFilter).length > 0) {
-            setProducts(productFilter)
-
-            let filterCategory = []
-
-            for(let i of products){
-                if (filterCategory.includes(i.category)){
-                    continue
-                }
-                else{
-                    filterCategory.push(i.category) 
-                }
-            }
-            setfilterCategorieList(filterCategory)
+        if (haveProduct) {
+            setProducts(filteredProducts)
         }
         else {
             axios.get(`/api/product`)
@@ -55,23 +46,22 @@ export default function ProductListTable() {
                     const { data } = res.data
                     setProducts(data)
                 }).catch(err => console.log(err))
-
-                let filterCategory = []
-
-                for(let i of products){
-                    if (filterCategory.includes(i.category)){
-                        continue
-                    }
-                    else{
-                        filterCategory.push(i.category) 
-                    }
-                }
-                setfilterCategorieList(filterCategory)
         }
-
-    }, [products]);
+    }, []);
 
     useMemo(() => {
+        let filterCategory = []
+
+        for (let i of products) {
+            if (filterCategory.includes(i.category)) {
+                continue
+            }
+            else {
+                filterCategory.push(i.category)
+            }
+        }
+        setfilterCategorieList(filterCategory)
+
         let priceList = products.map((item) => item.price)
         if (priceList.length > 0) {
             const min = priceList.reduce(function (a, b) {
@@ -111,14 +101,20 @@ export default function ProductListTable() {
 
     const handelSubmitFilter = (e) => {
         e.preventDefault();
+
         dispatch(clearProductFiler())
         axios.get(`/api/product?search=${searchFilter}&category=${categoryFilter}&price[gt]=${priceFilterVal[0]}&price[lt]=${priceFilterVal[1]}&stock[gt]=${stockFilterVal[0]}&stock[lt]=${stockFilterVal[1]}`)
             .then(({ data }) => {
-                dispatch(setProductFilter(data.data))
-                window.location.reload(true)
+                if (data.data.length > 0) {
+                    const setFilter = {haveProduct:true,filteredProducts:data.data , message: "have data"}
+                    dispatch(setProductFilter(setFilter))
+                    window.location.reload(true)
+                }
+                else{
+                    alert("Not Found")
+                }
             }).catch(({ response }) => console.log(response.data))
     }
-
 
     return (
         <>
@@ -149,9 +145,8 @@ export default function ProductListTable() {
                                                 <ul className="list-inline ps-0">
 
                                                     {
-                                                        Array.from(productFilter).length > 0 ?
-                                                        filterCategoriesList.map((item,ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>) : 
-                                                        filterCategoriesList.map((item,ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>)
+                                                        Array.from(filterCategoriesList).length == 1 ? filterCategoriesList.map((item, ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} checked /></li>) : filterCategoriesList.map((item, ind) => <li key={ind}><Form.Check label={item} name="category" type="radio" id={item} value={item} className="d-flex align-items-center checkbox-item" onChange={(e) => setFilterCategory(e.target.value)} /></li>)
+                                                        
                                                     }
 
                                                 </ul>
@@ -185,14 +180,14 @@ export default function ProductListTable() {
                                             </div>
                                         </div>
                                         <div className="filter_bottom text-end">
-
                                             {
-                                                Array.from(productFilter).length > 0 ? <Button variant="outline-primary" type="button" size={"sm"} className="me-3" onClick={()=>{
+                                                haveProduct ? <Button variant="outline-primary" type="button" size={"sm"} className="me-3" onClick={()=>{
                                                     dispatch(clearProductFiler())
                                                     window.location.reload(true)
                                                 }}>Clear Filter</Button> : ''
                                             }
                                             
+
 
                                             <Button variant="primary" type="submit" size={"sm"}>Apply</Button>
                                         </div>
@@ -236,27 +231,6 @@ export default function ProductListTable() {
                         </Dropdown>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end">
-                        {/* <nav aria-label="Page navigation example">
-                            <ul className="pagination mb-0">
-
-                                {pageNum - 1 > 0 ? <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-left"></i></NavLink></li> : ''}
-                                {
-                                    pages_lst.map((item, index) => {
-                                        { return pageNum == item ? <li key={index} className="page-item"><NavLink to={`/products/${item}`} className="page-link" onClick={()=>{
-                                            navigate(`/products/${item}`)
-                                            window.location.reload(true)
-                                        }}>{item}</NavLink></li> : <li key={index} className="page-item unactive"><NavLink to={`/products/${item}`} className="page-link" onClick={()=>{
-                                            navigate(`/products/${item}`)
-                                            window.location.reload(true)
-                                        }}>{item}</NavLink></li> }
-                                        // return 
-                                    })
-                                }
-
-                                {pageNum + 1 > totalPages ? '' : <li className="page-item"><NavLink to="/products" className="page-link unactive"><i className="fa fa-angle-right"></i></NavLink></li>}
-
-                            </ul>
-                        </nav> */}
                     </div>
                 </div>
             </div>

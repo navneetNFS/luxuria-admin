@@ -14,7 +14,7 @@ import productFilterSlice from "./slices/productFilter-slice";
 const persistedReducer = persistReducer(persistConfig, combineReducers({
     auth: authSlice,
     imageApi: imageApiSlice,
-    productFilter: productFilterSlice
+    filteredProduct: productFilterSlice
 }));
 
 const store = configureStore({
