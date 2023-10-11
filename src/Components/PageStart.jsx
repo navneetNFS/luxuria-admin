@@ -7,8 +7,8 @@ import { useLocation } from "react-router-dom"
 export default function PageStart() {
     const dispatch = useDispatch()
     let location = useLocation();
-    // const navigate = useNavigate()
 
+    
     // SET IMAGE API URL
     const api_url = "http://localhost:3000/uploads/images"
     const ApiUrl = (payload) => {
