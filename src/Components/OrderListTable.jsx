@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Dropdown, Form, Button } from 'react-bootstrap';
-import OrderItem from "./OrderItem";
+import OrderItem from "../Partials/OrderItem";
 
 export default function OrderListTable() {
     return (

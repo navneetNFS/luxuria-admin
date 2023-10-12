@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import OrderDetailProducts from "../Partials/OrderDetailProducts";
+import OrderDetailProducts from "../Components/OrderDetailProducts";
 
 export default function OrderDetailPage() {
   return (

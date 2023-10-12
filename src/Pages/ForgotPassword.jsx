@@ -1,24 +1,14 @@
-import LoginForm from "../Components/LoginForm";
+import ForgetForm from "../Components/ForgetForm";
 import AuthImage from "../assets/images/auth-screens.png";
-import { useSelector } from "react-redux";
-import { selectUserLogged } from "../store/slices/auth-slice";
-import { useNavigate } from "react-router-dom";
-import '../scss/Pages/Login.scss'
-
-export default function LoginPage() {
-    const navigate = useNavigate()
-    const isloggin = useSelector(selectUserLogged)
-    if(isloggin){
-        navigate('/dashboard')
-    }
-    return (
-        <>
-            <section className="login min-vh-100">
+export default function ForgotPassword() {
+  return (
+    <>
+    <section className="login min-vh-100">
                 <div className="container-fluid min-vh-100 p-0">
                     <div className="row min-vh-100">
                         <div className="col-lg-6 col-md-6 col-sm-6 min-vh-100">
                             <div className="left-panel">
-                                <LoginForm />
+                                <ForgetForm />
                             </div>
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-6 min-vh-100">
@@ -33,6 +23,6 @@ export default function LoginPage() {
                     </div>
                 </div>
             </section>
-        </>
-    )
+    </>
+  )
 }

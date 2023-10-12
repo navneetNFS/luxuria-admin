@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import '../scss/Pages/Products.scss'
-import ProductListTable from "../Partials/ProductListTable";
+import ProductListTable from "../Components/ProductListTable";
 export default function ProductPage() {
   return (
     <>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import '../scss/Pages/Category.scss'
-import CategoryList from "../Partials/CategoryList";
-import AddCategory from "../Partials/AddCategory";
+import CategoryList from "../Components/CategoryList";
+import AddCategory from "../Components/AddCategory";
 
 export default function CategoryPage() {
   return (

@@ -1,4 +1,4 @@
-import GetOtpModal from "../Partials/GetOtpModal";
+import GetOtpModal from "../Modal/GetOtpModal";
 
 export default function VerifyUserPage() {
     return (

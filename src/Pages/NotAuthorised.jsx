@@ -13,9 +13,7 @@ export default function NotAuthorised() {
                                 </div>
 
                                 <div className="contant_box_404">
-                                    <h3 className="h2">
-                                        Look like you are lost
-                                    </h3>
+                                    <h3 className="h2">Look like you are lost</h3>
 
                                     <p>You are not authorised to view this page please login first!</p>
 

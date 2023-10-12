@@ -20,6 +20,7 @@ import VerifyUserPage from "./Pages/VerifyUserPage";
 import SignOutPage from "./Pages/SignOutPage";
 import DeleteCategory from "./Components/DeleteCategory";
 import DeleteProduct from "./Components/DeleteProduct";
+import ForgotPassword from "./Pages/ForgotPassword";
 
 
 
@@ -38,6 +39,8 @@ function App() {
           <Route path="/" element={!isLogged ? <LoginPage /> : verifyed.verifyed ? <DashboardPage /> : <VerifyUserPage />} />
 
           <Route path="/sign-up" element={!isLogged ? <RegisterPage /> : <NotAuthorised />} />
+
+          <Route path="/forgot-password" element={!isLogged ? <ForgotPassword /> : <PageNotFound />} />
 
           {/* Dashboard */}
           <Route path="/dashboard" element={isLogged ? verifyed.verifyed ? <DashboardPage /> : <VerifyUserPage /> : <NotAuthorised />} />

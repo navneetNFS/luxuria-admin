@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import '../scss/Pages/Products.scss'
-import OrderListTable from "../Partials/OrderListTable";
+import OrderListTable from "../Components/OrderListTable";
 
 export default function OrderPage() {
   return (

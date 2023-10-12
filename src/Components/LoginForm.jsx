@@ -97,7 +97,7 @@ export default function LoginForm() {
                         <span className="error">{error.password}</span>
                     </div>
                     <div className="form-field mb-3 text-end">
-                        <a href="/" className="text-primary">Forgot Password</a>
+                        <Link to={"/forgot-password"} className="text-primary">Forgot Password</Link>
                     </div>
                 </div>
                 <div className="text-center">

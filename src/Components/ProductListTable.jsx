@@ -1,4 +1,4 @@
-import ProductItem from "./ProductItem";
+import ProductItem from "../Partials/ProductItem";
 import { Dropdown, Form, Button } from 'react-bootstrap';
 import AddProductPage from "../Modal/AddProductPage";
 import axios from "axios";

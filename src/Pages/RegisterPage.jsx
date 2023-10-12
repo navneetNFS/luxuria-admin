@@ -1,4 +1,4 @@
-import RegiterForm from "../Partials/RegiterForm";
+import RegiterForm from "../Components/RegiterForm";
 import AuthImage from "../assets/images/auth-screens.png";
 import '../scss/Pages/Login.scss'
 export default function RegisterPage() {
