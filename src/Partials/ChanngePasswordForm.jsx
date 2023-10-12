@@ -4,20 +4,20 @@ export default function ChanngePasswordForm() {
         <>
             <form method="POST">
                 <div className="form-group mb-5">
-                    {/* <div className="change_pwd_block">
+                    <div className="change_pwd_block">
                         <div className="form-field mb-3">
                             <input type="password"  className="form-control" placeholder="Current Password" />
-                            <span className="error">{error.email}</span>
+                            {/* <span className="error">{error.email}</span> */}
                         </div>
                         <div className="form-field mb-3">
                             <input type="password"  className="form-control" placeholder="New Password" />
-                            <span className="error">{error.email}</span>
+                            {/* <span className="error">{error.email}</span> */}
                         </div>
                         <div className="form-field mb-3">
                             <input type="password"  className="form-control" placeholder="Confirm Password" />
-                            <span className="error">{error.email}</span>
+                            {/* <span className="error">{error.email}</span> */}
                         </div>
-                    </div> */}
+                    </div>
 
                     <div className="text-center mt-5">
                         <Button variant="primary" type='submit'>Verify</Button>
