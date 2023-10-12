@@ -49,10 +49,7 @@ export default function GetOtpModal() {
             return {}
         }
     }
-
-
-
-
+    
     const initialState = {
         one: '',
         two: '',
