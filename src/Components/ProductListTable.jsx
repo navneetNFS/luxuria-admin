@@ -14,7 +14,6 @@ export default function ProductListTable() {
     const productFilter = useSelector(state => state.filteredProduct)
 
     const { haveProduct, filteredProducts } = productFilter
-    console.log(productFilter);
     const dispatch = useDispatch()
 
     const [products, setProducts] = useState([])
