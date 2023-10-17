@@ -42,9 +42,6 @@ function App() {
 
           <Route path="/forgot-password" element={!isLogged ? <ForgotPassword /> : <PageNotFound />} />
 
-          {/* Dashboard */}
-          <Route path="/dashboard" element={isLogged ? verifyed.verifyed ? <DashboardPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-
           {/* Verify User */}
           <Route path="/verify-user" element={isLogged ? !verifyed.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
 
