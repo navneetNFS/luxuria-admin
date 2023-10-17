@@ -19,10 +19,8 @@ const auth = createSlice({
             console.log(action.payload);
             state.user.verifyed = action.payload
         },
-        logOut: (state) => {
-            state.logged = null
-            state.accessTokken = null
-            state.accessTokken = null
+        logOut: () => {
+           return initialState
         }
     }
 })
@@ -32,5 +30,7 @@ export default auth.reducer
 export const { setCredential,logOut , setVerified } = auth.actions
 export const selectUserLogged = (state) => state.auth.logged
 export const selectCurrentUser = (state) => state.auth.user
+export const selectCurrentEmail = (state) => state.auth.user.email
+export const selectCurrentPwd = (state) => state.auth.user.password
 export const selectCurrentUserIsVerified = (state) => state.auth.user.verifyed
 export const selectCurrentTokken = (state) => state.auth.tokken

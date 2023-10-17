@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 // import { useNavigate } from "react-router-dom"
-import { selectCurrentTokken, selectCurrentUser, setCredential } from "../store/slices/auth-slice"
+import { logOut, selectCurrentTokken, selectCurrentUser, setCredential } from "../store/slices/auth-slice"
 import { setImageApiUrl } from "../store/slices/imageApi-slice"
 import { clearProductFiler } from "../store/slices/productFilter-slice"
 import { useLocation } from "react-router-dom"
+import axios from "axios"
+import { resetForgotPwd } from "../store/slices/forgogtPwd-slice"
 export default function PageStart() {
     const dispatch = useDispatch()
     let location = useLocation();
@@ -35,33 +37,48 @@ export default function PageStart() {
     const getCookie = useSelector(selectCurrentTokken)
     const current_user = useSelector(selectCurrentUser)
 
+    const passwordMatched = async function(){
+        let matched = await axios.get(`/api/user/getPwd?email=${current_user.email}&password=${current_user.password}`)
+        .then(({data}) => data).catch(({response})=> {response.data.message})
+        const {success} = matched
+        if(!success){
+            dispatch(logOut())
+        }
+    }
+    
+
     if (!tokken && !user) {
-        const setting = { logged: false, user: null, tokken: null }
-        const setCred = (payload) => {
-            dispatch(setCredential(payload))
+        const setCred = () => {
+            dispatch(logOut())
             dispatch(setImageApiUrl(""))
         }
-        setCred(setting)
+        setCred()
     }
     else {
-        if (current_user == null) {
+        if (current_user == null){
             const userData = user
             const jsonStr = userData.replace('j%3A', '')
             const decodedString = decodeURIComponent(jsonStr);
             const userObject = JSON.parse(decodedString);
-            delete userObject.password
-            const setting = { logged: true, user: userObject, tokken: getCookie }
+            
+            const setting = { logged: true, user: userObject, tokken: getCookie}
 
             const setCred = (payload) => {
                 dispatch(setCredential(payload))
             }
             setCred(setting)
         }
+
+        passwordMatched()
     }
 
 
     if(location.pathname != "/products"){
         dispatch(clearProductFiler())
+    }
+
+    if(location.pathname != "/forgot-password"){
+        dispatch(resetForgotPwd())
     }
 
 
