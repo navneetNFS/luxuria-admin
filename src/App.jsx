@@ -21,6 +21,8 @@ import SignOutPage from "./Pages/SignOutPage";
 import DeleteCategory from "./Components/DeleteCategory";
 import DeleteProduct from "./Components/DeleteProduct";
 import ForgotPassword from "./Pages/ForgotPassword";
+import SubCategoryPage from "./Pages/SubCategoryPage";
+import DeleteSubCategory from "./Components/DeleteSubCategory";
 
 
 
@@ -61,7 +63,9 @@ function App() {
 
           {/* Categories */}
           <Route path="/categories" element={isLogged ? verifyed.verifyed ? <CategoryPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/categories/:categoryName" element={isLogged ? verifyed.verifyed ? <SubCategoryPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/delete-categorie/:id" element={isLogged ? verifyed.verifyed ? <DeleteCategory /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-sub-categorie/:categoryName/:id" element={isLogged ? verifyed.verifyed ? <DeleteSubCategory /> : <VerifyUserPage /> : <NotAuthorised />} />
 
           {/* Categories */}
           <Route path="/log-out" element={isLogged ? verifyed.verifyed ? <SignOutPage /> : <VerifyUserPage /> : <NotAuthorised />} />

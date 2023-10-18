@@ -16,7 +16,7 @@ export default function CategoryList() {
                     categories.length > 0 ?
                     categories.map((item) => <div className="col-lg-3 col-md-3 col-sm-3 mb-5" key={item._id}>
                         <div className="category-box">
-                            {item.name}
+                            <Link to={`/categories/${item.name}`}>{item.name}</Link>
                             <Link to={`/delete-categorie/${item._id}`} className="btn-trash"><i className="fa fa-trash"></i></Link>
                         </div>
                     </div>) : 

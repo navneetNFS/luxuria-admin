@@ -50,7 +50,7 @@ export default function ProductItem({ data }) {
                         </div>
                     </div>
                 }) : <div className='no_product' style={noProductCSS}>
-                    <p>No Dataa Found</p>
+                    <p>No Data Found</p>
                 </div> : <div className='no_product' style={noProductCSS}>
                     <p>Loading...</p>
                 </div>

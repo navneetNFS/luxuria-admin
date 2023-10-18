@@ -49,7 +49,7 @@ export default function DeleteProduct() {
                 setSuccess(true)
                 setSuccessMessage('Product Deleted Successfully')
                 setTimeout(() => {
-                    navigate('/products/1');
+                    navigate('/products');
                     window.location.reload(true);
                 }, 200)
             }

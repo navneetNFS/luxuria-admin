@@ -1,24 +1,27 @@
-import axios from "axios";
+/* eslint-disable react/prop-types */
+import axios from 'axios';
 import { useState } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
-export default function AddCategory() {
+export default function AddSubCategory({ category }) {
     const initialState = {
-        name: ''
+        category,
+        subcategory: ''
     }
-    const [categoryInput, setCategory] = useState(initialState)
 
-    const { name } = categoryInput
     const [error, setError] = useState({})
+
     const [showSuccess, setSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
-
     const [showFail, setFail] = useState(false);
     const [FailMessage, setFailMessage] = useState('');
 
+    const [addSubCategory, setAddSubCategory] = useState(initialState)
+    const { subcategory } = addSubCategory
+
     const validation = () => {
-        if (!name) {
+        if (!subcategory) {
             const err = {}
-            err.name = "Category name is required field"
+            err.subCategoryError = "Please Enter Sub Category Name"
             setError(err)
             return err
         }
@@ -28,41 +31,43 @@ export default function AddCategory() {
         }
     }
 
-    const addCategory = async function (category_data) {
-        console.log(categoryInput);
-        const res = await axios.post('/api/category', category_data, {
-            withCredentials: true
-        }).then(({ data }) => { return data }).catch(({ response }) => { return response.data })
-
-        const { success, message } = res
-        if (success) {
-            setSuccess(true)
-            setSuccessMessage('Category Addedd Successfully')
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 1000)
-        }
-        else {
-            setFail(true);
-            setFailMessage(`${message}`)
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 1000)
-        }
+    const addingSubCatAPI = (subcat) => {
+        console.log(subcat);
+        axios.post("/api/category/create-sub-category", subcat, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(({ data }) => {
+                const { success } = data
+                if (success) {
+                    setSuccess(true)
+                    setSuccessMessage('Sub Category Created Successfully')
+                    setTimeout(() => {
+                        window.location.reload(true)
+                    }, 500)
+                }
+                setAddSubCategory(initialState)
+            })
+            .catch(({ response }) => {
+                setFail(true);
+                setFailMessage(`${response.data.message}`)
+            })
     }
 
     const handelSubmit = (e) => {
         e.preventDefault();
-        const isValid = validation();
-        const isValidKeys = Object.keys(isValid)
-        if (isValidKeys.length == 0) {
-            addCategory(categoryInput)
+        const isValid = validation()
+        const errorKeysLength = Object.keys(isValid).length
+        if (errorKeysLength == 0) {
+            addingSubCatAPI(addSubCategory)
         }
     }
 
     const handelChange = (e) => {
         const { name, value } = e.target
-        setCategory({ ...categoryInput, [name]: value })
+        setAddSubCategory({ ...addSubCategory, [name]: value })
     }
     return (
         <>
@@ -77,13 +82,13 @@ export default function AddCategory() {
                         <Dropdown.Menu className="filterDropdown">
                             <Dropdown>
                                 <div className="filter_header">
-                                    Add Category
+                                    Add Sub Category
                                 </div>
                                 <form method="POST" onSubmit={handelSubmit}>
                                     <div className="filter_options">
                                         <div className="field mb-4">
-                                            <input type="text" placeholder="Category Name" name="name" value={name} id="search" className="form-control" onChange={handelChange} onKeyUp={validation} />
-                                            <span className="error">{error.name}</span>
+                                            <input type="text" placeholder="Sub Category Name" name="subcategory" className="form-control" value={subcategory} onChange={handelChange} />
+                                            <span className="error">{error.subCategoryError}</span>
                                         </div>
                                     </div>
                                     <div className="filter_bottom text-end"><Button variant="primary" type="submit" size={"sm"}>Submit</Button></div>
