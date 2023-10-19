@@ -1,5 +1,5 @@
-import JoditEditor , { Jodit } from 'jodit-react';
-import { useEffect, useRef, useState } from 'react';
+import JoditEditor, { Jodit } from 'jodit-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import Noimage from '../assets/images/blank-image.svg'
@@ -65,22 +65,22 @@ export default function AddProductForm() {
     // General Instruction
     const editor = useRef(null);
     function preparePaste(jodit) {
-	jodit.e.on(
-		'paste',
-		e => {
-			if (confirm('Change pasted content?')) {
-				jodit.e.stopPropagation('paste');
-				jodit.s.insertHTML(
-					Jodit.modules.Helpers.getDataTransfer(e)
-						.getData(Jodit.constants.TEXT_HTML)
-						.replace(/a/g, 'b')
-				);
-				return false;
-			}
-		},
-		{ top: true }
-	);
-}
+        jodit.e.on(
+            'paste',
+            e => {
+                if (confirm('Change pasted content?')) {
+                    jodit.e.stopPropagation('paste');
+                    jodit.s.insertHTML(
+                        Jodit.modules.Helpers.getDataTransfer(e)
+                            .getData(Jodit.constants.TEXT_HTML)
+                            .replace(/a/g, 'b')
+                    );
+                    return false;
+                }
+            },
+            { top: true }
+        );
+    }
     const config = {
         readonly: false, // all options from https://xdsoft.net/jodit/docs/,
         placeholder: 'Enter Description'
@@ -93,6 +93,7 @@ export default function AddProductForm() {
         name: '',
         description: '',
         category: 0,
+        subcategory: 0,
         price: '',
         stock: '',
         sku: ''
@@ -101,15 +102,16 @@ export default function AddProductForm() {
     const [Product, setProduct] = useState(initialState)
     const [error, setError] = useState('')
 
-    const { name, description, category, price, stock, sku } = Product
+    const { name, description, category, subcategory, price, stock, sku } = Product
 
     const validation = () => {
-        if (!name && !description && !thumb && category == 0 && !images && !price && !stock && !sku) {
+        if (!name && !description && !thumb && category == 0 && subcategory == 0 && !images && !price && !stock && !sku) {
             const err = {}
             err.name = "Please enter product name",
                 err.description = "Please enter product description",
                 err.thumb = "Please upload product thumb",
                 err.category = "Please select product category",
+                err.subcategory = "Please select product sub category",
                 err.images = "Please upload product images",
                 err.price = "Please enter product price",
                 err.stock = "Please enter product available stock",
@@ -118,6 +120,7 @@ export default function AddProductForm() {
             return err
         }
         else if (!thumb) {
+            console.log(thumb);
             const err = {}
             err.thumb = "Please upload product thumb"
             setError(err)
@@ -125,13 +128,21 @@ export default function AddProductForm() {
         }
         else if (!images) {
             const err = {}
+            console.log(images);
             err.images = "Please upload product images"
             setError(err)
             return err
         }
         else if (category == 0) {
+            console.log(category);
             const err = {}
             err.category = "Please select product category",
+                setError(err)
+            return err
+        }
+        else if (subcategory == 0) {
+            const err = {}
+            err.subcategory = "Please select product sub category",
                 setError(err)
             return err
         }
@@ -171,7 +182,7 @@ export default function AddProductForm() {
         }
     }
 
-    
+
 
     const thumbImageUpload = async function (thumb_data) {
 
@@ -200,13 +211,13 @@ export default function AddProductForm() {
 
     const imagesInsert = async (its_image) => {
         const fd = new FormData()
-            fd.append(`images`, its_image);
-            return await axios.post("/api/product/product-images", fd, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'value'
-                }
-            }).then(({data}) => {return data}).catch(err => console.log(err))
+        fd.append(`images`, its_image);
+        return await axios.post("/api/product/product-images", fd, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'value'
+            }
+        }).then(({ data }) => { return data }).catch(err => console.log(err))
     }
 
     const productImageUpload = async function (images) {
@@ -219,24 +230,24 @@ export default function AddProductForm() {
     }
 
     const postProduct = (data) => {
-        axios.post('/api/product/create-product',data,{
+        axios.post('/api/product/create-product', data, {
             withCredentials: true,
             headers: {
-                'Content-Type':'application/json'
+                'Content-Type': 'application/json'
             }
         })
-        .then(() => {
-            setSuccess(true)
-            setSuccessMessage('Product Created Successfully')
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 1000)
-        })
-        .catch(({ response }) => {
-            setFail(true);
-            setFailMessage(`${response.data.message}`)
-        })
-        
+            .then(() => {
+                setSuccess(true)
+                setSuccessMessage('Product Created Successfully')
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 1000)
+            })
+            .catch(({ response }) => {
+                setFail(true);
+                setFailMessage(`${response.data.message}`)
+            })
+
     }
 
 
@@ -257,6 +268,22 @@ export default function AddProductForm() {
     const handelValueChange = (name, value) => {
         setProduct({ ...Product, [name]: value })
     }
+
+    const getSubCategory = async (categoryVal) => {
+        const res = await axios.get(`/api/category/sub-category?category=${categoryVal}`)
+            .then(({ data }) => data).catch(({ response }) => response.data)
+
+        const { success } = res
+        if (success) {
+            // alert(categoryVal)
+            console.log(res);
+            handelValueChange("subcategory", res.subcategory)
+        }
+    }
+
+    useMemo(()=> {
+        getSubCategory(category)
+    },[category])
 
 
 
@@ -297,11 +324,26 @@ export default function AddProductForm() {
                                         <i className="fa fa-angle-down"></i>
 
                                         <p><span className='error'>{error.category}</span></p>
-
                                         <p className="hint text-start pt-2">Set the product category.</p>
-
-                                        <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
                                     </div>
+
+                                    <div className="form-group boot-select">
+                                        <select className="form-control" multiple={false} defaultValue={subcategory} onChange={(e) => {
+                                            handelValueChange("SubCategory", e.target.value)
+                                        }}>
+                                            <option value={0}>-- Select Sub Category --</option>
+                                            {
+                                                Array.from(subcategory).map((item) => { return <option key={item._id}>{item.subcategory}</option> })
+                                            }
+
+                                        </select>
+                                        <i className="fa fa-angle-down"></i>
+
+                                        <p><span className='error'>{error.subcategory}</span></p>
+                                        <p className="hint text-start pt-2">Set the product sub category.</p>
+                                    </div>
+
+                                    <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
                                 </div>
                             </div>
                         </div>
