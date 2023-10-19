@@ -143,7 +143,7 @@ export default function AddProductForm() {
         else if (subcategory == 0) {
             const err = {}
             err.subcategory = "Please select product sub category",
-                setError(err)
+            setError(err)
             return err
         }
         else if (!name) {
@@ -255,6 +255,7 @@ export default function AddProductForm() {
         e.preventDefault()
         const isValid = validation();
         console.log(isValid);
+        console.log(Product);
         const errorLst = Object.keys(isValid)
         console.log(description);
         if (errorLst.length == 0) {
@@ -269,15 +270,15 @@ export default function AddProductForm() {
         setProduct({ ...Product, [name]: value })
     }
 
+    const [subCategoryLst,setSubCategoryLst] = useState([])
+
     const getSubCategory = async (categoryVal) => {
         const res = await axios.get(`/api/category/sub-category?category=${categoryVal}`)
             .then(({ data }) => data).catch(({ response }) => response.data)
 
         const { success } = res
         if (success) {
-            // alert(categoryVal)
-            console.log(res);
-            handelValueChange("subcategory", res.subcategory)
+            setSubCategoryLst(res.subcategory)
         }
     }
 
@@ -329,16 +330,15 @@ export default function AddProductForm() {
 
                                     <div className="form-group boot-select">
                                         <select className="form-control" multiple={false} defaultValue={subcategory} onChange={(e) => {
-                                            handelValueChange("SubCategory", e.target.value)
+                                            handelValueChange("subcategory", e.target.value)
                                         }}>
                                             <option value={0}>-- Select Sub Category --</option>
                                             {
-                                                Array.from(subcategory).map((item) => { return <option key={item._id}>{item.subcategory}</option> })
+                                                Array.from(subCategoryLst).map((item) => { return <option key={item._id}>{item.subcategory}</option> })
                                             }
 
                                         </select>
                                         <i className="fa fa-angle-down"></i>
-
                                         <p><span className='error'>{error.subcategory}</span></p>
                                         <p className="hint text-start pt-2">Set the product sub category.</p>
                                     </div>
