@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentUser, selectUserLogged } from "./store/slices/auth-slice";
+import { selectCurrentUser, selectCurrentUserType, selectUserLogged } from "./store/slices/auth-slice";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
 import DashboardPage from "./Pages/DashboardPage";
@@ -23,12 +23,15 @@ import DeleteProduct from "./Components/DeleteProduct";
 import ForgotPassword from "./Pages/ForgotPassword";
 import SubCategoryPage from "./Pages/SubCategoryPage";
 import DeleteSubCategory from "./Components/DeleteSubCategory";
+import RightsPage from "./Pages/RightsPage";
+import RightsForm from "./Partials/RightsForm";
 
 
 
 function App() {
   const isLogged = useSelector(selectUserLogged)
   const verifyed = useSelector(selectCurrentUser)
+  const userType = useSelector(selectCurrentUserType)
   return (
     <>
       <Router>
@@ -66,6 +69,21 @@ function App() {
           <Route path="/categories/:categoryName" element={isLogged ? verifyed.verifyed ? <SubCategoryPage /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/delete-categorie/:id" element={isLogged ? verifyed.verifyed ? <DeleteCategory /> : <VerifyUserPage /> : <NotAuthorised />} />
           <Route path="/delete-sub-categorie/:categoryName/:id" element={isLogged ? verifyed.verifyed ? <DeleteSubCategory /> : <VerifyUserPage /> : <NotAuthorised />} />
+
+
+          {/* Rights */}
+
+          {/* {
+            userType == "super-admin" ? <Route path="/right" element={isLogged ? verifyed.verifyed ? <RightsPage /> : <VerifyUserPage /> : <NotAuthorised />}>
+              <Route path="/right/:emailId" element={isLogged ? verifyed.verifyed ? <RightsForm /> : <VerifyUserPage /> : <NotAuthorised />} />
+            </Route> : <Route path="/right" element={isLogged ? verifyed.verifyed ? <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          } */}
+
+          <Route path="/right" element={isLogged ? verifyed.verifyed ? <RightsPage /> : <VerifyUserPage /> : <NotAuthorised />}>
+            <Route path="/right/:emailId" element={isLogged ? verifyed.verifyed ? <RightsForm /> : <VerifyUserPage /> : <NotAuthorised />} />
+          </Route>
+
+
 
           {/* Categories */}
           <Route path="/log-out" element={isLogged ? verifyed.verifyed ? <SignOutPage /> : <VerifyUserPage /> : <NotAuthorised />} />

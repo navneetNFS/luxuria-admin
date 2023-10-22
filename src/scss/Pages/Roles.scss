@@ -1,0 +1,33 @@
+.email_list {
+    height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+    margin-top: 10px;
+    li{
+        padding: 7px 0px;
+        border-bottom: 1px dashed #333;
+        a{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            .email_text{
+                display: inline-block;
+                width: calc(100% - 15px);
+                overflow: hidden;
+                white-space: nowrap;
+                padding-left: 9px;
+                color: #333;
+            }
+        }
+
+        &:first-child{
+            padding-top: 0;
+        }
+
+        &:last-child{
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border: 0;
+        }
+    }
+}

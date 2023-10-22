@@ -30,6 +30,7 @@ export default auth.reducer
 export const { setCredential,logOut , setVerified } = auth.actions
 export const selectUserLogged = (state) => state.auth.logged
 export const selectCurrentUser = (state) => state.auth.user
+export const selectCurrentUserType = (state) => state.auth.user.role
 export const selectCurrentEmail = (state) => state.auth.user.email
 export const selectCurrentPwd = (state) => state.auth.user.password
 export const selectCurrentUserIsVerified = (state) => state.auth.user.verifyed

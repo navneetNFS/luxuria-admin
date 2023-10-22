@@ -17,7 +17,7 @@ export default function NotAuthorised() {
 
                                     <p>You are not authorised to view this page please login first!</p>
 
-                                    <Link to="/" className="link_404">Go to Login Page</Link>
+                                    <Link to="/" className="link_404">Go to Dashboard Page</Link>
                                 </div>
                             </div>
                         </div>
