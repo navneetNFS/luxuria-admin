@@ -39,7 +39,7 @@ export default function PageStart() {
     const user = getCookieValue('user')
     const getCookie = useSelector(selectCurrentTokken)
     const current_user = useSelector(selectCurrentUser)
-
+    
     const passwordMatched = async function () {
         let matched = await axios.get(`/api/user/getPwd?email=${current_user.email}&password=${current_user.password}`)
             .then(({ data }) => data).catch(({ response }) => { response.data.message })
@@ -71,11 +71,14 @@ export default function PageStart() {
                 }
                 setCred(setting)
             }
-    
-    
-            if(current_user.email){
-                passwordMatched()
+
+            else{
+                if(current_user.email){
+                    passwordMatched()
+                }
             }
+    
+    
         }
     },[])
 

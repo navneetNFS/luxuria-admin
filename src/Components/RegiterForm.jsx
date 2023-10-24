@@ -31,7 +31,6 @@ export default function RegiterForm() {
     const [FailMessage, setFailMessage] = useState('');
 
     const userRegister = (postedData) => {
-        
         axios.post(`/api/user/new-user`, postedData,
             {
                 withCredentials: true,
@@ -112,6 +111,7 @@ export default function RegiterForm() {
         validation()
         setInputVals({ ...inputVals, [name]: value })
     }
+    
     return (
         <>
             <h1>Sign Up</h1>

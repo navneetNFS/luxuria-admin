@@ -22,7 +22,6 @@ export default function EmailVerificationForm() {
   }
 
   const submitEmail = async(email) => {
-    console.log(email);
     const res = await axios.post(`/api/user/verify-email-forgot`,email, {
       withCredentials: true,
       headers: {
@@ -52,7 +51,8 @@ export default function EmailVerificationForm() {
     }
   }
   const handelChange = (e) => {
-    setEmail(...email, e.target.value)
+
+    setEmail(e.target.value)
   }
   return (
     <>
