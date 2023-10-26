@@ -1,7 +1,7 @@
 import { Link, Outlet, useParams } from "react-router-dom";
 import { Row, Col, Alert } from 'react-bootstrap';
 import '../scss/Pages/Roles.scss'
-import RightUsers from "../Partials/RightUsers";
+import RightUsers from "../Components/RightUsers";
 
 export default function RightsPage() {
     const paramKeys = Object.keys(useParams())

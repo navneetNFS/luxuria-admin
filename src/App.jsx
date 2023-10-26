@@ -24,7 +24,7 @@ import ForgotPassword from "./Pages/ForgotPassword";
 import SubCategoryPage from "./Pages/SubCategoryPage";
 import DeleteSubCategory from "./Components/DeleteSubCategory";
 import RightsPage from "./Pages/RightsPage";
-import RightsForm from "./Partials/RightsForm";
+import RightsForm from "./Components/RightsForm";
 
 
 
