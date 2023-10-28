@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import RightsAllow from "../Partials/RightsAllow";
 import RightsUpdate from "../Partials/RightsUpdate";
-// import { useEffect } from "react";
 
 export default function RightsForm() {
     const { emailId } = useParams()
