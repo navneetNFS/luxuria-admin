@@ -1,13 +1,36 @@
+/* eslint-disable react/prop-types */
+import axios from "axios";
+import { useState } from "react";
 import { Button, Row , Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-export default function RightsUpdate({rights}) {
-    const {dashboard,products,orders,category} = rights
+export default function RightsUpdate({emailId,rightId,rights}) {
+    // console.log(rightId);
+    const navigate = useNavigate()
+    const [updateRights,setRight] = useState(rights)
+    const {dashboard,products,orders,category} = updateRights
+    const handelSubmit = async (e) => {
+        e.preventDefault();
+        const res = await axios.put(`/api/rights/${rightId}`,updateRights,{
+            withCredentials: true,
+            headers: {'Content-Type':'application/json'}
+        }).then(({data})=>data).catch(({response})=>response.data)
+
+        console.log(res);
+
+        const {success} = res
+        if(success){
+            console.log(res);
+            navigate(`/right/${emailId}`)
+        }
+    }
     const handelChange = (e)=>{
-
+        const {name,checked} = e.target
+        setRight({...updateRights,[name]:checked})
     }
     return (
         <>
-            <Form>
+            <Form onSubmit={handelSubmit}>
                 <Row className="mb-5">
                     <ul className="list-inline pl-0 mb-0">
                         <li className="list-inline-item me-3">

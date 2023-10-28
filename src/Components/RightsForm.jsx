@@ -8,10 +8,12 @@ import RightsUpdate from "../Partials/RightsUpdate";
 export default function RightsForm() {
     const { emailId } = useParams()
     const [user, setUser] = useState({})
+    const [rightId,setRightId] = useState('')
     const [rightsAlloted,setAlloted] = useState()
     const rightFunc = async (email) => {
         const right_res = await axios.get(`/api/rights/${email}`).then(({ data }) => data).catch(({ response }) => response.data)
         if (right_res.success) {
+            setRightId(right_res.id)
             setAlloted(right_res.rights)
         }
     }
@@ -32,9 +34,8 @@ export default function RightsForm() {
             <article className="ps-4">
                 <h1 className="mb-5">Allow Rights</h1>
                 
-                
                 {
-                    !rightsAlloted ? <RightsAllow emailId={emailId} user={user} /> : <RightsUpdate rights={rightsAlloted} />
+                    !rightsAlloted ? <RightsAllow emailId={emailId} user={user} /> : <RightsUpdate emailId={emailId} rightId={rightId} rights={rightsAlloted} />
                 }
 
                 
