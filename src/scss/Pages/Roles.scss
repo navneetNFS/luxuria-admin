@@ -1,5 +1,18 @@
+.email_search{
+    position: relative;
+    input{
+        padding-right: calc(22px + 15px);
+    }
+    i{
+        position: absolute;
+        top: 22px;
+        right: 11px;
+        font-size: 14px;
+    }
+}
+
 .email_list {
-    height: 100%;
+    height: calc(100% - 89px);
     overflow: hidden;
     overflow-y: auto;
     margin-top: 10px;
