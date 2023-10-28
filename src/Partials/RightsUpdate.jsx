@@ -1,32 +1,44 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { useState } from "react";
-import { Button, Row , Form } from "react-bootstrap";
+import { Button, Row, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-export default function RightsUpdate({emailId,rightId,rights}) {
+export default function RightsUpdate({ emailId, rightId, rights }) {
     // console.log(rightId);
     const navigate = useNavigate()
-    const [updateRights,setRight] = useState(rights)
-    const {dashboard,products,orders,category} = updateRights
+
+    const [showSuccess, setSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showFail, setFail] = useState(false);
+    const [FailMessage, setFailMessage] = useState('');
+
+    const [updateRights, setRight] = useState(rights)
+    const { dashboard, products, orders, category } = updateRights
     const handelSubmit = async (e) => {
         e.preventDefault();
-        const res = await axios.put(`/api/rights/${rightId}`,updateRights,{
+        const res = await axios.put(`/api/rights/${rightId}`, updateRights, {
             withCredentials: true,
-            headers: {'Content-Type':'application/json'}
-        }).then(({data})=>data).catch(({response})=>response.data)
+            headers: { 'Content-Type': 'application/json' }
+        }).then(({ data }) => data).catch(({ response }) => response.data)
 
-        console.log(res);
-
-        const {success} = res
-        if(success){
-            console.log(res);
-            navigate(`/right/${emailId}`)
+        const { success } = res
+        if (success) {
+            setSuccess(true)
+            setSuccessMessage('User Rights Updated Successfully')
+            setTimeout(() => {
+                navigate(`/right/${emailId}`)
+                window.location.reload(true);
+            }, 1000)
+        }
+        else {
+            setFail(true);
+            setFailMessage(`${res.data.message}`)
         }
     }
-    const handelChange = (e)=>{
-        const {name,checked} = e.target
-        setRight({...updateRights,[name]:checked})
+    const handelChange = (e) => {
+        const { name, checked } = e.target
+        setRight({ ...updateRights, [name]: checked })
     }
     return (
         <>
@@ -49,8 +61,21 @@ export default function RightsUpdate({emailId,rightId,rights}) {
                 </Row>
                 <Button variant="primary" className="me-3" type="submit">Update</Button>
                 <Button variant="outline-danger">Delete User</Button>
-                {/* <p className="error pt-4">{error.selectright}</p> */}
             </Form>
+
+            {
+                showSuccess ? <div className="custom_toast">
+                    <i className="fa fa-check"></i>
+                    <b>{successMessage}</b>
+                </div> : ''
+            }
+
+            {
+                showFail ? <div className="custom_toast error_tost">
+                    <i className="fa fa-times"></i>
+                    <b>{FailMessage}</b>
+                </div> : ''
+            }
         </>
     )
 }
