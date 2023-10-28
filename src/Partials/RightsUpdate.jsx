@@ -10,7 +10,6 @@ export default function RightsUpdate({ emailId, rightId, rights }) {
     const trueRights = []
     for(let i in rights){
         if(rights[i]){
-            console.log(i);
             trueRights.push(i)
         }
     }

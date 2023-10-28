@@ -22,7 +22,6 @@ export default function RightsAllow({ user , emailId }) {
   const { dashboard, products, orders, category } = right
 
   const roleAdd = async (data) => {
-    console.log(data);
     const res = await axios.post('/api/rights', data, {
       withCredentials: true,
       headers: {
