@@ -1,9 +1,26 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { selectCurrentUserType } from "../store/slices/auth-slice";
+import { selectCurrentUser, selectCurrentUserType } from "../store/slices/auth-slice";
+import { useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
 
 export default function Sidebar() {
     const role = useSelector(selectCurrentUserType)
+    const user = useSelector(selectCurrentUser)
+    const {email} = user
+    const [rights,setRight] = useState({})
+
+    const getRights = async () => {
+        const res = await axios(`/api/rights/${email}`).then(({data})=>data.rights).catch(({response})=> response.data);
+        setRight(res)
+    }
+
+    useEffect(()=>{
+        getRights()
+    },[])
+
+    const {dashboard,products,orders,category} = rights
     return (
         <>
             <aside className="sidebar">
@@ -12,10 +29,10 @@ export default function Sidebar() {
                         <a href="/">Luxuria</a>
                     </div>
                     <ul className="side-menu">
-                        <li><NavLink to="/" className="sidebar-link"><i className="fa fa-dashboard"></i> Dashboard</NavLink></li>
-                        <li><NavLink to="/products" className="sidebar-link"><i className="fa fa-tags"></i> Products</NavLink></li>
-                        <li><NavLink to="/orders" className="sidebar-link"><i className="fa fa-shopping-cart"></i> Orders</NavLink></li>
-                        <li><NavLink to="/categories" className="sidebar-link"><i className="fa fa-tasks"></i> Category</NavLink></li>
+                        {dashboard || role == "super-admin" ? <li><NavLink to="/" className="sidebar-link"><i className="fa fa-dashboard"></i> Dashboard</NavLink></li> : ''}
+                        {products || role == "super-admin" ? <li><NavLink to="/products" className="sidebar-link"><i className="fa fa-tags"></i> Products</NavLink></li>: ''}
+                        {orders || role == "super-admin" ? <li><NavLink to="/orders" className="sidebar-link"><i className="fa fa-shopping-cart"></i> Orders</NavLink></li> : ''}
+                        {category || role == "super-admin" ? <li><NavLink to="/categories" className="sidebar-link"><i className="fa fa-tasks"></i> Category</NavLink></li> : ''}
                         { role == "super-admin" ? <li><NavLink to="/right" className="sidebar-link"><i className="fa fa-tasks"></i> Allow Rights</NavLink></li> : '' }
                     </ul>
                 </nav>

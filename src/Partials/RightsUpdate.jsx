@@ -60,6 +60,7 @@ export default function RightsUpdate({ emailId, rightId, rights }) {
                     </ul>
                 </Row>
                 <Button variant="primary" className="me-3" type="submit">Update</Button>
+                <Button variant="outline-primary" className="me-3" href={`/remove-right/${rightId}`}>Remove Rights</Button>
                 <Button variant="outline-danger">Delete User</Button>
             </Form>
 
