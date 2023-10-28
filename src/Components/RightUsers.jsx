@@ -14,7 +14,7 @@ export default function RightUsers() {
     const [email,setEmailSearch] = useState('')
 
     const searchEmail = () => {
-        const filterRecord = Array.from(users).filter(e=>e.email.includes(email))
+        const filterRecord = Array.from(users).filter(e=>e.email.includes(email) && e.role == "admin")
         return filterRecord
     }
 
