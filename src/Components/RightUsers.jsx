@@ -13,12 +13,10 @@ export default function RightUsers() {
 
     const [email,setEmailSearch] = useState('')
 
-    function searchEmail(){
+    const searchEmail = () => {
         const filterRecord = Array.from(users).filter(e=>e.email.includes(email))
         return filterRecord
     }
-
-    searchEmail()
 
     useMemo(() => {
         axios.get(`/api/user`).then(({ data }) => {
