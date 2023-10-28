@@ -1,11 +1,36 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
+import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Row, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function RightsUpdate({ emailId, rightId, rights }) {
-    // console.log(rightId);
+
+    const trueRights = []
+    for(let i in rights){
+        if(rights[i]){
+            console.log(i);
+            trueRights.push(i)
+        }
+    }
+    const [noright,trueNotRight] = useState(false)
+
+    const deleteRight = async () => {
+        const res = await axios.delete(`/api/rights/delete-right/${rightId}`).then(({data})=>data).catch(({response})=>response.data)
+        const {success} = res
+        if(success){
+            navigate(`/right/${emailId}`)
+            window.location.reload(true);
+        }
+    }
+
+    useEffect(()=>{
+        if(trueRights.length == 0){
+            trueNotRight(true)
+        }
+    },[])
+
     const navigate = useNavigate()
 
     const [showSuccess, setSuccess] = useState(false);
@@ -59,8 +84,8 @@ export default function RightsUpdate({ emailId, rightId, rights }) {
                         </li>
                     </ul>
                 </Row>
-                <Button variant="primary" className="me-3" type="submit">Update</Button>
-                <Button variant="outline-primary" className="me-3" href={`/remove-right/${rightId}`}>Remove Rights</Button>
+                <Button variant="primary" className="me-3" type="submit">{noright? 'Allow': "Update"}</Button>
+                <Button variant="outline-primary" className="me-3" onClick={deleteRight}>Remove Rights</Button>
                 <Button variant="outline-danger">Delete User</Button>
             </Form>
 

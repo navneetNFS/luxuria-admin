@@ -12,8 +12,11 @@ export default function Sidebar() {
     const [rights,setRight] = useState({})
 
     const getRights = async () => {
-        const res = await axios(`/api/rights/${email}`).then(({data})=>data.rights).catch(({response})=> response.data);
-        setRight(res)
+        const res = await axios(`/api/rights/${email}`).then(({data})=>data).catch(({response})=> response.data);
+        const {success} = res
+        if(success){
+            setRight(res.rights)
+        }
     }
 
     useEffect(()=>{
