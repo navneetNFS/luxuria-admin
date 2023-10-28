@@ -71,6 +71,7 @@ export default function RightsAllow({ user , emailId }) {
 
   return (
     <>
+      <h1 className="mb-5">Allow Rights to <span className="text-primary">{user.name}</span></h1>
       <Form onSubmit={handelSubmit}>
         <Row className="mb-5">
           <ul className="list-inline pl-0 mb-0">

@@ -32,10 +32,8 @@ export default function RightsForm() {
     return (
         <>
             <article className="ps-4">
-                <h1 className="mb-5">Allow Rights</h1>
-                
                 {
-                    !rightsAlloted ? <RightsAllow emailId={emailId} user={user} /> : <RightsUpdate emailId={emailId} rightId={rightId} rights={rightsAlloted} />
+                    !rightsAlloted ? <RightsAllow emailId={emailId} user={user} /> : <RightsUpdate user={user} emailId={emailId} rightId={rightId} rights={rightsAlloted} />
                 }
 
                 

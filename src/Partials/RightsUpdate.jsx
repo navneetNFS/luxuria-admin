@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Row, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import DeleteUserFromRight from "./DeleteUserFromRight";
 
-export default function RightsUpdate({ emailId, rightId, rights }) {
-
+export default function RightsUpdate({ user , emailId, rightId, rights }) {
     const trueRights = []
     for(let i in rights){
         if(rights[i]){
@@ -66,6 +66,7 @@ export default function RightsUpdate({ emailId, rightId, rights }) {
     }
     return (
         <>
+            <h1 className="mb-5">Allow Rights to <span className="text-primary">{user.name}</span></h1>
             <Form onSubmit={handelSubmit}>
                 <Row className="mb-5">
                     <ul className="list-inline pl-0 mb-0">
@@ -85,7 +86,7 @@ export default function RightsUpdate({ emailId, rightId, rights }) {
                 </Row>
                 <Button variant="primary" className="me-3" type="submit">{noright? 'Allow': "Update"}</Button>
                 <Button variant="outline-primary" className="me-3" onClick={deleteRight}>Remove Rights</Button>
-                <Button variant="outline-danger">Delete User</Button>
+                <DeleteUserFromRight userid={user._id} />
             </Form>
 
             {
