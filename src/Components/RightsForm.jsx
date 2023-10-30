@@ -2,8 +2,6 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Right from "./Right";
-// import RightsAllow from "../Partials/RightsAllow";
-// import RightsUpdate from "../Partials/RightsUpdate";
 
 export default function RightsForm() {
     const initialState = {dashboard: false, products: false, orders: false, category: false}
@@ -38,9 +36,6 @@ export default function RightsForm() {
     return (
         <>
             <article className="ps-4">
-                {/* {
-                    !rightsAlloted ? <RightsAllow emailId={emailId} user={user} /> : <RightsUpdate user={user} emailId={emailId} rightId={rightId} rights={rightsAlloted} />
-                } */}
                 <Right emailId={emailId} user={user} rightId={rightId} rights={rightsAlloted} />
             </article>
         </>
