@@ -1,28 +1,34 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import RightsAllow from "../Partials/RightsAllow";
-import RightsUpdate from "../Partials/RightsUpdate";
+import Right from "./Right";
+// import RightsAllow from "../Partials/RightsAllow";
+// import RightsUpdate from "../Partials/RightsUpdate";
 
 export default function RightsForm() {
+    const initialState = {dashboard: false, products: false, orders: false, category: false}
     const { emailId } = useParams()
     const [user, setUser] = useState({})
     const [rightId,setRightId] = useState('')
-    const [rightsAlloted,setAlloted] = useState()
+    const [rightsAlloted,setAlloted] = useState(initialState)
+
     const rightFunc = async (email) => {
         const right_res = await axios.get(`/api/rights/${email}`).then(({ data }) => data).catch(({ response }) => response.data)
-        // console.log(right_res);
         if (right_res.success) {
             setRightId(right_res.id)
             setAlloted(right_res.rights)
+        }
+        else{
+            setRightId('')
+            setAlloted(initialState)
         }
     }
 
     useEffect(()=>{
         axios.get(`/api/user/${emailId}`).then(({ data }) => {
             if(data.success){
-                setUser(data.data)
                 if(data.data.email){
+                    setUser(data.data)
                     rightFunc(data.data.email);
                 }
             }
@@ -32,11 +38,10 @@ export default function RightsForm() {
     return (
         <>
             <article className="ps-4">
-                {
+                {/* {
                     !rightsAlloted ? <RightsAllow emailId={emailId} user={user} /> : <RightsUpdate user={user} emailId={emailId} rightId={rightId} rights={rightsAlloted} />
-                }
-
-                
+                } */}
+                <Right emailId={emailId} user={user} rightId={rightId} rights={rightsAlloted} />
             </article>
         </>
     )
