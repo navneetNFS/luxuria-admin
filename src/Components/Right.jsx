@@ -16,7 +16,7 @@ export default function Right({ emailId, user, rightId, rights }) {
 
     const [allowRight, setAllowRight] = useState(rights)
     const { dashboard, products, orders, category } = allowRight
-    
+
     const [removelen,setremlen] = useState(0)
 
     useEffect(() => { 
@@ -27,6 +27,24 @@ export default function Right({ emailId, user, rightId, rights }) {
     const handelChange = (e) => {
         const { name, checked } = e.target;
         setAllowRight({ ...allowRight, [name]: checked })
+    }
+
+    // Revoke Rights
+    const deleteRight = async () => {
+        const res = await axios.delete(`/api/rights/delete-right/${rightId}`).then(({data})=>data).catch(({response})=>response.data)
+        const {success} = res
+        if(success){
+            setSuccess(true)
+            setSuccessMessage('User Rights Revoked Successfully')
+            setTimeout(() => {
+                navigate(`/right/${emailId}`)
+                window.location.reload(true);
+            }, 1000)
+        }
+        else{
+            setFail(true);
+            setFailMessage(`${res.data.message}`)
+        }
     }
 
     // Update Right
@@ -133,7 +151,7 @@ export default function Right({ emailId, user, rightId, rights }) {
 
                 {!rightId ? <Button variant="primary" className="me-3" type="submit">Allow</Button> : <Button variant="primary" className="me-3" type="submit">{removelen == 0 ? "Allow":"Update"}</Button>}
 
-                {rightId && removelen > 0  ? <Button variant="outline-primary" className="me-3">Revoke Rights</Button> : ''}
+                {rightId && removelen > 0  ? <Button variant="outline-primary" className="me-3" onClick={deleteRight}>Revoke Rights</Button> : ''}
 
                 <Button variant="outline-danger">Delete User</Button>
                 <p className="error pt-4">{error.selectright}</p>

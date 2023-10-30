@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function Sidebar() {
     const role = useSelector(selectCurrentUserType)
     const user = useSelector(selectCurrentUser)
+
     const {email} = user
     const [rights,setRight] = useState({})
 
@@ -21,9 +22,10 @@ export default function Sidebar() {
 
     useEffect(()=>{
         getRights()
-    },[])
+    },[rights])
 
     const {dashboard,products,orders,category} = rights
+
     return (
         <>
             <aside className="sidebar">
