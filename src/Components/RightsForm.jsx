@@ -11,6 +11,7 @@ export default function RightsForm() {
     const [rightsAlloted,setAlloted] = useState()
     const rightFunc = async (email) => {
         const right_res = await axios.get(`/api/rights/${email}`).then(({ data }) => data).catch(({ response }) => response.data)
+        // console.log(right_res);
         if (right_res.success) {
             setRightId(right_res.id)
             setAlloted(right_res.rights)

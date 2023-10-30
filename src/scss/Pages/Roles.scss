@@ -32,6 +32,14 @@
                 padding-left: 9px;
                 color: #333;
             }
+
+            &.email_link{
+                &.active{
+                    span{
+                        color: var(--bs-blue);
+                    }
+                }
+            }
         }
 
         &:first-child{
