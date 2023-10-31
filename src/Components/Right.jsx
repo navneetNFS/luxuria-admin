@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Form, Row, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-export default function Right({ emailId, user, rightId, rights }) {
+export default function Right({ emailId , user, rightId, rights }) {
     const navigate = useNavigate()
     const [error, setError] = useState({})
 

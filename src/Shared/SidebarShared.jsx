@@ -4,6 +4,7 @@ import { selectCurrentUser, selectCurrentUserType } from "../store/slices/auth-s
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import Logo from '../assets/images/logo-black-bg.png'
 
 export default function Sidebar() {
     const role = useSelector(selectCurrentUserType)
@@ -31,7 +32,8 @@ export default function Sidebar() {
             <aside className="sidebar">
                 <nav className="sidenav">
                     <div className="logo">
-                        <a href="/">Luxuria</a>
+                        {/* <a href="/">Luxuria</a> */}
+                        <a href="/"><img src={Logo} alt={"Luxuria"} /></a>
                     </div>
                     <ul className="side-menu">
                         {dashboard || role == "super-admin" ? <li><NavLink to="/" className="sidebar-link"><i className="fa fa-dashboard"></i> Dashboard</NavLink></li> : ''}

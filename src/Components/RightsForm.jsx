@@ -36,7 +36,7 @@ export default function RightsForm() {
     return (
         <>
             <article className="ps-4">
-                <Right emailId={emailId} user={user} rightId={rightId} rights={rightsAlloted} />
+                <Right emailId={emailId} email={user.email} user={user} rightId={rightId} rights={rightsAlloted} />
             </article>
         </>
     )
