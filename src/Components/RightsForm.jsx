@@ -4,7 +4,7 @@ import axios from "axios";
 import Right from "./Right";
 
 export default function RightsForm() {
-    const initialState = {dashboard: false, products: false, orders: false, category: false}
+    const initialState = {products: false, orders: false, category: false}
     const { emailId } = useParams()
     const [user, setUser] = useState({})
     const [rightId,setRightId] = useState('')

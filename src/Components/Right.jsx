@@ -15,7 +15,7 @@ export default function Right({ emailId , user, rightId, rights }) {
 
 
     const [allowRight, setAllowRight] = useState(rights)
-    const { dashboard, products, orders, category } = allowRight
+    const { products, orders, category } = allowRight
 
     const [removelen,setremlen] = useState(0)
 
@@ -134,9 +134,6 @@ export default function Right({ emailId , user, rightId, rights }) {
             <Form onSubmit={handelSubmit}>
                 <Row className="mb-5">
                     <ul className="list-inline pl-0 mb-0">
-                        <li className="list-inline-item me-3">
-                            <Form.Check label="Dashboard" id="dashboard" name="dashboard" checked={dashboard} onChange={handelChange} />
-                        </li>
                         <li className="list-inline-item me-3">
                             <Form.Check label="Products" id="products" name="products" checked={products} onChange={handelChange} />
                         </li>
