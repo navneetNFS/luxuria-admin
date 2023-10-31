@@ -1,16 +1,8 @@
 import LoginForm from "../Components/LoginForm";
 import AuthImage from "../assets/images/auth-screens.png";
-import { useSelector } from "react-redux";
-import { selectUserLogged } from "../store/slices/auth-slice";
-import { useNavigate } from "react-router-dom";
 import '../scss/Pages/Login.scss'
 
 export default function LoginPage() {
-    const navigate = useNavigate()
-    const isloggin = useSelector(selectUserLogged)
-    if(isloggin){
-        navigate('/dashboard')
-    }
     return (
         <>
             <section className="login min-vh-100">

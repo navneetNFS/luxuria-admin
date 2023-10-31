@@ -53,7 +53,7 @@ function App() {
     getRights()
   }, [rights])
 
-  const { dashboard, products, orders, category } = rights
+  const { products, orders, category } = rights
   return (
     <>
       <Router>
@@ -63,14 +63,16 @@ function App() {
 
         <Routes>
           {/* User Links */}
-          <Route path="/" element={!isLogged ? <LoginPage /> : user.verifyed ? dashboard ? <DashboardPage /> : <NotAuthorised /> : <VerifyUserPage />} />
+          <Route path="/" element={!isLogged ? <LoginPage /> : <PageNotFound />} />
 
           <Route path="/sign-up" element={!isLogged ? <RegisterPage /> : <NotAuthorised />} />
 
           <Route path="/forgot-password" element={!isLogged ? <ForgotPassword /> : <PageNotFound />} />
 
+          <Route path="/dashboard" element={isLogged ? user.verifyed ? <DashboardPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+
           {/* Verify User */}
-          <Route path="/verify-user" element={isLogged ? !user.verifyed ? <VerifyUserPage /> : dashboard ? <DashboardPage /> : <NotAuthorised /> : <NotAuthorised />} />
+          <Route path="/verify-user" element={isLogged ? !user.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
 
           {/* Product Links */}
           <Route path="/products" element={isLogged ? user.verifyed ? products ? <ProductPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />

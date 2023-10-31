@@ -5,7 +5,7 @@ import { useNavigate } from "react-router"
 import { logOut } from "../store/slices/auth-slice"
 
 export default function SignOutPage() {
-  const naigate = useNavigate()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const logout = async function(){
@@ -13,8 +13,8 @@ export default function SignOutPage() {
     const {success} = res
     if(success){
       dispatch(logOut(false))
-      naigate('/')
-      window.location.reload(true)
+      navigate('/')
+      // window.location.reload(true)
     }
   }
 

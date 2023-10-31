@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 // import { useNavigate } from "react-router-dom"
-import { logOut, selectCurrentTokken, selectCurrentUser, setCredential } from "../store/slices/auth-slice"
+import { logOut, selectCurrentUser } from "../store/slices/auth-slice"
 import { setImageApiUrl } from "../store/slices/imageApi-slice"
 import { clearProductFiler } from "../store/slices/productFilter-slice"
 import { useLocation } from "react-router-dom"
@@ -37,9 +37,9 @@ export default function PageStart() {
 
     const tokken = getCookieValue('tokken')
     const user = getCookieValue('user')
-    const getCookie = useSelector(selectCurrentTokken)
+    // const getCookie = useSelector(selectCurrentTokken)
     const current_user = useSelector(selectCurrentUser)
-    
+
     const passwordMatched = async function () {
         let matched = await axios.get(`/api/user/getPwd?email=${current_user.email}&password=${current_user.password}`)
             .then(({ data }) => data).catch(({ response }) => { response.data.message })
@@ -49,7 +49,7 @@ export default function PageStart() {
         }
     }
 
-    useMemo(()=>{
+    useMemo(() => {
         if (!tokken && !user) {
             const setCred = () => {
                 dispatch(logOut())
@@ -58,31 +58,13 @@ export default function PageStart() {
             setCred()
         }
         else {
-            if (current_user == null) {
-                const userData = user
-                const jsonStr = userData.replace('j%3A', '')
-                const decodedString = decodeURIComponent(jsonStr);
-                const userObject = JSON.parse(decodedString);
-    
-                const setting = { logged: true, user: userObject, tokken: getCookie }
-    
-                const setCred = (payload) => {
-                    dispatch(setCredential(payload))
-                }
-                setCred(setting)
-            }
-
-            else{
-                if(current_user.email){
+            if (current_user) {
+                if (current_user.email) {
                     passwordMatched()
                 }
             }
-    
-    
         }
-    },[])
-
-
+    }, [])
 
 
     if (location.pathname != "/products") {

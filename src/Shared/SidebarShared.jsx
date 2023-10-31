@@ -33,10 +33,10 @@ export default function Sidebar() {
                 <nav className="sidenav">
                     <div className="logo">
                         {/* <a href="/">Luxuria</a> */}
-                        <a href="/"><img src={Logo} alt={"Luxuria"} /></a>
+                        <a href="/dashboard"><img src={Logo} alt={"Luxuria"} /></a>
                     </div>
                     <ul className="side-menu">
-                        {dashboard || role == "super-admin" ? <li><NavLink to="/" className="sidebar-link"><i className="fa fa-dashboard"></i> Dashboard</NavLink></li> : ''}
+                        {dashboard || role == "super-admin" ? <li><NavLink to="/dashboard" className="sidebar-link"><i className="fa fa-dashboard"></i> Dashboard</NavLink></li> : ''}
                         {products || role == "super-admin" ? <li><NavLink to="/products" className="sidebar-link"><i className="fa fa-tags"></i> Products</NavLink></li>: ''}
                         {orders || role == "super-admin" ? <li><NavLink to="/orders" className="sidebar-link"><i className="fa fa-shopping-cart"></i> Orders</NavLink></li> : ''}
                         {category || role == "super-admin" ? <li><NavLink to="/categories" className="sidebar-link"><i className="fa fa-tasks"></i> Category</NavLink></li> : ''}

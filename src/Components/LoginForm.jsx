@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { setCredential } from "../store/slices/auth-slice";
 
 export default function LoginForm() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
     const initialValue = {
         email: '',
         password: ''
@@ -33,7 +37,16 @@ export default function LoginForm() {
             setSuccess(true)
             setSuccessMessage('User Login Successfully')
             setTimeout(() => {
-                navigate('/');
+                // navigate('/dashboard');
+                // window.location.reload(true);
+                const setting = { logged: true, user: response.user, tokken: response.tokken }
+    
+                const setCred = (payload) => {
+                    dispatch(setCredential(payload))
+                }
+                setCred(setting);
+
+                navigate('/dashboard');
                 window.location.reload(true);
             }, 1000)
         }
