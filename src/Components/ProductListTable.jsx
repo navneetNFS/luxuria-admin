@@ -231,36 +231,41 @@ export default function ProductListTable() {
             <div className="table-footer">
                 <div className="row d-flex align-items-center justify-content-center">
                     <div className="col-lg-6 col-md-6 col-sm-6">
-                        <Dropdown>
-                            <Dropdown.Toggle id="pageSizeDD" className='btn-action text-black' style={{ "width": "7rem" }}>
-                                10 <i className="fa fa-angle-down"></i>
-                            </Dropdown.Toggle>
+                        {
+                            currentPageData.length > 0 ? <Dropdown>
+                                <Dropdown.Toggle id="pageSizeDD" className='btn-action text-black' style={{ "width": "7rem" }}>
+                                    10 <i className="fa fa-angle-down"></i>
+                                </Dropdown.Toggle>
 
-                            <Dropdown.Menu className='action-dd-menu'>
-                                <Dropdown.Item href="#" className="text-center">10</Dropdown.Item>
-                                <Dropdown.Item href="#" className="text-center">25</Dropdown.Item>
-                                <Dropdown.Item href="#" className="text-center">50</Dropdown.Item>
-                                <Dropdown.Item href="#" className="text-center">100</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                                <Dropdown.Menu className='action-dd-menu'>
+                                    <Dropdown.Item href="#" className="text-center">10</Dropdown.Item>
+                                    <Dropdown.Item href="#" className="text-center">25</Dropdown.Item>
+                                    <Dropdown.Item href="#" className="text-center">50</Dropdown.Item>
+                                    <Dropdown.Item href="#" className="text-center">100</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown> : ''
+                        }
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-6 d-inline-flex justify-content-end">
-                        <ReactPaginate
-                            previousLabel={<span aria-hidden="true"><i className="fa fa-chevron-left"></i></span>}
-                            nextLabel={<span aria-hidden="true"><i className="fa fa-chevron-right"></i></span>}
-                            pageCount={pageCount}
-                            onPageChange={handlePageChange}
-                            containerClassName={'pagination'}
-                            activeClassName={'active'}
-                            pageClassName={'page-item'}
-                            pageLinkClassName={'page-link'}
-                            previousClassName={'page-item'}
-                            nextClassName={'page-item'}
-                            previousLinkClassName={'page-link'}
-                            nextLinkClassName={'page-link'}
-                            breakClassName={'page-item break-item'}
-                            breakLinkClassName={'page-link break-link'}
-                        />
+                        {
+                            currentPageData.length > 0 ? <ReactPaginate
+                                previousLabel={<span aria-hidden="true"><i className="fa fa-chevron-left"></i></span>}
+                                nextLabel={<span aria-hidden="true"><i className="fa fa-chevron-right"></i></span>}
+                                pageCount={pageCount}
+                                onPageChange={handlePageChange}
+                                containerClassName={'pagination'}
+                                activeClassName={'active'}
+                                pageClassName={'page-item'}
+                                pageLinkClassName={'page-link'}
+                                previousClassName={'page-item'}
+                                nextClassName={'page-item'}
+                                previousLinkClassName={'page-link'}
+                                nextLinkClassName={'page-link'}
+                                breakClassName={'page-item break-item'}
+                                breakLinkClassName={'page-link break-link'}
+                            /> : ''
+                        }
+
                     </div>
                 </div>
             </div>
