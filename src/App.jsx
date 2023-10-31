@@ -25,6 +25,8 @@ import SubCategoryPage from "./Pages/SubCategoryPage";
 import DeleteSubCategory from "./Components/DeleteSubCategory";
 import RightsPage from "./Pages/RightsPage";
 import RightsForm from "./Components/RightsForm";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 
@@ -32,6 +34,26 @@ function App() {
   const isLogged = useSelector(selectUserLogged)
   const user = useSelector(selectCurrentUser)
   const role = user ? user.role : null
+
+
+  const email = user ? user.email : ''
+  const [rights, setRight] = useState({})
+
+  const getRights = async () => {
+    if (email != '') {
+      const res = await axios(`/api/rights/${email}`).then(({ data }) => data).catch(({ response }) => response.data);
+      const { success } = res
+      if (success) {
+        setRight(res.rights)
+      }
+    }
+  }
+
+  useEffect(() => {
+    getRights()
+  }, [rights])
+
+  const { dashboard, products, orders, category } = rights
   return (
     <>
       <Router>
@@ -41,34 +63,34 @@ function App() {
 
         <Routes>
           {/* User Links */}
-          <Route path="/" element={!isLogged ? <LoginPage /> : user.verifyed ? <DashboardPage /> : <VerifyUserPage />} />
+          <Route path="/" element={!isLogged ? <LoginPage /> : user.verifyed ? dashboard ? <DashboardPage /> : <NotAuthorised /> : <VerifyUserPage />} />
 
           <Route path="/sign-up" element={!isLogged ? <RegisterPage /> : <NotAuthorised />} />
 
           <Route path="/forgot-password" element={!isLogged ? <ForgotPassword /> : <PageNotFound />} />
 
           {/* Verify User */}
-          <Route path="/verify-user" element={isLogged ? !user.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
+          <Route path="/verify-user" element={isLogged ? !user.verifyed ? <VerifyUserPage /> : dashboard ? <DashboardPage /> : <NotAuthorised /> : <NotAuthorised />} />
 
           {/* Product Links */}
-          <Route path="/products" element={isLogged ? user.verifyed ? <ProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/product-detail/:productId" element={isLogged ? user.verifyed ? <ProductDetailPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/edit-product/:productId" element={isLogged ? user.verifyed ? <EditProductPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/delete-product/:productId" element={isLogged ? user.verifyed ? <DeleteProduct /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/products" element={isLogged ? user.verifyed ? products ? <ProductPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/product-detail/:productId" element={isLogged ? user.verifyed ? products ? <ProductDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/edit-product/:productId" element={isLogged ? user.verifyed ? products ? <EditProductPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-product/:productId" element={isLogged ? user.verifyed ? products ? <DeleteProduct /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+
+          {/* Reviews */}
+          <Route path="/reviews" element={isLogged ? user.verifyed ? products ? <ReviewPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* Orders Links */}
-          <Route path="/orders" element={isLogged ? user.verifyed ? <OrderPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/order-detail" element={isLogged ? user.verifyed ? <OrderDetailPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-
-          {/* Reviews */}
-          <Route path="/reviews" element={isLogged ? user.verifyed ? <ReviewPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/orders" element={isLogged ? user.verifyed ? orders ? <OrderPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/order-detail" element={isLogged ? user.verifyed ? orders ? <OrderDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
           {/* Categories */}
-          <Route path="/categories" element={isLogged ? user.verifyed ? <CategoryPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/categories/:categoryName" element={isLogged ? user.verifyed ? <SubCategoryPage /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/delete-categorie/:id" element={isLogged ? user.verifyed ? <DeleteCategory /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/delete-sub-categorie/:categoryName/:id" element={isLogged ? user.verifyed ? <DeleteSubCategory /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/categories" element={isLogged ? user.verifyed ? category ? <CategoryPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/categories/:categoryName" element={isLogged ? user.verifyed ? category ? <SubCategoryPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-categorie/:id" element={isLogged ? user.verifyed ? category ? <DeleteCategory /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-sub-categorie/:categoryName/:id" element={isLogged ? user.verifyed ? category ? <DeleteSubCategory /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* Rights */}
