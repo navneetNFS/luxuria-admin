@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 // import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { setCredential } from "../store/slices/auth-slice";
 
 /* eslint-disable react/no-unknown-property */
 export default function RegiterForm() {
-
-
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const initialValue = {
         name: '',
@@ -21,7 +22,7 @@ export default function RegiterForm() {
 
     const [inputVals, setInputVals] = useState(initialValue)
 
-    const { name, email, password, mobile , role } = inputVals
+    const { name, email, password, mobile, role } = inputVals
 
     const [error, setError] = useState({})
 
@@ -46,7 +47,13 @@ export default function RegiterForm() {
                     setSuccess(true)
                     setSuccessMessage('User Created Successfully')
                     setTimeout(() => {
-                        navigate('/');
+                        const setting = { logged: true, user: data.user, tokken: data.tokken }
+
+                        const setCred = (payload) => {
+                            dispatch(setCredential(payload))
+                        }
+                        setCred(setting);
+                        navigate('/dashboard');
                         window.location.reload(true);
                     }, 1000)
                 }
@@ -111,7 +118,7 @@ export default function RegiterForm() {
         validation()
         setInputVals({ ...inputVals, [name]: value })
     }
-    
+
     return (
         <>
             <h1>Sign Up</h1>

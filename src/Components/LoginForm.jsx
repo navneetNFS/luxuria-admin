@@ -37,8 +37,6 @@ export default function LoginForm() {
             setSuccess(true)
             setSuccessMessage('User Login Successfully')
             setTimeout(() => {
-                // navigate('/dashboard');
-                // window.location.reload(true);
                 const setting = { logged: true, user: response.user, tokken: response.tokken }
     
                 const setCred = (payload) => {

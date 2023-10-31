@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { logOut, selectCurrentUser } from "../store/slices/auth-slice"
 import { setImageApiUrl } from "../store/slices/imageApi-slice"
 import { clearProductFiler } from "../store/slices/productFilter-slice"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { resetForgotPwd } from "../store/slices/forgogtPwd-slice"
 import axios from "axios"
 import { useMemo } from "react"
 // import { useEffect } from "react"
 // import axios from "axios"
 export default function PageStart() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     let location = useLocation();
 
@@ -44,7 +45,7 @@ export default function PageStart() {
         let matched = await axios.get(`/api/user/getPwd?email=${current_user.email}&password=${current_user.password}`)
             .then(({ data }) => data).catch(({ response }) => { response.data.message })
         const { success } = matched
-        if (!success) {
+        if (!success || !matched.matched) {
             dispatch(logOut())
         }
     }
@@ -56,12 +57,15 @@ export default function PageStart() {
                 dispatch(setImageApiUrl(""))
             }
             setCred()
+
+            navigate("/")
+            // window.location.reload(true)
+            console.log("Not Found");
         }
         else {
-            if (current_user) {
-                if (current_user.email) {
+            if (current_user && current_user.verifyed) {
+                console.log(current_user);
                     passwordMatched()
-                }
             }
         }
     }, [])
