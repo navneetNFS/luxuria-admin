@@ -75,24 +75,24 @@ function App() {
           <Route path="/verify-user" element={isLogged ? !user.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
 
           {/* Product Links */}
-          <Route path="/products" element={isLogged ? user.verifyed ? products ? <ProductPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/product-detail/:productId" element={isLogged ? user.verifyed ? products ? <ProductDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/edit-product/:productId" element={isLogged ? user.verifyed ? products ? <EditProductPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/delete-product/:productId" element={isLogged ? user.verifyed ? products ? <DeleteProduct /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/products" element={isLogged ? user.verifyed ? products || role == "super-admin" ? <ProductPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/product-detail/:productId" element={isLogged ? user.verifyed ? products || role == "super-admin" ? <ProductDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/edit-product/:productId" element={isLogged ? user.verifyed ? products || role == "super-admin" ? <EditProductPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-product/:productId" element={isLogged ? user.verifyed ? products || role == "super-admin" ? <DeleteProduct /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
           {/* Reviews */}
-          <Route path="/reviews" element={isLogged ? user.verifyed ? products ? <ReviewPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/reviews" element={isLogged ? user.verifyed ? products || role == "super-admin" ? <ReviewPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* Orders Links */}
-          <Route path="/orders" element={isLogged ? user.verifyed ? orders ? <OrderPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/order-detail" element={isLogged ? user.verifyed ? orders ? <OrderDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/orders" element={isLogged ? user.verifyed ? orders || role == "super-admin" ? <OrderPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/order-detail" element={isLogged ? user.verifyed ? orders || role == "super-admin" ? <OrderDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
           {/* Categories */}
-          <Route path="/categories" element={isLogged ? user.verifyed ? category ? <CategoryPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/categories/:categoryName" element={isLogged ? user.verifyed ? category ? <SubCategoryPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/delete-categorie/:id" element={isLogged ? user.verifyed ? category ? <DeleteCategory /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/delete-sub-categorie/:categoryName/:id" element={isLogged ? user.verifyed ? category ? <DeleteSubCategory /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/categories" element={isLogged ? user.verifyed ? category || role == "super-admin" ? <CategoryPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/categories/:categoryName" element={isLogged ? user.verifyed ? category || role == "super-admin" ? <SubCategoryPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-categorie/:id" element={isLogged ? user.verifyed ? category || role == "super-admin" ? <DeleteCategory /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/delete-sub-categorie/:categoryName/:id" element={isLogged ? user.verifyed ? category || role == "super-admin" ? <DeleteSubCategory /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* Rights */}
