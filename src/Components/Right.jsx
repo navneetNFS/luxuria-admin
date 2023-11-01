@@ -128,6 +128,11 @@ export default function Right({ emailId , user, rightId, rights }) {
         }
     }
 
+    // Delete User
+    const deleteUser = async () => {
+        console.log("Hello");
+    }
+
     return (
         <>
             <h1 className="mb-5">Allow Rights to <span className="text-primary">{user.name}</span></h1>
@@ -150,7 +155,7 @@ export default function Right({ emailId , user, rightId, rights }) {
 
                 {rightId && removelen > 0  ? <Button variant="outline-primary" className="me-3" onClick={deleteRight}>Revoke Rights</Button> : ''}
 
-                <Button variant="outline-danger">Delete User</Button>
+                <Button variant="outline-danger" onClick={deleteUser}>Delete User</Button>
                 <p className="error pt-4">{error.selectright}</p>
             </Form>
 

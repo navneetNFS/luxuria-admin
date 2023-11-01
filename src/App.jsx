@@ -27,6 +27,7 @@ import RightsPage from "./Pages/RightsPage";
 import RightsForm from "./Components/RightsForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
+// import GrantRight from "./Pages/GrantRight";
 
 
 
@@ -54,12 +55,14 @@ function App() {
   }, [rights])
 
   const { products, orders, category } = rights
+  console.log(rights);
   return (
     <>
       <Router>
         <PageStart />
         {isLogged ? <Header /> : ''}
         {isLogged ? <Sidebar /> : ''}
+
 
         <Routes>
           {/* User Links */}
@@ -69,7 +72,7 @@ function App() {
 
           <Route path="/forgot-password" element={!isLogged ? <ForgotPassword /> : <PageNotFound />} />
 
-          <Route path="/dashboard" element={isLogged ? user.verifyed ? <DashboardPage /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/dashboard" element={isLogged ? user.verifyed ? <DashboardPage rights={rights} role={role} /> : <VerifyUserPage /> : <NotAuthorised />} />
 
           {/* Verify User */}
           <Route path="/verify-user" element={isLogged ? !user.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
@@ -112,6 +115,7 @@ function App() {
           {/* Page Not Found */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+        
       </Router>
     </>
   )

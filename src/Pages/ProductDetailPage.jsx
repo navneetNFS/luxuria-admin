@@ -19,7 +19,7 @@ export default function ProductDetailPage() {
       })
   }, [])
 
-  const { name, description, price, stock, sku, images, category, thumb } = product
+  const { name, description, price, stock, sku, images, category , subcategory , thumb } = product
 
 
   const img_list = []
@@ -72,11 +72,17 @@ export default function ProductDetailPage() {
                   <form action="">
                     <div className="card widget-card">
                       <h6 className="title">Category</h6>
-                      <div className="form-group boot-select">
+                      <div className="form-group boot-select mb-4">
                         <select className="form-control" id="productCategory" disabled>
                           <option>{category}</option>
                         </select>
-                        <i className="fa fa-angle-down"></i>
+                        {/* <i className="fa fa-angle-down"></i> */}
+                      </div>
+                      <div className="form-group boot-select">
+                        <select className="form-control" id="productSubCategory" disabled>
+                          <option>{subcategory}</option>
+                        </select>
+                        {/* <i className="fa fa-angle-down"></i> */}
                       </div>
                     </div>
                   </form>

@@ -22,10 +22,12 @@ export default function EditPageForm() {
     }
 
     const [categoryChanged, setCategoryChange] = useState(false)
+    const [subcategoryChanged, setSubCategoryChange] = useState(false)
 
     const inputValue = {
         thumb: '',
         category: '',
+        subcategory: '',
         images: [],
         name: '',
         description: '',
@@ -37,6 +39,7 @@ export default function EditPageForm() {
     const [Product, setProduct] = useState(inputValue)
     const [loadProduct, setLoadProduct] = useState(false)
     const [Category, setCategory] = useState([])
+    const [SubCategory, setSubCategory] = useState([])
 
     useMemo(() => {
         axios.get(`/api/product/${productId}`)
@@ -56,7 +59,7 @@ export default function EditPageForm() {
     }, [])
 
 
-    const { name, thumb, category, images, description, price, stock, sku } = Product
+    const { name, thumb, category, subcategory , images, description, price, stock, sku } = Product
 
     const imageHidden = useRef(images);
     // const removedImagesList = []
@@ -265,10 +268,22 @@ export default function EditPageForm() {
                                             : <option value={category}>{category}</option>}
                                     </select>
                                     <i className="fa fa-angle-down"></i>
-                                    <p className="hint text-start pt-2">Update the product category.</p>
+                                </div>
+                                <p className="hint text-start pt-2">Update the product category.</p>
+
+                                {/* <div className="form-group boot-select">
+                                    <select className="form-control" id="productCategory" onChange={(e) => {
+                                        handelChange("category", e.target.value)
+                                    }} onMouseDown={() => { setCategoryChange(true) }}>
+                                        {subcategoryChanged ? SubCategory.map((item) => {
+                                            return <option key={item._id} value={item.name}>{item.name}</option>
+                                        })
+                                            : <option value={subcategory}>{subcategory}</option>}
+                                    </select>
+                                    <i className="fa fa-angle-down"></i>
+                                </div> */}
 
                                     <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
-                                </div>
                             </div>
                         </div>
                     </div>

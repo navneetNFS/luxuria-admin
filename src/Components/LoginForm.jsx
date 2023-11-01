@@ -33,7 +33,9 @@ export default function LoginForm() {
         }).then(({ data }) => { return data }).catch(({ response }) => { return response.data })
         console.log(response);
         const { success , message } = response
-        if (success) {
+        console.log(response);
+        if (success && response.tokken) {
+            console.log(response);
             setSuccess(true)
             setSuccessMessage('User Login Successfully')
             setTimeout(() => {
@@ -51,6 +53,12 @@ export default function LoginForm() {
         else {
             setFail(true);
             setFailMessage(`${message}`)
+            setTimeout(() => {
+                navigate('/');
+                window.location.reload(true);
+            }, 1000)
+            
+            console.log(response);
         }
     }
 

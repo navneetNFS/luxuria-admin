@@ -57,14 +57,13 @@ export default function PageStart() {
                 dispatch(setImageApiUrl(""))
             }
             setCred()
-
-            navigate("/")
-            // window.location.reload(true)
-            console.log("Not Found");
+            setTimeout(()=>{
+                navigate("/")
+            },100)
+            
         }
         else {
             if (current_user && current_user.verifyed) {
-                console.log(current_user);
                     passwordMatched()
             }
         }
