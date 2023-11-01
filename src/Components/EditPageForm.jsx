@@ -39,10 +39,12 @@ export default function EditPageForm() {
     const [Category, setCategory] = useState([])
     const [SubCategory, setSubCategory] = useState([])
 
-    
+    const [categoryChanged, setCategoryChanged] = useState(false)
 
 
-    const { name, thumb, category, subcategory , images, description, price, stock, sku } = Product
+
+
+    const { name, thumb, category, subcategory, images, description, price, stock, sku } = Product
 
     const imageHidden = useRef(images);
 
@@ -63,18 +65,18 @@ export default function EditPageForm() {
                 setCategory(category)
             }).catch(({ response }) => console.log(response))
 
-            console.log(category);
-        
-            
+        console.log(category);
+
+
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`/api/category/sub-category?category=${category}`)
-        .then(({ data }) => {
-            const { subcategory } = data
-            setSubCategory(subcategory)
-        }).catch(({ response }) => console.log(response))
-    },[category])
+            .then(({ data }) => {
+                const { subcategory } = data
+                setSubCategory(subcategory)
+            }).catch(({ response }) => console.log(response))
+    }, [category])
     // const removedImagesList = []
     const [removedImagesList, setRemoveItemList] = useState([])
 
@@ -219,10 +221,14 @@ export default function EditPageForm() {
     }
 
     const handelChange = (name, value) => {
+        if (name == "category") {
+            setCategoryChanged(true)
+        }
         setProduct({ ...Product, [name]: value })
     }
 
     const postProduct = async function (update_data) {
+        console.log(update_data);
         const res = await axios.put(`/api/product/edit-product/${productId}`, update_data, {
             withCredentials: true,
             headers: { 'Content-Type': 'application/json' }
@@ -244,151 +250,165 @@ export default function EditPageForm() {
         }
     }
 
+    console.log(SubCategory);
+
     return (
         <>
             {
-                loadProduct? <form method='POST' onSubmit={handelSubmit}>
-                <div className="row">
-                    <div className="col-lg-3 col-md-3 col-sm-3">
-                        <div className="thumbline mb-5">
-                            <div className="card widget-card">
-                                <h6 className="title">Thumbnail</h6>
-                                <div className="thumb_img mx-auto">
-                                    {thumb ? <img src={`${imageApi}/${thumb}`} alt="" id="thumbImg" /> : ''}
-                                    <input type="file" id="thumbImage" className="hidden-file" ref={newThumbFiles} onChange={(e) => {
-                                        newThumUpload()
-                                        setNewThumb(e.target.files)
-                                    }} />
+                loadProduct ? <form method='POST' onSubmit={handelSubmit}>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-3 col-sm-3">
+                            <div className="thumbline mb-5">
+                                <div className="card widget-card">
+                                    <h6 className="title">Thumbnail</h6>
+                                    <div className="thumb_img mx-auto">
+                                        {thumb ? <img src={`${imageApi}/${thumb}`} alt="" id="thumbImg" /> : ''}
+                                        <input type="file" id="thumbImage" className="hidden-file" ref={newThumbFiles} onChange={(e) => {
+                                            newThumUpload()
+                                            setNewThumb(e.target.files)
+                                        }} />
 
-                                    <input type="hidden" value={thumb} ref={prevThumb} />
-                                    <label className="btn-edit" htmlFor="thumbImage" id="editIcon"><i className="fa fa-pencil"></i></label>
+                                        <input type="hidden" value={thumb} ref={prevThumb} />
+                                        <label className="btn-edit" htmlFor="thumbImage" id="editIcon"><i className="fa fa-pencil"></i></label>
+                                    </div>
+                                    <p className="hint">Update the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
                                 </div>
-                                <p className="hint">Update the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</p>
                             </div>
-                        </div>
 
-                        <div className="category">
-                            <div className="card widget-card">
-                                <h6 className="title">Category</h6>
-                                <div className="form-group boot-select">
-                                    <select className="form-control" id="productCategory" defaultValue={category} onChange={(e) => {
-                                        handelChange("category", e.target.value)
-                                    }}>
-                                        {
-                                            Category.map((item) => <option key={item._id} value={item.name}>{item.name}</option>)
-                                        }
-                                    </select>
-                                    <i className="fa fa-angle-down"></i>
-                                </div>
+                            <div className="category">
+                                <div className="card widget-card">
+                                    <h6 className="title">Category</h6>
+                                    <div className="form-group boot-select">
+                                        <select className="form-control" id="productCategory" defaultValue={category} onChange={(e) => {
+                                            handelChange("category", e.target.value)
+                                        }}>
+                                            {
+                                                Category.map((item) => <option key={item._id} value={item.name}>{item.name}</option>)
+                                            }
+                                        </select>
+                                        <i className="fa fa-angle-down"></i>
+                                    </div>
+                                    
+                                    <h6 className="title pt-4 mb-3">Sub Category</h6>
 
-                                <p className="hint text-start pt-2">Update the product category.</p>
+                                    {
+                                        categoryChanged ? <div className="form-group boot-select">
+                                            <select className="form-control" id="productCategory" onChange={(e) => {
+                                                handelChange("subcategory", e.target.value)
+                                            }}>
+                                                <option value="0">-- Select Sub Category --</option>
+                                                {
+                                                    SubCategory.map((item) => <option key={item._id} value={item.subcategory}>{item.subcategory}</option>)
+                                                }
+                                            </select>
+                                            <i className="fa fa-angle-down"></i>
+                                        </div> : <div className="form-group boot-select">
+                                            <select className="form-control" id="productCategory" disabled onChange={(e) => {
+                                                handelChange("subcategory", e.target.value)
+                                            }}>
+                                                <option value={subcategory}>{subcategory}</option>
+                                            </select>
+                                            <i className="fa fa-angle-down"></i>
+                                        </div> 
+                                    }
 
-                                <div className="form-group boot-select">
-                                    <select className="form-control" id="productCategory" defaultValue={subcategory} onChange={(e) => {
-                                        handelChange("subcategory", e.target.value)
-                                    }}>
-                                        {
-                                            SubCategory.map((item) => <option key={item._id} value={item.subcategory}>{item.subcategory}</option>)
-                                        }
-                                    </select>
-                                    <i className="fa fa-angle-down"></i>
-                                </div>
+                                    <p className="hint text-start pt-2">Update the product category.</p>
 
                                     <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="col-lg-9 col-md-9 col-sm-9">
-                        <div className="images mb-5">
-                            <div className="card widget-card">
-                                <h6 className="title">Images</h6>
+                        <div className="col-lg-9 col-md-9 col-sm-9">
+                            <div className="images mb-5">
+                                <div className="card widget-card">
+                                    <h6 className="title">Images</h6>
 
-                                <div className="upload_more" id="uploadBtn">
-                                    <label htmlFor="uploadMore" className="btn btn-primary btn-upload-more btn-sm">Upload More</label>
-                                    <input type="file" id="uploadMore" className="w-100" accept="image/*" multiple onChange={uploadNewImages} />
+                                    <div className="upload_more" id="uploadBtn">
+                                        <label htmlFor="uploadMore" className="btn btn-primary btn-upload-more btn-sm">Upload More</label>
+                                        <input type="file" id="uploadMore" className="w-100" accept="image/*" multiple onChange={uploadNewImages} />
+                                    </div>
+                                    <input type="hidden" value={images} ref={imageHidden} />
+                                    <div className="d-flex image_list">
+                                        {
+                                            images.map((item, ind) => {
+                                                return <div className="thumb_img me-4" id={`image_${ind}`} key={ind}>
+                                                    <img src={`${imageApi}/${item}`} alt="" />
+                                                    <button type="button" className="btn-edit currentProdImage" onClick={() => {
+                                                        setRemoveItemList([...removedImagesList, item])
+                                                    }}><i className="fa fa-trash"></i></button>
+                                                </div>
+                                            })
+                                        }
+                                    </div>
+                                    <div className="d-flex image_list" id="newImages">
+
+                                    </div>
                                 </div>
-                                <input type="hidden" value={images} ref={imageHidden} />
-                                <div className="d-flex image_list">
-                                    {
-                                        images.map((item, ind) => {
-                                            return <div className="thumb_img me-4" id={`image_${ind}`} key={ind}>
-                                                <img src={`${imageApi}/${item}`} alt="" />
-                                                <button type="button" className="btn-edit currentProdImage" onClick={() => {
-                                                    setRemoveItemList([...removedImagesList, item])
-                                                }}><i className="fa fa-trash"></i></button>
+                            </div>
+
+
+                            <div className="general mb-4">
+                                <div className="card widget-card">
+                                    <h6 className="title">General</h6>
+
+                                    <div className="form-group">
+                                        <label htmlFor="productName" className="mb-3 h5">Product Name <span style={{ color: "red" }}>*</span></label>
+                                        <input type="text" className="form-control" id="productName" value={name} onChange={(e) => {
+                                            handelChange("name", e.target.value)
+                                        }} />
+                                        <p className="hint text-start pt-2">A product name is required and recommended to be unique.</p>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="mb-3 h5">Description <span style={{ color: "red" }}>*</span></label>
+                                        <JoditEditor ref={editor}
+                                            value={description}
+                                            config={config}
+                                            tabIndex={1} // tabIndex of textarea
+                                            onBlur={newDescription => handelChange("description", newDescription)} id="productDescription" />
+                                        <p className="hint text-start pt-2">Update description of the product for better visibility.</p>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-lg-4 col-md-4 col-sm-4">
+                                            <div className="form-group">
+                                                <label htmlFor="productPrice" className="mb-3 h5">Price <span style={{ color: "red" }}>*</span></label>
+                                                <input type="text" className="form-control" id="productPrice" value={price} onChange={(e) => {
+                                                    handelChange("price", e.target.value)
+                                                }} />
+                                                <p className="hint text-start pt-2">Update the product price.</p>
                                             </div>
-                                        })
-                                    }
-                                </div>
-                                <div className="d-flex image_list" id="newImages">
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div className="general mb-4">
-                            <div className="card widget-card">
-                                <h6 className="title">General</h6>
-
-                                <div className="form-group">
-                                    <label htmlFor="productName" className="mb-3 h5">Product Name <span style={{ color: "red" }}>*</span></label>
-                                    <input type="text" className="form-control" id="productName" value={name} onChange={(e) => {
-                                        handelChange("name", e.target.value)
-                                    }} />
-                                    <p className="hint text-start pt-2">A product name is required and recommended to be unique.</p>
-                                </div>
-
-                                <div className="form-group">
-                                    <label className="mb-3 h5">Description <span style={{ color: "red" }}>*</span></label>
-                                    <JoditEditor ref={editor}
-                                        value={description}
-                                        config={config}
-                                        tabIndex={1} // tabIndex of textarea
-                                        onBlur={newDescription => handelChange("description", newDescription)} id="productDescription" />
-                                    <p className="hint text-start pt-2">Update description of the product for better visibility.</p>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-lg-4 col-md-4 col-sm-4">
-                                        <div className="form-group">
-                                            <label htmlFor="productPrice" className="mb-3 h5">Price <span style={{ color: "red" }}>*</span></label>
-                                            <input type="text" className="form-control" id="productPrice" value={price} onChange={(e) => {
-                                                handelChange("price", e.target.value)
-                                            }} />
-                                            <p className="hint text-start pt-2">Update the product price.</p>
+                                        </div>
+                                        <div className="col-lg-4 col-md-4 col-sm-4">
+                                            <div className="form-group">
+                                                <label htmlFor="productStock" className="mb-3 h5">Stock <span style={{ color: "red" }}>*</span></label>
+                                                <input type="text" className="form-control" id="productStock" value={stock} onChange={(e) => {
+                                                    handelChange("stock", e.target.value)
+                                                }} />
+                                                <p className="hint text-start pt-2">Update the product stock remaining.</p>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-4 col-md-4 col-sm-4">
+                                            <div className="form-group">
+                                                <label htmlFor="productStock" className="mb-3 h5">SKU <span style={{ color: "red" }}>*</span></label>
+                                                <input type="text" className="form-control" id="productStock" value={sku} onChange={(e) => {
+                                                    handelChange("sku", e.target.value)
+                                                }} />
+                                                <p className="hint text-start pt-2">Update the product SKU.</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-4 col-md-4 col-sm-4">
-                                        <div className="form-group">
-                                            <label htmlFor="productStock" className="mb-3 h5">Stock <span style={{ color: "red" }}>*</span></label>
-                                            <input type="text" className="form-control" id="productStock" value={stock} onChange={(e) => {
-                                                handelChange("stock", e.target.value)
-                                            }} />
-                                            <p className="hint text-start pt-2">Update the product stock remaining.</p>
-                                        </div>
+                                    <div className="text-end">
+                                        <button type="submit" className="btn btn-primary">Update</button>
                                     </div>
-                                    <div className="col-lg-4 col-md-4 col-sm-4">
-                                        <div className="form-group">
-                                            <label htmlFor="productStock" className="mb-3 h5">SKU <span style={{ color: "red" }}>*</span></label>
-                                            <input type="text" className="form-control" id="productStock" value={sku} onChange={(e) => {
-                                                handelChange("sku", e.target.value)
-                                            }} />
-                                            <p className="hint text-start pt-2">Update the product SKU.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="text-end">
-                                    <button type="submit" className="btn btn-primary">Update</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form> : 'Loading...'
+                </form> : 'Loading...'
             }
-            
+
 
             {
                 showSuccess ? <div className="custom_toast">
