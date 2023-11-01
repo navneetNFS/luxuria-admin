@@ -5,6 +5,7 @@ import JoditEditor from 'jodit-react';
 import axios from 'axios';
 import $ from 'jquery';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 export default function EditPageForm() {
     const { productId } = useParams()
     const imageApi = useSelector((state) => state.imageApi)
@@ -20,9 +21,6 @@ export default function EditPageForm() {
         readonly: false,
         placeholder: 'Enter Description',
     }
-
-    const [categoryChanged, setCategoryChange] = useState(false)
-    const [subcategoryChanged, setSubCategoryChange] = useState(false)
 
     const inputValue = {
         thumb: '',
@@ -41,6 +39,14 @@ export default function EditPageForm() {
     const [Category, setCategory] = useState([])
     const [SubCategory, setSubCategory] = useState([])
 
+    
+
+
+    const { name, thumb, category, subcategory , images, description, price, stock, sku } = Product
+
+    const imageHidden = useRef(images);
+
+
     useMemo(() => {
         axios.get(`/api/product/${productId}`)
             .then(({ data }) => {
@@ -56,12 +62,19 @@ export default function EditPageForm() {
                 const { category } = data
                 setCategory(category)
             }).catch(({ response }) => console.log(response))
+
+            console.log(category);
+        
+            
     }, [])
 
-
-    const { name, thumb, category, subcategory , images, description, price, stock, sku } = Product
-
-    const imageHidden = useRef(images);
+    useEffect(()=>{
+        axios.get(`/api/category/sub-category?category=${category}`)
+        .then(({ data }) => {
+            const { subcategory } = data
+            setSubCategory(subcategory)
+        }).catch(({ response }) => console.log(response))
+    },[category])
     // const removedImagesList = []
     const [removedImagesList, setRemoveItemList] = useState([])
 
@@ -210,7 +223,6 @@ export default function EditPageForm() {
     }
 
     const postProduct = async function (update_data) {
-        console.log(update_data);
         const res = await axios.put(`/api/product/edit-product/${productId}`, update_data, {
             withCredentials: true,
             headers: { 'Content-Type': 'application/json' }
@@ -259,29 +271,28 @@ export default function EditPageForm() {
                             <div className="card widget-card">
                                 <h6 className="title">Category</h6>
                                 <div className="form-group boot-select">
-                                    <select className="form-control" id="productCategory" onChange={(e) => {
+                                    <select className="form-control" id="productCategory" defaultValue={category} onChange={(e) => {
                                         handelChange("category", e.target.value)
-                                    }} onMouseDown={() => { setCategoryChange(true) }}>
-                                        {categoryChanged ? Category.map((item) => {
-                                            return <option key={item._id} value={item.name}>{item.name}</option>
-                                        })
-                                            : <option value={category}>{category}</option>}
+                                    }}>
+                                        {
+                                            Category.map((item) => <option key={item._id} value={item.name}>{item.name}</option>)
+                                        }
                                     </select>
                                     <i className="fa fa-angle-down"></i>
                                 </div>
+
                                 <p className="hint text-start pt-2">Update the product category.</p>
 
-                                {/* <div className="form-group boot-select">
-                                    <select className="form-control" id="productCategory" onChange={(e) => {
-                                        handelChange("category", e.target.value)
-                                    }} onMouseDown={() => { setCategoryChange(true) }}>
-                                        {subcategoryChanged ? SubCategory.map((item) => {
-                                            return <option key={item._id} value={item.name}>{item.name}</option>
-                                        })
-                                            : <option value={subcategory}>{subcategory}</option>}
+                                <div className="form-group boot-select">
+                                    <select className="form-control" id="productCategory" defaultValue={subcategory} onChange={(e) => {
+                                        handelChange("subcategory", e.target.value)
+                                    }}>
+                                        {
+                                            SubCategory.map((item) => <option key={item._id} value={item.subcategory}>{item.subcategory}</option>)
+                                        }
                                     </select>
                                     <i className="fa fa-angle-down"></i>
-                                </div> */}
+                                </div>
 
                                     <Link to="/categories" className="btn btn-outline-primary btn-sm w-100 mt-4"><i className="fa fa-plus"></i> Add More Category</Link>
                             </div>
