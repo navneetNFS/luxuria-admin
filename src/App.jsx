@@ -27,9 +27,6 @@ import RightsPage from "./Pages/RightsPage";
 import RightsForm from "./Components/RightsForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import GrantRight from "./Pages/GrantRight";
-
-
 
 function App() {
   const isLogged = useSelector(selectUserLogged)
@@ -55,7 +52,6 @@ function App() {
   }, [rights])
 
   const { products, orders, category } = rights
-  console.log(rights);
   return (
     <>
       <Router>
