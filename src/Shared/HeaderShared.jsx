@@ -33,7 +33,7 @@ export default function Header() {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className='profile_dd_menu'>
-                  <Dropdown.Item href="/dashboard" className='profile-dd-item text-primary-hover'>My Profile</Dropdown.Item>
+                  <Dropdown.Item href="/my-profile" className='profile-dd-item text-primary-hover'>My Profile</Dropdown.Item>
                   <Dropdown.Item href="/dashboard" className='profile-dd-item text-primary-hover'>Change Password</Dropdown.Item>
                   <Dropdown.Item href="/log-out" className='profile-dd-item text-primary-hover'>Sign Out</Dropdown.Item>
                 </Dropdown.Menu>

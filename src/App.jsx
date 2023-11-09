@@ -27,6 +27,7 @@ import RightsPage from "./Pages/RightsPage";
 import RightsForm from "./Components/RightsForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import MyProfile from "./Pages/MyProfile";
 
 function App() {
   const isLogged = useSelector(selectUserLogged)
@@ -70,6 +71,11 @@ function App() {
 
           <Route path="/dashboard" element={isLogged ? user.verifyed ? <DashboardPage rights={rights} role={role} /> : <VerifyUserPage /> : <NotAuthorised />} />
 
+
+          {/* User Profile */}
+
+          <Route path="/my-profile" element={isLogged ? user.verifyed ? <MyProfile /> : <VerifyUserPage /> : <NotAuthorised />} />
+
           {/* Verify User */}
           <Route path="/verify-user" element={isLogged ? !user.verifyed ? <VerifyUserPage /> : <DashboardPage /> : <NotAuthorised />} />
 
@@ -85,7 +91,10 @@ function App() {
 
           {/* Orders Links */}
           <Route path="/orders" element={isLogged ? user.verifyed ? orders || role == "super-admin" ? <OrderPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
-          <Route path="/order-detail" element={isLogged ? user.verifyed ? orders || role == "super-admin" ? <OrderDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
+
+          {/* <Route path="/order-detail" element={isLogged ? user.verifyed ? orders || role == "super-admin" ? <OrderDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} /> */}
+
+          <Route path="/order-detail" element={isLogged ? user.verifyed ? orders || role == "admin" || role == "super-admin" ? <OrderDetailPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
 
           {/* Categories */}
           <Route path="/categories" element={isLogged ? user.verifyed ? category || role == "super-admin" ? <CategoryPage /> : <NotAuthorised /> : <VerifyUserPage /> : <NotAuthorised />} />
