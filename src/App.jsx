@@ -25,7 +25,7 @@ import SubCategoryPage from "./Pages/SubCategoryPage";
 import DeleteSubCategory from "./Components/DeleteSubCategory";
 import RightsPage from "./Pages/RightsPage";
 import RightsForm from "./Components/RightsForm";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import axios from "axios";
 import MyProfile from "./Pages/MyProfile";
 
@@ -37,20 +37,26 @@ function App() {
 
   const email = user ? user.email : ''
   const [rights, setRight] = useState({})
+  const [isLoading, setLoading] = useState(false)
 
   const getRights = async () => {
     if (email != '') {
       const res = await axios(`/api/rights/${email}`).then(({ data }) => data).catch(({ response }) => response.data);
       const { success } = res
+      setLoading(false)
+
       if (success) {
         setRight(res.rights)
       }
     }
   }
 
-  useEffect(() => {
-    getRights()
-  }, [rights])
+  useLayoutEffect(() => {
+    if (isLogged) {
+      setLoading(true)
+      getRights()
+    }
+  }, [isLogged])
 
   const { products, orders, category } = rights
   return (
@@ -69,7 +75,7 @@ function App() {
 
           <Route path="/forgot-password" element={!isLogged ? <ForgotPassword /> : <PageNotFound />} />
 
-          <Route path="/dashboard" element={isLogged ? user.verifyed ? <DashboardPage rights={rights} role={role} /> : <VerifyUserPage /> : <NotAuthorised />} />
+          <Route path="/dashboard" element={isLogged ? user.verifyed ? <DashboardPage rights={rights} role={role} isLoading={isLoading} /> : <VerifyUserPage /> : <NotAuthorised />} />
 
 
           {/* User Profile */}
